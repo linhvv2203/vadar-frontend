@@ -1,0 +1,243 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async)?.items"
+        (nzCurrentPageDataChange)="currentPageDataChange($event)"
+      >
+        <thead>
+          <tr>
+            <td
+              *ngIf="
+                _commonService.validatePermission(
+                  [
+                    EnPermissions.FullPermission,
+                    EnPermissions.WorkspacePermissionSetting
+                  ],
+                  (auth$ | async)?.systemPermissions
+                )
+              "
+              class="col- p-3 text-center"
+              nzShowCheckbox
+              [(nzChecked)]="isAllDisplayDataChecked"
+              [nzIndeterminate]="isIndeterminate"
+              (nzCheckedChange)="checkAll($event)"
+            ></td>
+            <th class="col-url">{{ "SIDEBAR.ROLES" | translate }}</th>
+            <th class="col-type">{{ "SIDEBAR.PERMISSION" | translate }}</th>
+            <th class="col-action"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTable.data; let i = index"
+            class="position-relative"
+          >
+            <td
+              *ngIf="
+                _commonService.validatePermission(
+                  [
+                    EnPermissions.FullPermission,
+                    EnPermissions.WorkspacePermissionSetting
+                  ],
+                  (auth$ | async)?.systemPermissions
+                )
+              "
+              class="col-"
+              nzShowCheckbox
+              [(nzChecked)]="mapOfCheckedId[data.id]"
+              (nzCheckedChange)="refreshStatus()"
+            ></td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "SIDEBAR.ROLES" | translate }}
+              </div>
+              <a
+                *ngIf="
+                  _commonService.validatePermission(
+                    [
+                      EnPermissions.FullPermission,
+                      EnPermissions.WorkspacePermissionSetting
+                    ],
+                    (auth$ | async)?.systemPermissions
+                  )
+                "
+                class="text-primary line-clamp"
+                id="table-roles__name-{{ i }}"
+                clickPreventDefault
+                nzTooltipTitle="{{ data?.name }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                href="#"
+                routerLink="/roles/edit"
+                [queryParams]="{
+                  id: data?.id,
+                  name: data?.name
+                }"
+                >{{ data?.name }}</a
+              >
+
+              <a
+                *ngIf="
+                  !_commonService.validatePermission(
+                    [
+                      EnPermissions.FullPermission,
+                      EnPermissions.WorkspacePermissionSetting
+                    ],
+                    (auth$ | async)?.systemPermissions
+                  )
+                "
+                class="text-primary line-clamp"
+                clickPreventDefault
+                nzTooltipTitle="{{ data?.name }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                href="#"
+                id="table-roles__name-{{ i }}"
+                >{{ data?.name }}</a
+              >
+              <!-- url -->
+            </td>
+            <td class="col-type justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "SIDEBAR.PERMISSION" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ data?.permissions }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate-3"
+              >
+                {{ data?.permissions }}
+              </span>
+              <!-- type -->
+            </td>
+            <td class="col-action p-0">
+              <div>
+                <a
+                  *ngIf="
+                    _commonService.validatePermission(
+                      [
+                        EnPermissions.FullPermission,
+                        EnPermissions.WorkspacePermissionSetting
+                      ],
+                      (auth$ | async)?.systemPermissions
+                    )
+                  "
+                  href="#"
+                  clickPreventDefault
+                  class="more d-flex align-items-center justify-content-center"
+                  nzPlacement="bottomRight"
+                  nz-dropdown
+                  nzTrigger="click"
+                  [nzDropdownMenu]="menu"
+                >
+                  <span class="material-icons-outlined font-25">
+                    more_vert
+                  </span>
+                </a>
+                <!-- more -->
+
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu class="select-lg">
+                    <li
+                      *ngIf="
+                        _commonService.validatePermission(
+                          [
+                            EnPermissions.FullPermission,
+                            EnPermissions.WorkspacePermissionSetting
+                          ],
+                          (auth$ | async)?.systemPermissions
+                        )
+                      "
+                      routerLink="/roles/edit"
+                      [queryParams]="{
+                        id: data.id,
+                        name: data.name
+                      }"
+                      class="d-flex align-items-center px-3"
+                      nz-menu-item
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="edit"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "ROLES.EDIT_PERMISSION" | translate }}
+                    </li>
+                    <li nz-menu-divider></li>
+                    <li
+                      *ngIf="
+                        _commonService.validatePermission(
+                          [
+                            EnPermissions.FullPermission,
+                            EnPermissions.WorkspacePermissionSetting
+                          ],
+                          (auth$ | async)?.systemPermissions
+                        )
+                      "
+                      (click)="showConfirm(data.id)"
+                      class="d-flex align-items-center px-3 text-danger"
+                      nz-menu-item
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="delete"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "GLOBAL.DELETE" | translate }}
+                    </li>
+                  </ul>
+                </nz-dropdown-menu>
+                <!-- Dropdown -->
+              </div>
+              <!-- action -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<nz-pagination
+  class="text-center"
+  [nzPageIndex]="workspaceRoleRequest.pageIndex"
+  [nzPageSize]="workspaceRoleRequest.pageSize"
+  [nzTotal]="(model$ | async)?.count"
+  (nzPageIndexChange)="onPageChange($event)"
+></nz-pagination>
+
+<div class="site-btn mb-4 mt-3">
+  <button
+    *ngIf="
+      _commonService.validatePermission(
+        [
+          EnPermissions.FullPermission,
+          EnPermissions.WorkspacePermissionSetting
+        ],
+        (auth$ | async)?.systemPermissions
+      )
+    "
+    class="mdc-button mdc-btn-sm mdc-button--outlined mdc-ripple-upgraded"
+    (click)="showConfirm()"
+  >
+    <span>{{ "GROUP.DELETE_SELECTED" | translate }}</span>
+  </button>
+</div>
+
+<vadar-delete-modal
+  [(isVisible)]="isVisible"
+  [id]="idRoles"
+  (callback)="handleCallBackModal($event)"
+>
+</vadar-delete-modal>

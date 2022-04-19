@@ -1,0 +1,70 @@
+<div class="card mt-4">
+  <div class="mx-3 mt-3 d-flex justify-content-between">
+    <p
+      class="font-18 font-weight-500 mb-2 line-clamp"
+      nzTooltipTitle="{{ 'SECURITY.TOP_REQ_OVER_TIME' | translate }}"
+      nzTooltipPlacement="topLeft"
+      nz-tooltip
+    >
+      {{ "SECURITY.TOP_REQ_OVER_TIME" | translate }}
+    </p>
+  </div>
+  <div class="border-bottom"></div>
+  <saf-line-chart
+    [type]="'lineChart'"
+    [data]="topRequirementsOverTime$ | async"
+    [className]="'custom'"
+    [label]="'name'"
+    [dateFormat]="_commonService.isDayDateFormat(time)"
+  >
+  </saf-line-chart>
+</div>
+<div class="row">
+  <div class="col-md-4 pb-1">
+    <div class="card mt-4">
+      <div class="mx-3 mt-3 d-flex justify-content-between">
+        <p
+          class="font-18 font-weight-500 mb-2 line-clamp"
+          nzTooltipTitle="{{ 'SECURITY.TOP_AGENTS_BY_ALERT' | translate }}"
+          nzTooltipPlacement="topLeft"
+          nz-tooltip
+        >
+          {{ "SECURITY.TOP_AGENTS_BY_ALERT" | translate }}
+        </p>
+      </div>
+      <div class="border-bottom"></div>
+      <vadar-donut-chart
+        [type]="'chartPie'"
+        [data]="topAgentsByAlerts$ | async"
+        [className]="'custom'"
+      >
+      </vadar-donut-chart>
+    </div>
+  </div>
+  <div class="col-md-8 pb-1">
+    <div class="card mt-4">
+      <div class="mx-3 mt-3 d-flex justify-content-between">
+        <p
+          class="font-18 font-weight-500 mb-2 line-clamp"
+          nzTooltipTitle="{{ 'SECURITY.PCI_DSS_REQUIREMENTS' | translate }}"
+          nzTooltipPlacement="topLeft"
+          nz-tooltip
+        >
+          {{ "SECURITY.PCI_DSS_REQUIREMENTS" | translate }}
+        </p>
+      </div>
+      <div class="border-bottom"></div>
+      <vadar-bubble-chart
+        [label]="'name'"
+        [type]="'chartBubble'"
+        [data]="pciDssReq$ | async"
+        [className]="'custom'"
+        [dateFormat]="_commonService.isDayDateFormat(time)"
+      ></vadar-bubble-chart>
+    </div>
+  </div>
+</div>
+<vadar-top-events-by-level
+  [time]="time"
+  [type]="'pcidss'"
+></vadar-top-events-by-level>

@@ -1,0 +1,73 @@
+<nz-modal
+  [(nzVisible)]="isVisibleResend"
+  nzTitle="{{ 'MEMBERS.RESEND_INVITATION' | translate }}"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  nzWrapClassName="vertical-center-modal"
+>
+  <ng-template #modalContent>
+    <p class="px-3">
+      {{ "MEMBERS.RESEND_CONTENT" | translate }}
+    </p>
+
+    <form
+      nz-form
+      class="px-3"
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item>
+        <nz-form-label class="text-left" [nzSpan]="24" nzFor="url"
+          ><b>URL</b></nz-form-label
+        >
+        <nz-form-control [nzSpan]="24">
+          <nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
+            <input
+              id="metaTagLinkResend"
+              type="text"
+              placeholder="input search text"
+              nz-input
+              value="{{ urlInvitation }}{{ invitation?.inviteId }}/{{
+                (workspaceSelected$ | async)?.name
+              }}"
+            />
+          </nz-input-group>
+          <ng-template #suffixButton>
+            <button
+              type="button"
+              (click)="copyLinkResend()"
+              style="border-bottom-left-radius: 0; border-top-left-radius: 0;"
+              class="border px-4 mdc-button mdc-btn-lg mdc-button--unelevated btn-gray"
+              nzSize="large"
+              nzSearch
+            >
+              <i class="material-icons-outlined mdc-button__icon mr-2">
+                filter_none
+              </i>
+              {{ "GLOBAL.COPY" | translate }}
+            </button>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- metatag -->
+      <div
+        class="site-btn mt-5 mb-4 d-flex justify-content-between align-items-center"
+      >
+        <span
+          ><b>{{ "MEMBERS.VIA_RESEND" | translate }}:</b>
+          {{ invitation?.userEmail }}</span
+        >
+        <button
+          class="px-4 mdc-button mdc-btn-lg mdc-button--unelevated"
+          (click)="resendInvitation(invitation?.inviteId)"
+        >
+          {{ "GLOBAL.RESEND" | translate }}
+        </button>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #modalFooter> </ng-template>
+</nz-modal>

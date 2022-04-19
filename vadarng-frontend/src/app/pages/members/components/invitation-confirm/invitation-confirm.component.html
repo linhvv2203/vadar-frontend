@@ -1,0 +1,53 @@
+<div class="page-padding pl-3">
+  <div class="container-fluid">
+    <div
+      *ngIf="verifyInvitation == 1"
+      class="row text-center align-items-center justify-content-between"
+    >
+      <h4 class="col-md-12">
+        {{ "MEMBERS.CONFIRM_INVITATION_JOIN_WORKSPACE" | translate }}
+      </h4>
+      <div class="col-md-12">
+        <button
+          style="background-color: #ddd;"
+          class="px-5 mr-3 mdc-button mdc-btn-lg mdc-button--unelevated"
+          (click)="showConfirm()"
+        >
+          {{ "MEMBERS.REJECT" | translate }}
+        </button>
+        <button
+          class="px-5 mdc-button mdc-btn-lg mdc-button--unelevated"
+          (click)="invitationConfirm(1)"
+        >
+          {{ "MEMBERS.ACCEPT" | translate }}
+        </button>
+      </div>
+    </div>
+    <div *ngIf="verifyInvitation == 2" class="text-center">
+      <img src="assets/images/404.png" alt="404" />
+
+      <div class="site-btn mt-4">
+        {{ "MEMBERS.THE_PAGE_NOT_FOUND" | translate }}
+      </div>
+      <!-- <nz-empty [nzNotFoundContent]="contentTpl">
+        <ng-template #contentTpl>
+          <h2>403: {{ "FORBIDDEN.FORBIDDEN" | translate }}</h2>
+          <div class="site-btn mt-4">
+            <button
+              class="px-5 mr-3 mdc-button mdc-btn-lg mdc-button--unelevated"
+              (click)="logout()"
+            >
+              {{ "HEADER.LOGOUT" | translate }}
+            </button>
+          </div>
+        </ng-template>
+      </nz-empty> -->
+    </div>
+  </div>
+</div>
+
+<vadar-cancel-modal
+  [(isVisible)]="isVisible"
+  id="true"
+  (callback)="handleCallBackModal($event)"
+></vadar-cancel-modal>

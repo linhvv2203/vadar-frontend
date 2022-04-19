@@ -1,0 +1,36 @@
+<nz-modal
+  [(nzVisible)]="isVisibleCancel"
+  nzTitle="{{ 'MEMBERS.CANCEL_INVITE' | translate }}"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  nzWrapClassName="vertical-center-modal"
+>
+  <ng-template #modalContent>
+    <p class="px-3 text-center">
+      {{ "MEMBERS.CANCEL_CONTENT_HEAD" | translate }}
+      {{ invitation?.userEmail }}
+      {{ "MEMBERS.CANCEL_CONTENT_END" | translate }}?
+    </p>
+
+    <div
+      class="site-btn mt-5 mb-4 d-flex justify-content-center align-items-center"
+    >
+      <button
+        class="px-5 mr-3 mdc-button mdc-btn-lg mdc-button--outlined"
+        (click)="handleCancel()"
+      >
+        {{ "MEMBERS.NO" | translate }}
+      </button>
+      <button
+        class="px-5 mdc-button mdc-btn-lg mdc-button--unelevated"
+        (click)="cancelInvitation(invitation?.inviteId)"
+      >
+        {{ "MEMBERS.YES_CANCEL" | translate }}
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooter> </ng-template>
+</nz-modal>

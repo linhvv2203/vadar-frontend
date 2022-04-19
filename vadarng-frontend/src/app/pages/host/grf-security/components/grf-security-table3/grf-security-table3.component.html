@@ -1,0 +1,70 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="d-flex justify-content-center align-items-center py-2">
+      <span class="font-18">{{
+        "HOST.EVENTS_AND_INFLUENCE_LEVELS" | translate
+      }}</span>
+    </div>
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        nzVirtualScroll
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async).items"
+        [nzNoResult]="noResultTpl"
+        [nzPageSize]="pageSize"
+        [nzScroll]="{ y: '378px' }"
+      >
+        <ng-template #noResultTpl>
+          <img src="assets/images/noresult.svg" alt="no-result" />
+          <div>{{ "LOGS.NO_DATA_IN_THE_TIME_PERIOD" | translate }}</div>
+        </ng-template>
+        <thead (nzSortChange)="sorF($event)" nzSingleSort>
+          <tr>
+            <th nzWidth="100px">{{ "LOGS.LEVEL" | translate }}</th>
+            <th>{{ "LOGS.EVENT_NAME" | translate }}</th>
+            <th nzWidth="100px" nzRight>{{ "LOGS.QUANTITY" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-template nz-virtual-scroll let-data>
+            <tr>
+              <td
+                class="cursor-pointer"
+                (click)="redirectEvents($event, data.level, '')"
+              >
+                <span class="line-clamp">{{ data.level }}/15</span>
+                <!-- level -->
+              </td>
+              <td
+                class="cursor-pointer"
+                (click)="redirectEvents($event, '', data.eventName)"
+              >
+                <span
+                  style="cursor: pointer;"
+                  class="line-clamp"
+                  nzTooltipTitle="{{ data.eventName }}"
+                  nzTooltipPlacement="topLeft"
+                  nz-tooltip
+                >
+                  {{ data.eventName }}
+                </span>
+                <!-- name -->
+              </td>
+              <td nzRight>
+                <div>
+                  {{ data.count }}
+                </div>
+                <!-- full log -->
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->

@@ -1,0 +1,71 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-4 pt-4 pb-5 position-relative">
+    <div class="mdc-content position-relative ">
+      <div class="title font-18 font-weight-500 mb-3">
+        {{ "GLOBAL.EDIT" | translate }}
+      </div>
+      <!-- title -->
+
+      <form
+        nz-form
+        [nzLayout]="'inline'"
+        [formGroup]="validateForm"
+        (ngSubmit)="submitForm()"
+      >
+        <table>
+          <tbody>
+            <tr>
+              <th class="py-2 px-3">Name</th>
+              <td class="py-2 px-3">
+                <div class="d-flex align-items-center">
+                  <nz-form-item>
+                    <nz-form-control nzErrorTip="Please input your hostname!">
+                      <nz-input-group>
+                        <input
+                          class="rounded"
+                          formControlName="hostname"
+                          nz-input
+                          placeholder="Input hostname"
+                        />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="py-2 px-3">Detail</th>
+              <td class="py-2 px-3">
+                <nz-form-item>
+                  <nz-form-control nzErrorTip="Please input detail action!">
+                    <nz-input-group>
+                      <input
+                        class="rounded"
+                        formControlName="detail"
+                        nz-input
+                        placeholder="Input detail action"
+                      />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </td>
+            </tr>
+            <tr>
+              <th class="py-2 px-3">Block</th>
+              <td class="py-2 px-3">
+                <nz-switch formControlName="enable"></nz-switch>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+      <div class="site-btn px-3 pt-3">
+        <button
+          class="mdc-button mdc-button--unelevated mdc-ripple-upgraded px-4"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

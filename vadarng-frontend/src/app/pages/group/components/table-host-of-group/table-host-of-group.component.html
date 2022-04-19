@@ -1,0 +1,215 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async)?.items"
+        (nzCurrentPageDataChange)="currentPageDataChange($event)"
+      >
+        <thead>
+          <tr>
+            <!-- <td
+              class="col- p-3 text-center"
+              nzShowCheckbox
+              [(nzChecked)]="isAllDisplayDataChecked"
+              [nzIndeterminate]="isIndeterminate"
+              (nzCheckedChange)="checkAll($event)"
+            ></td> -->
+            <th class="col-url">{{ "HOST.HOST_NAME" | translate }}</th>
+            <th class="col-type pl-5">{{ "HOST.OS" | translate }}</th>
+            <th class="col-status text-center">
+              {{ "GLOBAL.STATUS" | translate }}
+            </th>
+            <th class="col-time">{{ "GLOBAL.DATE" | translate }}</th>
+            <th class="col-action"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTable.data; let i = index"
+            class="position-relative"
+          >
+            <!-- <td
+              class="col-"
+              nzShowCheckbox
+              [(nzChecked)]="mapOfCheckedId[data.id]"
+              (nzCheckedChange)="refreshStatus()"
+            ></td> -->
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none" translate="HOST.HOST_NAME">
+                Tên miền
+              </div>
+              <a
+                class="text-primary line-clamp"
+                id="table-host-of-group__name-{{ i }}"
+                clickPreventDefault
+                nzTooltipTitle="{{ data.name }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                href="#"
+                routerLink="/host/edit"
+                [queryParams]="{
+                  id: data.id,
+                  name: data.name,
+                  groupId: data.groupId,
+                  device: data.devices
+                }"
+                >{{ data.name }}</a
+              >
+              <!-- url -->
+            </td>
+            <td class="col-type justify-content-between">
+              <div class="d-block d-lg-none" translate="HOST.OS">Kiểu</div>
+              <div class="d-flex">
+                <div
+                  class="text-center d-inline-block"
+                  style="min-width: 77px;"
+                >
+                  <img
+                    *ngIf="
+                      data.os && data.os.toLowerCase().indexOf('windows') !== -1
+                    "
+                    class="mr-2"
+                    src="assets/images/host/windows.svg"
+                    alt="window"
+                  />
+                  <img
+                    *ngIf="
+                      data.os && data.os.toLowerCase().indexOf('centos') !== -1
+                    "
+                    class="mr-2"
+                    src="assets/images/host/centos.svg"
+                    alt="window"
+                  />
+                  <img
+                    *ngIf="
+                      data.os && data.os.toLowerCase().indexOf('ubuntu') !== -1
+                    "
+                    class="mr-2"
+                    src="assets/images/host/ubuntu.svg"
+                    alt="window"
+                  />
+                  <img
+                    *ngIf="
+                      data.os && data.os.toLowerCase().indexOf('macos') !== -1
+                    "
+                    class="mr-2"
+                    src="assets/images/host/macos.svg"
+                    alt="window"
+                  />
+                </div>
+                <span class="line-clamp">
+                  {{ data.os }}
+                </span>
+              </div>
+              <!-- type -->
+            </td>
+            <!-- <td class="col-result justify-content-between">
+              <div class="d-block d-lg-none" translate="SIDEBAR.GROUP">
+                Kết quả rà soát
+              </div>
+              <span
+                style="cursor: pointer;"
+                class="line-clamp"
+                nzTooltipTitle="{{ data.group }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                >{{ data.group }}</span
+              >
+            </td> -->
+
+            <td class="col-status justify-content-between text-center">
+              <div class="d-block d-lg-none" translate="GLOBAL.STATUS"></div>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="online"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                *ngIf="data.status"
+              >
+                <div class="d-inline-block dot bg-success"></div>
+              </span>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="offline"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                *ngIf="!data.status"
+              >
+                <div class="d-inline-block dot bg-danger"></div>
+              </span>
+              <!-- <span class="line-clamp">
+                <div class="dot bg-success ml-4"></div>
+              </span> -->
+              <!-- result -->
+            </td>
+            <td class="col-time justify-content-between">
+              <div class="d-block d-lg-none" translate="GLOBAL.DATE"></div>
+              <span>{{ data?.createdDate | date: "dd/MM/yyyy" }}</span>
+              <!-- result -->
+            </td>
+            <td class="col-action p-0">
+              <div>
+                <a
+                  href="#"
+                  clickPreventDefault
+                  class="more d-flex align-items-center justify-content-center"
+                  nzPlacement="bottomRight"
+                  nz-dropdown
+                  nzTrigger="click"
+                  [nzDropdownMenu]="menu"
+                >
+                  <span class="material-icons-outlined font-25">
+                    more_vert
+                  </span>
+                </a>
+                <!-- more -->
+
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu class="select-lg">
+                    <li
+                      (click)="removeToGroup(data.id)"
+                      class="d-flex align-items-center px-3 text-danger"
+                      nz-menu-item
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="delete"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "GLOBAL.DELETE" | translate }}
+                    </li>
+                  </ul>
+                </nz-dropdown-menu>
+                <!-- Dropdown -->
+              </div>
+              <!-- action -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<!-- <div class="site-btn mb-4 mt-3">
+  <button
+    class="mdc-button mdc-btn-sm mdc-button--outlined mdc-ripple-upgraded"
+  >
+    <span>{{ "GROUP.DELETE_SELECTED" | translate }}</span>
+  </button>
+</div> -->
+
+<nz-pagination
+  class="text-center"
+  [nzPageIndex]="currentPageIndex"
+  [nzTotal]="(model$ | async)?.count"
+  (nzPageIndexChange)="onPageChange($event)"
+></nz-pagination>
+<!-- pagiante -->

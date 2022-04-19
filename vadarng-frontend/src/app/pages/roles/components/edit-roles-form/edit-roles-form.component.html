@@ -1,0 +1,165 @@
+<div class="card p-4">
+  <b class="font-20 mb-3"
+    >{{ "ROLES.ROLES_NAME" | translate }}: {{ query.name }}</b
+  >
+  <div class="row">
+    <div class="col-sm-5">
+      <div>
+        <h5 class="mb-3 font-18">{{ "ROLES.LIST_PERMISSION" | translate }}</h5>
+        <nz-table
+          #rowSelectionTable
+          [nzShowPagination]="false"
+          [nzFrontPagination]="false"
+          [nzData]="(model$ | async)?.unAssignedPermissions"
+          (nzCurrentPageDataChange)="currentPageDataChange($event)"
+        >
+          <thead>
+            <tr>
+              <td
+                class="col- p-3 text-center"
+                nzShowCheckbox
+                [(nzChecked)]="isAllDisplayDataChecked"
+                [nzIndeterminate]="isIndeterminate"
+                (nzCheckedChange)="checkAll($event)"
+              ></td>
+              <th class="col-url"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let data of rowSelectionTable.data"
+              class="position-relative"
+            >
+              <td
+                class="col-"
+                nzShowCheckbox
+                [(nzChecked)]="mapOfCheckedId[data.id]"
+                (nzCheckedChange)="refreshStatus()"
+              ></td>
+              <td class="col-url justify-content-between">
+                <span
+                  class="line-clamp"
+                  clickPreventDefault
+                  nzTooltipTitle="{{ data?.name }}"
+                  nzTooltipPlacement="topLeft"
+                  nz-tooltip
+                  href="#"
+                  >{{ data?.name }}</span
+                >
+                <!-- url -->
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <!-- table -->
+      </div>
+    </div>
+    <div
+      class="col-sm-2"
+      *ngIf="
+        _commonService.validatePermission(
+          [
+            EnPermissions.FullPermission,
+            EnPermissions.WorkspacePermissionSetting
+          ],
+          (auth$ | async)?.systemPermissions
+        )
+      "
+    >
+      <div
+        class="h-100 d-flex align-items-center justify-content-center flex-sm-column pt-3"
+      >
+        <button
+          class="mb-2 mt-4 btn btn-outline-secondary d-none d-sm-block"
+          (click)="assignPermissions()"
+        >
+          <i nz-icon nzType="right" nzTheme="outline"></i>
+        </button>
+        <button
+          class="mb-4 btn btn-outline-secondary d-none d-sm-block"
+          (click)="unAssignPermissions()"
+        >
+          <i nz-icon nzType="left" nzTheme="outline"></i>
+        </button>
+        <!-- for desktop -->
+        <button
+          class="my-3 mx-2 btn btn-outline-secondary d-block d-sm-none"
+          (click)="assignPermissions()"
+        >
+          <i nz-icon nzType="down" nzTheme="outline"></i>
+        </button>
+        <button
+          class="my-3 mx-2 btn btn-outline-secondary d-block d-sm-none"
+          (click)="unAssignPermissions()"
+        >
+          <i nz-icon nzType="up" nzTheme="outline"></i>
+        </button>
+        <!-- for mobile -->
+        <!-- <button class="mb-2 btn btn-outline-secondary" (click)="assignAllPermissions()">
+          <i nz-icon nzType="double-right" nzTheme="outline"></i>
+        </button>
+        <button class="btn btn-outline-secondary" (click)="unAssignAllPermissions()">
+          <i nz-icon nzType="double-left" nzTheme="outline"></i>
+        </button> -->
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <div>
+        <h5 class="mb-3 font-18">
+          {{ "ROLES.CURENT_PERMISSION" | translate }}
+        </h5>
+        <nz-table
+          #rowSelectionTable2
+          [nzShowPagination]="false"
+          [nzFrontPagination]="false"
+          [nzData]="(model$ | async)?.assignedPermissions"
+          (nzCurrentPageDataChange)="currentPageDataChangeCurent($event)"
+        >
+          <thead>
+            <tr>
+              <td
+                class="col- p-3 text-center"
+                nzShowCheckbox
+                [(nzChecked)]="isAllDisplayDataCheckedCurent"
+                [nzIndeterminate]="isIndeterminateCurent"
+                (nzCheckedChange)="checkAllCurent($event)"
+              ></td>
+              <th class="col-url"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let data of rowSelectionTable2.data"
+              class="position-relative"
+            >
+              <td
+                class="col-"
+                nzShowCheckbox
+                [(nzChecked)]="mapOfCheckedIdCurent[data.id]"
+                (nzCheckedChange)="refreshStatusCurent()"
+              ></td>
+              <td class="col-url justify-content-between">
+                <span
+                  class="line-clamp"
+                  clickPreventDefault
+                  nzTooltipTitle="{{ data?.name }}"
+                  nzTooltipPlacement="topLeft"
+                  nz-tooltip
+                  href="#"
+                  >{{ data?.name }}</span
+                >
+                <!-- url -->
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <!-- table -->
+      </div>
+    </div>
+  </div>
+</div>
+<vadar-confirm-popup
+  [(isVisible)]="isVisible"
+  (callback)="handleCallBackModal($event)"
+  [isAdd]="isAdd"
+></vadar-confirm-popup>

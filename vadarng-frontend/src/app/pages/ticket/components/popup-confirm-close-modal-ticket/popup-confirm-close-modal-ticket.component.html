@@ -1,0 +1,95 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  nzWrapClassName="vertical-center-modal"
+>
+  <ng-template #modalTitle>
+    <div class="d-flex align-items-center justify-content-center mt-3">
+      <i
+        class="mr-2 text-warning"
+        style="font-size: 70px;"
+        nz-icon
+        nzType="exclamation-circle"
+        nzTheme="outline"
+      ></i>
+      <br />
+    </div>
+  </ng-template>
+
+  <ng-template #modalContent>
+    <div>
+      <div class="text-center mb-4 font-16 card py-2 bg-warning mt-n3">
+        {{ "TICKET.CONFIRM_CLOSE" | translate }}
+      </div>
+      <form [formGroup]="validateForm">
+        <nz-form-item class="mb-0">
+          <nz-form-control class="mb-3">
+            <nz-radio-group
+              formControlName="resolutionStatus"
+              (ngModelChange)="handleChangeRsStatus($event)"
+            >
+              <label
+                *ngFor="let item of enResolutionStatus"
+                nz-radio
+                [nzValue]="item"
+                >{{ "TICKET." + item | translate }}</label
+              >
+            </nz-radio-group>
+          </nz-form-control>
+          <nz-form-control
+            class="mb-3"
+            *ngIf="
+              validateForm.value?.resolutionStatus ==
+              EnResolutionStatus.TruePositive
+            "
+          >
+            <nz-form-label
+              nzRequired
+              class="mt-2"
+              nzFor="impactStatus"
+              nzTooltipTitle="text"
+              >{{ "TICKET.IMPACT" | translate }}</nz-form-label
+            >
+            <nz-radio-group formControlName="impactStatus">
+              <label nz-radio nzValue="WithImpact">{{
+                "TICKET.YES" | translate
+              }}</label>
+              <label nz-radio nzValue="NoImpact">{{
+                "MEMBERS.NO" | translate
+              }}</label>
+            </nz-radio-group>
+          </nz-form-control>
+          <nz-form-control class="mb-3">
+            <nz-form-label nzRequired nzFor="summary">{{
+              "GLOBAL.SUMMARY" | translate
+            }}</nz-form-label>
+            <textarea rows="4" nz-input formControlName="summary"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <div class="d-flex border-top">
+      <button
+        class="text-secondary m-0 h-auto border-right rounded-0 mdc-button py-3 mdc-button-lg mdc-button mdc-dialog__button"
+        type="button"
+        (click)="handleCancel()"
+      >
+        {{ "WORKSPACES.CANCEL" | translate }}
+      </button>
+      <button
+        class="m-0 h-auto mdc-button py-3 mdc-button-lg mdc-dialog__button text-danger"
+        type="button"
+        (click)="handleOk()"
+      >
+        {{ "WORKSPACES.OK" | translate }}
+      </button>
+    </div>
+  </ng-template>
+</nz-modal>

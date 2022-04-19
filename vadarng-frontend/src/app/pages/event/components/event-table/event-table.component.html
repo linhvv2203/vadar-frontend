@@ -1,0 +1,83 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        [nzShowPagination]="false"
+        [nzData]="
+          (model$ | async).items.slice(
+            (currentPageIndex - 1) * 10,
+            currentPageIndex * 10
+          )
+        "
+        (nzCurrentPageDataChange)="currentPageDataChange($event)"
+      >
+        <thead>
+          <tr>
+            <th class="col-">#</th>
+            <th class="col-url">{{ "WORKSPACES.NAME" | translate }}</th>
+            <th class="col-type">{{ "DASHBOARD.LEVEL" | translate }}</th>
+            <th class="col-result">{{ "EVENT.AMOUNT" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTable.data"
+            class="position-relative"
+          >
+            <td class="col-">{{ data?.id + 1 }}</td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "WORKSPACES.NAME" | translate }}
+              </div>
+              <a
+                class="text-primary line-clamp"
+                clickPreventDefault
+                nzTooltipTitle="{{ data.name }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                href="#"
+                >{{ data.name }}</a
+              >
+              <!-- url -->
+            </td>
+            <td class="col-type justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "DASHBOARD.LEVEL" | translate }}
+              </div>
+              <div class="d-flex">{{ data.level }}</div>
+              <!-- type -->
+            </td>
+            <td class="col-status justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "EVENT.AMOUNT" | translate }}
+              </div>
+              <span
+                class="line-clamp"
+                nzTooltipTitle="{{ data.count }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+              >
+                {{ data.count }}
+              </span>
+              <!-- result -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<nz-pagination
+  *ngIf="(model$ | async).count"
+  class="text-center"
+  [nzPageIndex]="currentPageIndex"
+  [nzTotal]="(model$ | async).count"
+  (nzPageIndexChange)="onPageChange($event)"
+></nz-pagination>
+<!-- pagiante -->

@@ -1,0 +1,34 @@
+<div class="card p-3 h-100">
+  <p
+    class="font-18 font-weight-500 mb-2 line-clamp"
+    nzTooltipTitle="{{ 'DASHBOARD.TOP_10_ATTACK' | translate }}"
+    nzTooltipPlacement="topLeft"
+    nz-tooltip
+  >
+    {{ "DASHBOARD.TOP_10_ATTACK" | translate }}
+  </p>
+  <div class="border-bottom mx-n3 mb-3"></div>
+  <ul class="list-unstyled mb-0">
+    <li class="pt-5" *ngIf="!data.length">
+      <nz-empty></nz-empty>
+    </li>
+    <li
+      nzTooltipTitle="{{ item.country }} ({{ item.total || 0 }})"
+      nzTooltipPlacement="topLeft"
+      nz-tooltip
+      class="d-flex align-items-center py-2 ml-3"
+      *ngFor="let item of data; let indexOfelement = index"
+      id="ds-top-attack-ip__country-{indexOfelement}"
+    >
+      <img
+        class="mr-2"
+        style="max-width: 26px;"
+        src="https://flagcdn.com/64x48/{{ item.countryCode.toLowerCase() }}.png"
+        alt="{{ item.countryCode }}"
+      />
+      <span class="font-weight-500 line-clamp"
+        >{{ item.country }} ({{ item.total || 0 }})</span
+      >
+    </li>
+  </ul>
+</div>

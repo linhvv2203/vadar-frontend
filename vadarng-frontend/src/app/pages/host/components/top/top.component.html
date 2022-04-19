@@ -1,0 +1,97 @@
+<div class="row align-items-center justify-content-between">
+  <div class="col-md-4 mb-3 mb-md-0 pl-0">
+    <div class="d-flex align-items-center">
+      <a
+        href="#"
+        clickPreventDefault
+        [routerLink]="redirect"
+        class="more mr-2 d-flex align-items-center justify-content-center"
+      >
+        <span class="material-icons-outlined font-25">
+          keyboard_backspace
+        </span>
+      </a>
+      <b class="font-20">{{ "HOST.MANAGE_HOSTS" | translate }}</b>
+    </div>
+  </div>
+  <!-- button -->
+  <div
+    *ngIf="(workspaceSelected$ | async)?.id > 0"
+    class="col-md-8 px-0 d-flex align-items-center justify-content-end"
+  >
+    <form
+      nz-form
+      [formGroup]="validateForm"
+      [nzLayout]="'inline'"
+      class="text-lg-right filter-form"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item class="mb-0 w-100">
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="prefixTemplateUrl">
+            <ng-template #prefixTemplateUrl
+              ><i class="font-19 ml-n2" nz-icon nzType="search"></i
+            ></ng-template>
+            <input
+              class="custom-border"
+              type="text"
+              nz-input
+              formControlName="url"
+              placeholder="{{ 'GLOBAL.SEARCH' | translate }}..."
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- url -->
+      <nz-form-item
+        class="mb-0 mr-0 ml-2 d-inline-flex align-items-center w-100"
+      >
+        <label class="mb-0 mr-2" for="group"
+          >{{ "SIDEBAR.GROUP" | translate }}:</label
+        >
+        <nz-form-control>
+          <nz-select
+            formControlName="groupId"
+            class="custom-select-border"
+            nzPlaceHolder="{{ 'HOST.SELECT_GROUP' | translate }}"
+            (ngModelChange)="submitForm()"
+          >
+            <nz-option
+              nzValue="all"
+              nzLabel="{{ 'GLOBAL.ALL' | translate }}"
+            ></nz-option>
+            <nz-option
+              *ngFor="let o of (model$ | async).items"
+              [nzLabel]="o.name"
+              [nzValue]="o.id"
+            >
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- group -->
+    </form>
+    <div class="mb-lg-0 ml-4">
+      <button
+        (click)="onOpenFormCreate()"
+        class="mdc-button mdc-btn-sm mdc-button--unelevated mdc-ripple-upgraded"
+        *ngIf="
+          _commonService.validatePermission(
+            [EnPermissions.FullPermission, EnPermissions.HostSetting],
+            (auth$ | async)?.systemPermissions
+          )
+        "
+      >
+        <i
+          class="d-inline d-md-none"
+          nz-icon
+          nzType="plus"
+          nzTheme="outline"
+        ></i>
+        <span class="d-md-inline d-none">{{ "HOST.ADD_NEW" | translate }}</span>
+      </button>
+    </div>
+  </div>
+  <!-- filter -->
+</div>
+<!-- top -->

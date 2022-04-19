@@ -1,0 +1,49 @@
+<div class="wrapper">
+  <div
+    class="row ml-0 ml-lg-n3  text-center align-items-center justify-content-between"
+  >
+    <div class="col-md-12">
+      <p
+        *ngIf="
+          (this.workspaceSelected$ | async)?.status !== ExpireStatus.Revoked
+        "
+        class="font-25 text-center text-danger"
+        style="margin-top: 25vh;"
+      >
+        {{ "ROLES.NO_WORKSPACE_SELECTED_YET" | translate }}
+      </p>
+      <p
+        class="font-25 text-center text-danger"
+        style="margin-top: 23vh;"
+        *ngIf="
+          (this.workspaceSelected$ | async)?.status === ExpireStatus.Revoked
+        "
+      >
+        {{ "WORKSPACES.REVOKED" | translate }}
+      </p>
+      <div class="site-btn text-center mt-4">
+        <button
+          nzTooltipTitle="contact@vsec.com.vn"
+          nzTooltipPlacement="topLeft"
+          nz-tooltip
+          (click)="_commonService.mailTo()"
+          class="mdc-button mdc-btn-lg mdc-button--unelevated mx-0 mx-sm-2 mb-3"
+          type="button"
+        >
+          {{ "GLOBAL.EMAIL_FOR_US" | translate }}
+        </button>
+        <span class="mb-3 d-inline-flex align-middle">
+          {{ "GLOBAL.OR" | translate }}
+        </span>
+        <a
+          nzTooltipTitle="+(84) 906 831 337"
+          nzTooltipPlacement="topLeft"
+          nz-tooltip
+          class="mdc-button mdc-btn-lg mdc-button--unelevated mx-0 mx-sm-2 mb-3"
+          href="tel:+84906831337"
+          >{{ "GLOBAL.PHONE" | translate }}</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

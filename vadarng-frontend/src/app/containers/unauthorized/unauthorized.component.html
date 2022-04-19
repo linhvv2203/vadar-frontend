@@ -1,0 +1,10 @@
+<div class="wrapper">
+  <nz-empty
+    [nzNotFoundContent]="contentTpl"
+    [nzNotFoundImage]="'assets/images/unauthorized.png'"
+  >
+    <ng-template #contentTpl>
+      <h2>401: Unauthorized</h2>
+    </ng-template>
+  </nz-empty>
+</div>

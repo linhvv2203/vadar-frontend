@@ -1,0 +1,482 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async)?.items"
+        class="w-100"
+      >
+        <thead>
+          <tr>
+            <th class="col-stt">#</th>
+            <th class="col-url">{{ "HOST.HOST_NAME" | translate }}</th>
+            <th class="col-url">{{ "HOST.DISPLAY_HOST_NAME" | translate }}</th>
+            <th class="col-url">IP</th>
+            <th class="col-type pl-3">{{ "HOST.OS" | translate }}</th>
+            <th class="col-result">{{ "SIDEBAR.GROUP" | translate }}</th>
+            <th class="col-result">{{ "HOST.DEVICE_TYPE" | translate }}</th>
+
+            <th class="col-status" [nzAlign]="'center'">
+              {{ "GLOBAL.STATUS" | translate }}
+            </th>
+
+            <th class="col-status" [nzAlign]="'center'">
+              {{ "GROUP.SECURITY" | translate }}
+            </th>
+            <th class="col-status" [nzAlign]="'center'">
+              {{ "GROUP.PERFORMANCE" | translate }}
+            </th>
+            <th class="col-time">{{ "GLOBAL.DATE" | translate }}</th>
+            <th class="col-action"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTable.data; let i = index"
+            class="position-relative"
+          >
+            <td class="col-stt">{{ getOrdinalNumbers(i) }}</td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "HOST.HOST_NAME" | translate }}
+              </div>
+              <a
+                class="text-primary overflow-hidden line-clamp"
+                nzTooltipTitle="{{ data.nameEngine }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                href="{{ grafanaInventoryDashboardtUrl }}{{ data.nameEngine }}"
+                target="_blank"
+                >{{ data.nameEngine }}</a
+              >
+              <!-- url -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "HOST.DISPLAY_HOST_NAME" | translate }}
+              </div>
+              <span
+                class="overflow-hidden line-clamp"
+                nzTooltipTitle="{{ data.name || data.nameEngine }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                >{{ data.name || data.nameEngine }}</span
+              >
+              <!-- url -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                IP
+              </div>
+              <span class="overflow-hidden line-clamp">{{ data.ip }}</span>
+              <!-- url -->
+            </td>
+            <td class="col-type justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "HOST.OS" | translate }}
+              </div>
+              <div
+                class="d-flex align-items-center line-clamp justify-content-end justify-content-lg-start"
+              >
+                <div class="d-inline-block mr-2">
+                  <span
+                    nzTooltipTitle="{{ data.os }}"
+                    nzTooltipPlacement="topLeft"
+                    nz-tooltip
+                  >
+                    <img
+                      *ngIf="
+                        data.os &&
+                        data.os.toLowerCase().indexOf('windows') !== -1
+                      "
+                      class="line-clamp text-right text-lg-left"
+                      class="mr-2"
+                      src="assets/images/host/windows.svg"
+                      alt="window"
+                    />
+                    <img
+                      *ngIf="
+                        data.os &&
+                        data.os.toLowerCase().indexOf('centos') !== -1
+                      "
+                      class="mr-2"
+                      src="assets/images/host/centos.svg"
+                      alt="window"
+                    />
+                    <img
+                      *ngIf="
+                        data.os &&
+                        data.os.toLowerCase().indexOf('ubuntu') !== -1
+                      "
+                      class="mr-2"
+                      src="assets/images/host/ubuntu.svg"
+                      alt="window"
+                    />
+                    <img
+                      *ngIf="
+                        data.os && data.os.toLowerCase().indexOf('macos') !== -1
+                      "
+                      class="mr-2"
+                      src="assets/images/host/macos.svg"
+                      alt="window"
+                    />
+                  </span>
+                </div>
+                <!-- <span>
+                  {{ data.os }}
+                </span> -->
+              </div>
+              <!-- type -->
+            </td>
+            <td class="col-result justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "SIDEBAR.GROUP" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ data.groupName }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="line-clamp text-right text-lg-left"
+                >{{ data.groupName }}</span
+              >
+              <!-- result -->
+            </td>
+            <td class="col-result justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "HOST.DEVICE_TYPE" | translate }}
+              </div>
+              <div
+                class="d-flex align-items-center line-clamp justify-content-end justify-content-lg-start"
+              >
+                <div class="d-inline-block mr-2">
+                  <span
+                    nzTooltipTitle="{{ getDeviceTypeDescription(data.type) }}"
+                    nzTooltipPlacement="topLeft"
+                    nz-tooltip
+                  >
+                    <img
+                      *ngIf="data.type == EnDeviceTypeId.Client"
+                      class="mr-2"
+                      src="assets/images/host/pc.svg"
+                      alt="getDeviceTypeDescription(data.type)"
+                    />
+                    <img
+                      *ngIf="data.type == EnDeviceTypeId.Server"
+                      class="mr-2"
+                      src="assets/images/host/servers.svg"
+                      alt="getDeviceTypeDescription(data.type)"
+                    />
+                    <img
+                      *ngIf="data.type == EnDeviceTypeId.NetworkEquipment"
+                      class="mr-2"
+                      src="assets/images/host/networkdevice.svg"
+                      alt="getDeviceTypeDescription(data.type)"
+                    />
+                  </span>
+                </div>
+                <!-- <span>
+                  {{ data.os }}
+                </span> -->
+              </div>
+              <!-- result -->
+            </td>
+            <td class="col-status text-center justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "GLOBAL.STATUS" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="online"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                *ngIf="data.status == 1"
+              >
+                <div class="d-inline-block dot bg-success"></div>
+              </span>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="offline"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                *ngIf="data.status == -1"
+              >
+                <div class="d-inline-block dot bg-danger"></div>
+              </span>
+              <!-- result -->
+            </td>
+            <td class="col-status text-center justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "GROUP.SECURITY" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ 'HOST.INSTALLED' | translate }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                *ngIf="data.wazuhRef != null && data.wazuhRef != ''"
+              >
+                <a
+                  href="#"
+                  clickPreventDefault
+                  [routerLink]="'grf-security'"
+                  [queryParams]="{ hostName: data.nameEngine }"
+                  class="d-flex align-items-center justify-content-center"
+                >
+                  <span class="material-icons-outlined text-success">
+                    archive
+                  </span>
+                </a>
+              </span>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ 'HOST.NOT_INSTALLED' | translate }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                *ngIf="data.wazuhRef == null || data.wazuhRef == ''"
+              >
+                <span
+                  *ngFor="let link of data.linkDownloadSecurity"
+                  class="display-grid"
+                >
+                  <a
+                    href="{{ link.url }}"
+                    target="_blank"
+                    class="d-flex align-items-center justify-content-center"
+                  >
+                    <!-- <span>{{ link.name }}</span> -->
+                    <span class="material-icons-outlined text-secondary">
+                      archive
+                    </span>
+                  </a>
+                </span>
+              </span>
+              <!-- result -->
+            </td>
+            <td class="col-status text-center justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "GROUP.PERFORMANCE" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ 'HOST.INSTALLED' | translate }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                *ngIf="data.zabbixRef != null && data.zabbixRef != ''"
+              >
+                <a
+                  href="{{ grafanaPerformanceDashboardtUrl }}{{
+                    data.nameEngine
+                  }}"
+                  target="_blank"
+                  class="d-flex align-items-center justify-content-center"
+                >
+                  <span class="material-icons-outlined text-success">
+                    archive
+                  </span>
+                </a>
+              </span>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ 'HOST.NOT_INSTALLED' | translate }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                *ngIf="data.zabbixRef == null || data.zabbixRef == ''"
+              >
+                <span
+                  class="display-grid"
+                  *ngFor="let link of data.linkDownloadPerformance"
+                >
+                  <a
+                    href="{{ link.url }}"
+                    target="_blank"
+                    class="d-flex align-items-center justify-content-center"
+                  >
+                    <!-- <span>{{ link.name }}</span> -->
+                    <span class="material-icons-outlined text-secondary">
+                      archive
+                    </span>
+                  </a>
+                </span>
+              </span>
+              <!-- result -->
+            </td>
+            <td class="col-time justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "GLOBAL.DATE" | translate }}
+              </div>
+              <span>{{ data?.createdDate | date: "dd/MM/yyyy" }}</span>
+              <!-- result -->
+            </td>
+            <td class="col-action p-0">
+              <div>
+                <a
+                  href="#"
+                  clickPreventDefault
+                  class="more d-flex align-items-center justify-content-center"
+                  nzPlacement="bottomRight"
+                  nz-dropdown
+                  nzTrigger="click"
+                  [nzDropdownMenu]="menu"
+                >
+                  <span class="material-icons-outlined font-25">
+                    more_vert
+                  </span>
+                </a>
+                <!-- more -->
+
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu class="select-lg">
+                    <li
+                      *ngIf="
+                        _commonService.validatePermission(
+                          [
+                            EnPermissions.FullPermission,
+                            EnPermissions.HostSetting
+                          ],
+                          (auth$ | async)?.systemPermissions
+                        )
+                      "
+                      routerLink="/host/edit"
+                      [queryParams]="{
+                        id: data.id,
+                        name: data.name,
+                        nameEngine: data.nameEngine,
+                        groupId: data.groupId,
+                        type: data.type
+                      }"
+                      class="d-flex align-items-center px-3"
+                      nz-menu-item
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="edit"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "GLOBAL.EDIT" | translate }}
+                    </li>
+                    <li
+                      *ngIf="
+                        _commonService.validatePermission(
+                          [
+                            EnPermissions.FullPermission,
+                            EnPermissions.HostSetting
+                          ],
+                          (auth$ | async)?.systemPermissions
+                        )
+                      "
+                      class="m-0"
+                      nz-menu-divider
+                    ></li>
+                    <li class="d-flex align-items-center px-3" nz-menu-item>
+                      <a
+                        href="{{ grafanaInventoryDashboardtUrl }}{{
+                          data.nameEngine
+                        }}"
+                        target="_blank"
+                      >
+                        <span
+                          class="align-middle material-icons-outlined mr-2 font-18"
+                        >
+                          visibility
+                        </span>
+                        {{ "HOST.VIEW_INVENTORY" | translate }}
+                      </a>
+                    </li>
+                    <li class="m-0" nz-menu-divider></li>
+                    <li class="d-flex align-items-center px-3" nz-menu-item>
+                      <a
+                        href="#"
+                        clickPreventDefault
+                        [routerLink]="'grf-security'"
+                        [queryParams]="{ hostName: data.nameEngine }"
+                      >
+                        <span
+                          class="align-middle material-icons-outlined mr-2 font-18"
+                        >
+                          security
+                        </span>
+                        {{ "GROUP.SECURITY" | translate }}
+                      </a>
+                    </li>
+                    <li class="m-0" nz-menu-divider></li>
+                    <li class="d-flex align-items-center px-3" nz-menu-item>
+                      <a
+                        href="{{ grafanaPerformanceDashboardtUrl }}{{
+                          data.nameEngine
+                        }}"
+                        target="_blank"
+                      >
+                        <i
+                          class="mr-2 font-19"
+                          nz-icon
+                          nzType="thunderbolt"
+                          nzTheme="outline"
+                        ></i>
+                        {{ "GROUP.PERFORMANCE" | translate }}
+                      </a>
+                    </li>
+                    <li
+                      *ngIf="
+                        _commonService.validatePermission(
+                          [
+                            EnPermissions.FullPermission,
+                            EnPermissions.HostSetting
+                          ],
+                          (auth$ | async)?.systemPermissions
+                        )
+                      "
+                      class="d-flex align-items-center px-3"
+                      nz-menu-item
+                      (click)="showConfirm(data.id)"
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="delete"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "GLOBAL.DELETE" | translate }}
+                    </li>
+                  </ul>
+                </nz-dropdown-menu>
+                <!-- Dropdown -->
+              </div>
+              <!-- action -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<!-- <div class="site-btn mb-4 mt-3">
+  <button
+    class="mdc-button mdc-btn-sm mdc-button--outlined mdc-ripple-upgraded"
+  >
+    <span>{{ "GROUP.DELETE_SELECTED" | translate }}</span>
+  </button>
+</div> -->
+
+<nz-pagination
+  class="text-center"
+  [nzPageIndex]="hostRequest.pageIndex"
+  [nzPageSize]="hostRequest.pageSize"
+  [nzTotal]="(model$ | async)?.count"
+  (nzPageIndexChange)="onPageChange($event)"
+></nz-pagination>
+<!-- pagiante -->
+
+<vadar-delete-modal
+  [(isVisible)]="isVisible"
+  [id]="idHost"
+  (callback)="handleCallBackModal($event)"
+>
+</vadar-delete-modal>

@@ -1,0 +1,15 @@
+<section class="page-event page-padding pl-3">
+  <div class="container-fluid">
+    <vadar-event-top redirect="/"></vadar-event-top>
+
+    <div class="mx-n3 pt-4">
+      <vadar-event-table></vadar-event-table>
+    </div>
+    <!-- table -->
+    <div *ngIf="!workspaceId || workspaceId < 0">
+      <p class="font-25 text-center text-danger" style="margin-top: 25vh;">
+        {{ "ROLES.NO_WORKSPACE_SELECTED_YET" | translate }}
+      </p>
+    </div>
+  </div>
+</section>

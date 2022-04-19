@@ -1,0 +1,129 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTables
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async).items"
+        [nzNoResult]="noResultTpl"
+      >
+        <ng-template #noResultTpl>
+          <img src="assets/images/noresult.svg" alt="no-result" />
+          <div>{{ "LOGS.NO_DATA_IN_THE_TIME_PERIOD" | translate }}</div>
+        </ng-template>
+        <thead>
+          <tr>
+            <th class="col-result">{{ "LOGS.EVENT_NAME" | translate }}</th>
+            <th class="col-url">{{ "LOGS.DESCRIPTION" | translate }}</th>
+            <th class="col-result">{{ "LOGS.HOSTS" | translate }}</th>
+            <th class="col-type">{{ "LOGS.SEVERITY" | translate }}</th>
+            <th class="col-status" [nzAlign]="'center'">
+              {{ "LOGS.EVENT_STATUS" | translate }}
+            </th>
+            <th class="col-time">{{ "GLOBAL.TIME" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTables.data"
+            class="position-relative"
+          >
+            <td
+              class="col-result justify-content-between cursor-pointer"
+              (click)="onSelect(data)"
+            >
+              <div class="d-block d-lg-none">
+                {{ "LOGS.EVENT_NAME" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ data.eventName }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate-3"
+              >
+                {{ data.eventName }}
+              </span>
+              <!-- name -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.DESCRIPTION" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                class="truncate-3"
+                nzTooltipTitle="{{ data.description }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+              >
+                {{ data.description || "--" }}
+              </span>
+              <!-- description -->
+            </td>
+            <td class="col-result justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.HOSTS" | translate }}
+              </div>
+              <span>{{ data.hostName }}</span>
+              <!-- host -->
+            </td>
+            <td class="col-type justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.SEVERITY" | translate }}
+              </div>
+              <div class="d-flex">
+                {{ data.severity }}
+              </div>
+              <!-- severity -->
+            </td>
+            <td class="col-status justify-content-between">
+              <div class="d-block d-lg-none font-weight-500">
+                {{ "LOGS.EVENT_STATUS" | translate }}
+              </div>
+              <div class="d-flex justify-content-center">
+                <div
+                  *ngIf="
+                    data?.status?.toUpperCase() === 'RESOLVED' ||
+                    data?.status?.toUpperCase() === 'OK'
+                  "
+                  class="dot bg-success"
+                ></div>
+                <div
+                  *ngIf="data?.status?.toUpperCase() === 'PROBLEM'"
+                  class="dot bg-danger"
+                ></div>
+              </div>
+              <!-- status -->
+            </td>
+            <td class="col-time justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "GLOBAL.TIME" | translate }}
+              </div>
+              <span>
+                {{ data.time + " UTC" | date: "yyyy-MM-dd HH:mm:ss" }}
+              </span>
+              <!-- time -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<nz-pagination
+  class="text-center"
+  [nzPageIndex]="currentPageIndex"
+  [nzTotal]="(model$ | async).count"
+  (nzPageIndexChange)="onPageChange($event)"
+></nz-pagination>
+<!-- pagiante -->
+<vadar-popup-detail-performance
+  [(isPopupDetail)]="isPopupDetail"
+  [dataSelected]="dataSelected"
+></vadar-popup-detail-performance>

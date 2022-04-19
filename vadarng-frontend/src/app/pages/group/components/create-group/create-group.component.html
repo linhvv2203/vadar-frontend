@@ -1,0 +1,59 @@
+<div class="mx-n3 pt-4" *ngIf="isCreate">
+  <div class="pt-4 px-4 card position-relative text-body">
+    <div class="position-absolute" style="top: 0; right: 0">
+      <a
+        href="#"
+        clickPreventDefault
+        (click)="onClose()"
+        class="more d-flex align-items-center justify-content-center"
+      >
+        <span class="material-icons-outlined font-25">clear</span>
+      </a>
+    </div>
+    <!-- clear -->
+
+    <div class="title font-18 font-weight-500 mb-3">
+      {{ "GROUP.ADD_NEW_GROUP" | translate }}
+    </div>
+
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control [nzSpan]="8" class="mr-3" [nzErrorTip]="errorName">
+          <input
+            formControlName="name"
+            id="create-group__name"
+            nzSize="large"
+            class="mb-2"
+            nz-input
+            placeholder="{{ 'WORKSPACES.WORKSPACE_NAME' | translate }}"
+          />
+          <ng-template #errorName let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              {{ "GROUP.REQUIRED" | translate }}
+            </ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">
+              {{ "GROUP.NOT_SPECIAL_CHAR" | translate }}
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+        <button
+          [disabled]="isCreating"
+          id="create-group__add-new"
+          class="mdc-button mdc-btn-lg mdc-button--unelevated"
+        >
+          <i class="material-icons-outlined font-16 mr-2">control_point</i>
+          {{ "GROUP.ADD_NEW" | translate }}
+        </button>
+        <!-- <div class="mx-n4 border-bottom my-4"></div>
+        <button
+          type="submit"
+          class="px-5 mdc-button mdc-btn-lg mdc-button--unelevated"
+        >
+          {{ "GLOBAL.START_SCAN" | translate }}
+        </button> -->
+      </nz-form-item>
+    </form>
+  </div>
+  <!-- card -->
+</div>
+<!-- form -->

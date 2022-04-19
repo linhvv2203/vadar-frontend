@@ -1,0 +1,36 @@
+.create-scan {
+  background-color: #00b3c6;
+  border-radius: 5px;
+  .divider {
+    &::before {
+      content: "";
+      width: 100%;
+      position: absolute;
+      top: 12px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      opacity: 0.4;
+      z-index: 0;
+      background: #ffffff;
+    }
+
+    span {
+      z-index: 1;
+      position: relative;
+      background-color: #00b3c6;
+    }
+  }
+}
+
+::ng-deep .members {
+  display: none;
+}
+
+::ng-deep .ant-calendar-picker {
+  width: 100% !important;
+}
+
+::ng-deep label {
+  line-height: 0;
+}

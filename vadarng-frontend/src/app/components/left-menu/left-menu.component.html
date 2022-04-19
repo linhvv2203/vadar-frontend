@@ -1,0 +1,398 @@
+<div class="left-menu  pt-4" [ngClass]="{ show: stateLeftMenu$ | async }">
+  <a
+    class="logo align-left d-inline-block w-100 text-center"
+    href
+    routerLink="/"
+  >
+    <img
+      src="assets/images/logo-light.svg"
+      class="img-responsive pr-3"
+      alt="SafeSai"
+      style="max-height: 60px;"
+    />
+  </a>
+  <!-- logg -->
+
+  <div class="side-bar">
+    <nav class="side-bar--top">
+      <ul class="list-unstyled text-white pr-2">
+        <li>
+          <a
+            class="font-13 disabled d-flex text-white-50 align-items-center btn p-0"
+          >
+            <span>{{ "SIDEBAR.INFORMATION" | translate }}</span>
+          </a>
+        </li>
+        <!-- main menu group -->
+
+        <li>
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            routerLink="/dashboard"
+            [ngClass]="{ active: _router.url === '/dashboard' }"
+            *ngIf="
+              _commonService.validatePermission(
+                [
+                  EnPermissions.FullPermission,
+                  EnPermissions.AllDashboardsView,
+                  EnPermissions.DashboardView
+                ],
+                (auth$ | async)?.systemPermissions
+              )
+            "
+          >
+            <i
+              class="mr-2 font-20"
+              nz-icon
+              nzType="dashboard"
+              nzTheme="outline"
+            ></i>
+            <span>{{ "SIDEBAR.DASHBOARD" | translate }}</span>
+          </a>
+        </li>
+        <!-- dashboard -->
+
+        <li
+          *ngIf="
+            _commonService.validatePermission(
+              [
+                EnPermissions.FullPermission,
+                EnPermissions.AllLogsView,
+                EnPermissions.LogsView
+              ],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+        >
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            [ngClass]="{
+              active:
+                _router.url.indexOf('/performance') !== -1 ||
+                _router.url.indexOf('/security') !== -1 ||
+                _router.url.indexOf('/network') !== -1 ||
+                levelMenu.logs
+            }"
+            (click)="collapseSubMenu('logs')"
+          >
+            <i
+              class="font-20 mr-2"
+              nz-icon
+              nzType="notification"
+              nzTheme="outline"
+            ></i>
+            <span>{{ "SIDEBAR.EVENTS" | translate }}</span>
+            <span class="material-icons-outlined ml-auto mr-2">
+              {{ levelMenu.logs ? "arrow_drop_down" : "arrow_right" }}
+            </span>
+            <!-- arrow_drop_down -->
+          </a>
+          <!--  -->
+          <ul
+            class="list-unstyled pl-3"
+            [ngClass]="{ 'hide-animate': !levelMenu.logs }"
+          >
+            <li>
+              <a
+                routerLink="/performance"
+                class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+                [ngClass]="{
+                  active: _router.url.indexOf('/performance') !== -1
+                }"
+              >
+                <span>{{ "SIDEBAR.PERFORMANCE" | translate }}</span>
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="/security"
+                class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+                [ngClass]="{ active: _router.url.indexOf('/security') !== -1 }"
+              >
+                <span>{{ "SIDEBAR.SECURITY" | translate }}</span>
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="/network"
+                class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+                [ngClass]="{ active: _router.url.indexOf('/network') !== -1 }"
+              >
+                <span>{{ "SIDEBAR.NETWORK" | translate }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- logs -->
+
+        <!-- <li
+          *ngIf="
+            _commonService.validatePermission(
+              [
+                EnPermissions.FullPermission,
+                EnPermissions.AllEventsView,
+                EnPermissions.EventsView
+              ],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+        >
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            routerLink="/events"
+            [ngClass]="{ active: _router.url === '/events' }"
+          >
+            <i class="font-20 mr-2" nz-icon nzType="code" nzTheme="outline"></i>
+            <span>{{ "SIDEBAR.STATISTICAL" | translate }}</span>
+          </a>
+        </li> -->
+        <!-- events -->
+
+        <li
+          *ngIf="
+            _commonService.validatePermission(
+              [
+                EnPermissions.FullPermission,
+                EnPermissions.WorkspacePermissionView,
+                EnPermissions.WorkspacePermissionSetting,
+                EnPermissions.AllPermissionSetting
+              ],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+        >
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            [ngClass]="{
+              active:
+                _router.url.indexOf('/roles') !== -1 ||
+                _router.url.indexOf('/member') !== -1 ||
+                levelMenu.permission
+            }"
+            (click)="collapseSubMenu('permission')"
+          >
+            <span
+              class="material-icons-outlined font-20 mr-2"
+              style="margin-left: 1.5px;"
+            >
+              security
+            </span>
+            <span>{{ "SIDEBAR.PERMISSION" | translate }}</span>
+            <span class="material-icons-outlined ml-auto mr-2">
+              {{ levelMenu.permission ? "arrow_drop_down" : "arrow_right" }}
+            </span>
+            <!-- arrow_drop_down -->
+          </a>
+          <!--  -->
+          <ul
+            class="list-unstyled pl-3"
+            [ngClass]="{ 'hide-animate': !levelMenu.permission }"
+          >
+            <li>
+              <a
+                routerLink="/roles"
+                class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+                [ngClass]="{ active: _router.url.indexOf('/roles') !== -1 }"
+              >
+                <span>{{ "SIDEBAR.ROLES" | translate }}</span>
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="/member"
+                class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+                [ngClass]="{ active: _router.url.indexOf('/member') !== -1 }"
+              >
+                <span>{{ "SIDEBAR.MEMBERS" | translate }}</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- Permission -->
+
+        <li class="mt-sm-5 mt-4">
+          <a
+            class="font-13 disabled d-flex text-white-50 align-items-center btn p-0"
+          >
+            <span>{{ "GLOBAL.MANAGER" | translate }}</span>
+          </a>
+        </li>
+        <!-- servies group -->
+
+        <li
+          *ngIf="
+            _commonService.validatePermission(
+              [
+                EnPermissions.FullPermission,
+                EnPermissions.GroupSetting,
+                EnPermissions.GroupView,
+                EnPermissions.AllGroupsSetting,
+                EnPermissions.AllGroupsView
+              ],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+        >
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            routerLink="/group"
+            [ngClass]="{ active: _router.url.indexOf('/group') !== -1 }"
+          >
+            <i class="fas fa-users mr-2 font-20"></i>
+            <span>{{ "SIDEBAR.GROUP" | translate }}</span>
+          </a>
+        </li>
+        <!-- website -->
+
+        <li
+          *ngIf="
+            _commonService.validatePermission(
+              [
+                EnPermissions.FullPermission,
+                EnPermissions.HostSetting,
+                EnPermissions.HostView,
+                EnPermissions.AllHostsSetting,
+                EnPermissions.AllHostsView
+              ],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+          [ngClass]="{ 'slide-animation': !(isFirstClickHost$ | async) }"
+        >
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            routerLink="/host"
+            [queryParams]="{ isCreate: true }"
+            [ngClass]="{
+              active:
+                _router.url.indexOf('/host') !== -1 ||
+                _router.url.indexOf('/guide') !== -1 ||
+                !(isFirstClickHost$ | async)
+            }"
+          >
+            <i
+              class="font-20 mr-2"
+              nz-icon
+              nzType="database"
+              nzTheme="outline"
+            ></i>
+            <span>{{ "SIDEBAR.HOSTS" | translate }}</span>
+          </a>
+        </li>
+        <!-- scanning -->
+
+        <li
+          *ngIf="
+            _commonService.validatePermission(
+              [
+                EnPermissions.FullPermission,
+                EnPermissions.EmailNotificationView,
+                EnPermissions.AllNotificationView,
+                EnPermissions.EmailNotificationSetting
+              ],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+        >
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            routerLink="/notifications"
+            [ngClass]="{ active: _router.url === '/notifications' }"
+          >
+            <i class="far fa-bell font-20 mr-2" style="margin-left: 2px;"></i>
+            <span>{{ "SIDEBAR.NOTIFICATION" | translate }}</span>
+          </a>
+        </li>
+        <!-- notifications -->
+
+        <li
+          *ngIf="
+            _commonService.validatePermission(
+              [
+                EnPermissions.FullPermission,
+                EnPermissions.PolicyView,
+                EnPermissions.PolicySetting,
+                EnPermissions.WhitelistIpView,
+                EnPermissions.WhitelistIpSetting
+              ],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+        >
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            routerLink="/actions"
+            [ngClass]="{
+              active: _router.url === '/actions'
+            }"
+          >
+            <i
+              class="font-20 mr-2"
+              nz-icon
+              nzType="setting"
+              nzTheme="outline"
+            ></i>
+            <span>{{ "SIDEBAR.ACTIONS" | translate }}</span>
+          </a>
+        </li>
+        <!-- action -->
+
+        <li
+          *ngIf="
+            _commonService.validatePermission(
+              [
+                EnPermissions.FullPermission,
+                EnPermissions.AllLogsView,
+                EnPermissions.LogsView
+              ],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+        >
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            routerLink="/ticket"
+            [ngClass]="{
+              active: _router.url === '/ticket'
+            }"
+          >
+            <span
+              class="material-icons-outlined font-20 mr-2"
+              style="margin-left: 1.5px;"
+            >
+              topic
+            </span>
+            <span class="pl-1">{{ "SIDEBAR.TICKET" | translate }}</span>
+          </a>
+        </li>
+        <!-- ticket -->
+
+        <li>
+          <a
+            class="side-bar__item pl-3 mb-2 d-flex text-white align-items-center"
+            routerLink="/feedback"
+            [ngClass]="{
+              active: _router.url === '/feedback'
+            }"
+          >
+            <span
+              class="material-icons-outlined font-20 mr-2"
+              style="margin-left: 1.5px;"
+            >
+              feedback
+            </span>
+            <span class="pl-1">{{ "SIDEBAR.FEEDBACK" | translate }}</span>
+          </a>
+        </li>
+        <!-- feedback -->
+      </ul>
+    </nav>
+  </div>
+
+  <!-- start language -->
+  <div class="d-flex bottom-0 mb-4 ml-3 right-0 align-items-center d-lg-none">
+    <span class="text-white" translate="GLOBAL.LANGUAGE"></span>
+    <vadar-select-lang></vadar-select-lang>
+  </div>
+  <!-- end language -->
+</div>

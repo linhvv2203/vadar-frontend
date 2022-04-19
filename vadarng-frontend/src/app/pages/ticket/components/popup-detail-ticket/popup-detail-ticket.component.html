@@ -1,0 +1,239 @@
+<nz-modal
+  [(nzVisible)]="isPopupDetail"
+  [nzTitle]="modalTItle"
+  [nzFooter]="null"
+  [nzContent]="modalContent"
+  (nzOnCancel)="close()"
+  nzWidth="800"
+></nz-modal>
+<ng-template #modalTItle>
+  <div>
+    <span class="font-16 mr-3">{{ "LOGS.DETAIL" | translate }}</span>
+    <div style="overflow: hidden; position: fixed; top: -1000px">
+      <input
+        id="metaTag"
+        [ngModel]="dataSelected.rawLogs"
+        type="text"
+        nz-input
+      />
+    </div>
+  </div>
+</ng-template>
+<ng-template #modalContent>
+  <div
+    class="row d-flex justify-content-end align-items-center mb-3 pb-1 mt-n2"
+  >
+    <div class="col-md-6" style="position: unset;">
+      <vadar-chat-with-expert></vadar-chat-with-expert>
+    </div>
+  </div>
+  <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item class="mb-0">
+      <div class="row pb-2">
+        <div class="col-md-3 font-weight-600 d-flex align-items-center">
+          {{ "TICKET.TITLE" | translate }}:
+        </div>
+        <div class="col-md-9" *ngIf="!isEdit">
+          {{ (detailTicket$ | async).title }}
+        </div>
+        <div class="col-md-9" *ngIf="isEdit">
+          <nz-form-control>
+            <input formControlName="title" nz-input />
+          </nz-form-control>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-md-3 font-weight-600 d-flex align-items-center">
+          {{ "TICKET.SEVERITY" | translate }}:
+        </div>
+        <div
+          class="col-md-9 text-{{ (detailTicket$ | async).severity }}"
+          *ngIf="!isEdit"
+        >
+          {{
+            "TICKET.SEVERITY_" + (detailTicket$ | async).severity | translate
+          }}
+        </div>
+        <div class="col-md-9" *ngIf="isEdit">
+          <nz-form-control>
+            <nz-radio-group formControlName="severity">
+              <label class="text-1" nz-radio [nzValue]="1">{{
+                "TICKET.SEVERITY_1" | translate
+              }}</label>
+              <label class="text-2" nz-radio [nzValue]="2">{{
+                "TICKET.SEVERITY_2" | translate
+              }}</label>
+              <label class="text-3" nz-radio [nzValue]="3">{{
+                "TICKET.SEVERITY_3" | translate
+              }}</label>
+              <label class="text-4" nz-radio [nzValue]="4">{{
+                "TICKET.SEVERITY_4" | translate
+              }}</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-md-3 font-weight-600 d-flex align-items-center">
+          {{ "TICKET.ASSIGNEE" | translate }}:
+        </div>
+        <div class="col-md-9" *ngIf="!isEdit">
+          {{ (detailTicket$ | async).assignee }}
+        </div>
+        <div class="col-md-9" *ngIf="isEdit">
+          <nz-form-control>
+            <input formControlName="assignee" nz-input />
+          </nz-form-control>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-md-3 font-weight-600 d-flex align-items-center">
+          Thêm người nhận thông báo:
+        </div>
+        <div class="col-md-9" *ngIf="!isEdit">
+          {{ (detailTicket$ | async).assignTo || "--" }}
+        </div>
+        <div class="col-md-9" *ngIf="isEdit">
+          <nz-form-control>
+            <nz-select formControlName="assignTo" nzMode="multiple">
+              <nz-option
+                *ngFor="let option of listOfAssignTo"
+                [nzLabel]="option.label | translate"
+                [nzValue]="option.value | translate"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-md-3 font-weight-600 d-flex align-items-center">
+          {{ "TICKET.START_DATE" | translate }}:
+        </div>
+        <div class="col-md-9" *ngIf="!isEdit">
+          {{ (detailTicket$ | async).startDate | date: "yyyy-MM-dd HH:mm:ss" }}
+        </div>
+        <div class="col-md-9" *ngIf="isEdit">
+          <nz-form-control>
+            <nz-date-picker
+              class="w-100"
+              nzShowTime
+              formControlName="startDate"
+            >
+            </nz-date-picker>
+          </nz-form-control>
+        </div>
+      </div>
+      <div class="row pb-2">
+        <div class="col-md-3 font-weight-600 d-flex align-items-center">
+          {{ "TICKET.TAGS" | translate }}:
+        </div>
+        <div class="col-md-9" *ngIf="!isEdit">
+          <span
+            class="p-1 mr-2 font-14 badge badge-primary"
+            *ngFor="let tag of (detailTicket$ | async).tags"
+            >{{ tag }}</span
+          >
+          <span *ngIf="!(detailTicket$ | async).tags.length">{{
+            "TICKET.NOT_SPECIFIED" | translate
+          }}</span>
+        </div>
+        <div class="col-md-9" *ngIf="isEdit">
+          <nz-form-control>
+            <nz-select
+              class="mb-2"
+              nzMode="tags"
+              formControlName="tags"
+              nzServerSearch
+            ></nz-select>
+          </nz-form-control>
+        </div>
+      </div>
+      <div
+        class="row pb-2"
+        *ngIf="(detailTicket$ | async).status === enTicketStatus.Resolved"
+      >
+        <div class="col-md-3 font-weight-600 d-flex align-items-center">
+          {{ "TICKET.END_DATE" | translate }}:
+        </div>
+        <div class="col-md-9" *ngIf="!isEdit">
+          {{ (detailTicket$ | async).endDate | date: "yyyy-MM-dd HH:mm:ss" }}
+        </div>
+        <div class="col-md-9" *ngIf="isEdit">
+          <nz-form-control>
+            <nz-date-picker class="w-100" nzShowTime formControlName="endDate">
+            </nz-date-picker>
+          </nz-form-control>
+        </div>
+      </div>
+      <div class="py-4">
+        <div class="font-weight-600 d-flex align-items-center text-main">
+          {{ "TICKET.ADDITIONAL_INFORMATION" | translate }}:
+        </div>
+        <div *ngIf="!isEdit">
+          {{
+            (detailTicket$ | async).information ||
+              ("TICKET.NO_INFO" | translate)
+          }}
+        </div>
+      </div>
+      <div class="pb-2">
+        <div class="font-weight-600 d-flex align-items-center text-main">
+          {{ "LOGS.DESCRIPTION" | translate }}:
+        </div>
+        <div *ngIf="!isEdit">
+          {{ (detailTicket$ | async).description }}
+        </div>
+        <nz-form-control *ngIf="isEdit">
+          <textarea rows="4" nz-input formControlName="description"></textarea>
+        </nz-form-control>
+      </div>
+      <div class="site-btn mt-3">
+        <button
+          *ngIf="!isEdit"
+          type="button"
+          class="btn btn-sm btn-outline-info mr-3"
+          (click)="showEdit()"
+        >
+          {{ "GLOBAL.EDIT" | translate }}
+        </button>
+        <button
+          *ngIf="isEdit"
+          (click)="cancelEdit()"
+          class="btn btn-sm btn-outline-secondary mr-3"
+        >
+          {{ "GLOBAL.CANCEL" | translate }}
+        </button>
+        <button *ngIf="isEdit" class="btn btn-sm btn-outline-info mr-3">
+          {{ "GLOBAL.SAVE" | translate }}
+        </button>
+        <button
+          *ngIf="(detailTicket$ | async).status === enTicketStatus.Open"
+          class="btn btn-sm btn-outline-secondary mr-3"
+          (click)="showCloseConfirm()"
+        >
+          {{ "TICKET.CLOSE" | translate }}
+        </button>
+        <button
+          *ngIf="(detailTicket$ | async).status === enTicketStatus.Resolved"
+          class="btn btn-sm btn-outline-secondary"
+          (click)="showReOpenConfirm()"
+        >
+          {{ "TICKET.REOPEN" | translate }}
+        </button>
+      </div>
+    </nz-form-item>
+  </form>
+</ng-template>
+
+<vadar-popup-confirm-modal-ticket
+  [(isVisible)]="isReOpenVisible"
+  id="true"
+  (callback)="handleCallBackModal($event)"
+>
+</vadar-popup-confirm-modal-ticket>
+
+<vadar-popup-confirm-close-modal-ticket
+  [(isVisible)]="isCloseVisible"
+  id="true"
+  (callback)="handleCloseCallBackModal($event)"
+></vadar-popup-confirm-close-modal-ticket>

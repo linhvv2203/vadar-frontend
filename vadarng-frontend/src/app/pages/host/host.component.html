@@ -1,0 +1,30 @@
+<section class="page-host page-padding pl-3">
+  <div class="container-fluid">
+    <vadar-host-top
+      *ngIf="
+        _commonService.validatePermission(
+          [EnPermissions.FullPermission, EnPermissions.HostSetting],
+          (auth$ | async)?.systemPermissions
+        )
+      "
+      [(isCreate)]="isCreate"
+      [(filter)]="filter"
+    ></vadar-host-top>
+
+    <vadar-create-host
+      *ngIf="this.workspaceId >= 0"
+      [(isCreate)]="isCreate"
+    ></vadar-create-host>
+    <!-- create form -->
+
+    <div class="mx-n3 pt-4" *ngIf="this.workspaceId >= 0">
+      <vadar-table-host [(filter)]="filter"></vadar-table-host>
+    </div>
+    <!-- table -->
+    <div *ngIf="!this.workspaceId || this.workspaceId < 0">
+      <p class="font-25 text-center text-danger" style="margin-top: 25vh;">
+        {{ "ROLES.NO_WORKSPACE_SELECTED_YET" | translate }}
+      </p>
+    </div>
+  </div>
+</section>

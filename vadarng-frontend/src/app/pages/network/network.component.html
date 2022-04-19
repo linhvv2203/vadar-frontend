@@ -1,0 +1,23 @@
+<section class="page-log page-padding pl-3">
+  <div class="container-fluid">
+    <vadar-top-network></vadar-top-network>
+
+    <div
+      class="mx-n3 pt-4"
+      *ngIf="this.workspaceId != null && this.workspaceId >= 0"
+    >
+      <vadar-filter-logs-network
+        [(filter)]="filterNet"
+      ></vadar-filter-logs-network>
+      <vadar-table-logs-network
+        [(filter)]="filterNet"
+      ></vadar-table-logs-network>
+    </div>
+    <!-- table -->
+    <div *ngIf="this.workspaceId === null || this.workspaceId < 0">
+      <p class="font-25 text-center text-danger" style="margin-top: 25vh;">
+        {{ "ROLES.NO_WORKSPACE_SELECTED_YET" | translate }}
+      </p>
+    </div>
+  </div>
+</section>

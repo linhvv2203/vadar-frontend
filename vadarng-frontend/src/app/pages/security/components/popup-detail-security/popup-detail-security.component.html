@@ -1,0 +1,135 @@
+<nz-modal
+  [(nzVisible)]="isPopupDetail"
+  [nzTitle]="modalTItle"
+  [nzFooter]="null"
+  [nzContent]="modalContent"
+  (nzOnCancel)="close()"
+  nzWidth="800"
+></nz-modal>
+<ng-template #modalTItle>
+  <div>
+    <span class="font-16 mr-3">{{ "LOGS.DETAIL" | translate }}</span>
+    <div style="overflow: hidden; position: fixed; top: -1000px">
+      <input
+        id="metaTag"
+        [ngModel]="dataSelected.rawLogs"
+        type="text"
+        nz-input
+      />
+    </div>
+  </div>
+</ng-template>
+<ng-template #modalContent>
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <div class="row d-flex justify-content-end mb-3">
+      <div class="col-md-6" style="position: unset;">
+        <vadar-chat-with-expert></vadar-chat-with-expert>
+      </div>
+    </div>
+    <div class="row pb-2">
+      <div class="col-md-3 font-weight-600 d-flex align-items-center">
+        {{ "LOGS.EVENT_NAME" | translate }}:
+      </div>
+      <div class="col-md-9 text-danger">
+        {{ dataSelected.description }}
+      </div>
+    </div>
+    <div class="row pb-2">
+      <div class="col-md-3 font-weight-600 d-flex align-items-center">
+        {{ "LOGS.EVENT_GROUP" | translate }}:
+      </div>
+      <div class="col-md-9">
+        {{ dataSelected.groups }}
+      </div>
+    </div>
+    <div class="row pb-2">
+      <div class="col-md-3 font-weight-600">
+        {{ "LOGS.FULL_LOG" | translate }}:
+      </div>
+      <div class="col-md-9">
+        {{ dataSelected.fullLog }}
+      </div>
+    </div>
+    <div class="row pb-2">
+      <div class="col-md-3 font-weight-600 d-flex align-items-center">
+        {{ "LOGS.HOST_NAME" | translate }}:
+      </div>
+      <div class="col-md-9">
+        <a
+          href="{{ grafanaSecurityDashboardtUrl }}{{ dataSelected.host }}"
+          target="_blank"
+        >
+          {{ dataSelected.host }}
+        </a>
+      </div>
+    </div>
+    <div class="row pb-2">
+      <div class="col-md-3 font-weight-600 d-flex align-items-center">
+        {{ "LOGS.LEVEL" | translate }}:
+      </div>
+      <div class="col-md-9">{{ dataSelected.level }}/15</div>
+    </div>
+    <div class="row pb-2">
+      <div class="col-md-3 font-weight-600">
+        {{ "LOGS.RATIONALE" | translate }}:
+      </div>
+      <div class="col-md-9">{{ dataSelected.rationale }}</div>
+    </div>
+    <div class="row pb-2">
+      <div class="col-md-3 font-weight-600">
+        {{ "LOGS.REFERENCES" | translate }}:
+      </div>
+      <div class="col-md-9">{{ dataSelected.references }}</div>
+    </div>
+    <div class="row pb-2">
+      <div class="col-md-3 font-weight-600 d-flex align-items-center">
+        {{ "GLOBAL.TIME" | translate }}:
+      </div>
+      <div class="col-md-9">
+        {{ dataSelected.timestamp + " UTC" | date: "yyyy-MM-dd HH:mm:ss" }}
+      </div>
+    </div>
+    <div class="row pb-2 mb-4">
+      <div class="col-md-3 font-weight-600">
+        {{ "LOGS.COPY_LOG" | translate }}:
+      </div>
+      <div class="col-md-9">
+        <span class="material-icons-outlined cursor-pointer" (click)="copy()">
+          file_copy
+        </span>
+      </div>
+    </div>
+    <div class="row pb-2 mb-3 d-flex align-items-center">
+      <div class="col-md-5 d-flex align-items-center">
+        <p class="m-0 mr-1">{{ "LOGS.IMPORT" | translate }}:</p>
+        <nz-form-item class="mb-0">
+          <nz-form-control>
+            <nz-select
+              [(nzOpen)]="isTemplateOpen"
+              formControlName="template"
+              (ngModelChange)="selectCaseTemplate($event)"
+            >
+              <nz-option [nzValue]="''" nzLabel="Empty case"> </nz-option>
+              <nz-option
+                *ngFor="let case_template of caseTemplate$ | async"
+                [nzValue]="case_template"
+                nzLabel="{{ case_template.name }}"
+              >
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div class="col-md-3 mt-3 mt-md-0">
+        <button
+          type="submit"
+          class="w-100 mdc-button mdc-btn-md mdc-button--unelevated"
+        >
+          {{ "LOGS.CREATE_TICKET" | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-template>
+<vadar-ticket-popup-warning [(isVisible)]="isTicketWarning">
+</vadar-ticket-popup-warning>

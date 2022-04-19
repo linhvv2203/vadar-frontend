@@ -1,0 +1,56 @@
+<div class="mx-n3 pt-4" *ngIf="isCreate">
+  <div class="pt-4 px-4 card position-relative text-body">
+    <div class="position-absolute" style="top: 0; right: 0">
+      <a
+        href="#"
+        clickPreventDefault
+        (click)="onClose()"
+        class="more d-flex align-items-center justify-content-center"
+      >
+        <span class="material-icons-outlined font-25">clear</span>
+      </a>
+    </div>
+    <!-- clear -->
+
+    <div class="title font-18 font-weight-500 mb-3">
+      {{ "ROLES.ADD_NEW" | translate }}
+    </div>
+
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control
+          [nzSpan]="8"
+          class="mr-3 mb-3 mb-sm-0"
+          [nzErrorTip]="errorName"
+        >
+          <input
+            formControlName="name"
+            nzSize="large"
+            class="mb-2"
+            nz-input
+            placeholder="{{ 'WORKSPACES.WORKSPACE_NAME' | translate }}"
+            id="create-roles__input"
+          />
+          <ng-template #errorName let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              {{ "ROLES.REQUIRED" | translate }}
+            </ng-container>
+            <ng-container *ngIf="control.hasError('pattern')">
+              {{ "ROLES.NOT_SPECIAL_CHAR" | translate }}
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+        <button
+          type="submit"
+          class="mdc-button mdc-btn-lg mdc-button--unelevated"
+          id="create-roles__btn"
+        >
+          <i class="material-icons-outlined font-16 mr-2">control_point</i>
+          {{ "ROLES.ADD" | translate }}
+        </button>
+      </nz-form-item>
+    </form>
+  </div>
+  <!-- card -->
+</div>
+<!-- form -->

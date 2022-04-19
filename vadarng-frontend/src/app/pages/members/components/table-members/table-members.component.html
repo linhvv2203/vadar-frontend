@@ -1,0 +1,98 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative">
+      <div class="p-3 d-flex justify-content-between align-items-center">
+        <b>{{ "SIDEBAR.MEMBERS" | translate }}</b>
+        <button
+          *ngIf="
+            _commonService.validatePermission(
+              [
+                EnPermissions.FullPermission,
+                EnPermissions.WorkspacePermissionSetting
+              ],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+          class="mdc-btn-sm mdc-button mdc-button--outlined mdc-ripple-upgraded"
+          (click)="isShowPopupAddMember = true"
+          id="table-members__add-btn"
+        >
+          {{ "HEADER.ADD_MEM" | translate }}
+        </button>
+      </div>
+      <div style="max-height: 600px;" class="overflow-auto">
+        <nz-table
+          #rowSelectionTable
+          [nzShowPagination]="false"
+          [nzData]="model$ | async"
+          [nzFrontPagination]="false"
+        >
+          <tbody>
+            <tr
+              *ngFor="let data of rowSelectionTable.data; let i = index"
+              class="position-relative"
+              [ngStyle]="{
+                'background-color':
+                  data?.inviteId === memberSelected?.inviteId ? '#ddd' : ''
+              }"
+              (click)="onSelectedItem(data)"
+            >
+              <td class="col-url d-flex align-items-center">
+                <img
+                  src="assets/images/150.png"
+                  loading="lazy"
+                  style="max-height: 25px;"
+                  class="mr-2"
+                  alt="vsec"
+                />
+
+                <div>
+                  <a
+                    class="text-primary"
+                    clickPreventDefault
+                    nzTooltipTitle="{{ data?.userEmail }}"
+                    nzTooltipPlacement="topLeft"
+                    nz-tooltip
+                    href="#"
+                    id="table-members__name-{{ i }}"
+                    >{{ data?.userEmail }}</a
+                  >
+                  <p
+                    *ngIf="data?.inviteStatus === 1"
+                    class="text-success font-11 mb-0 mt-1n"
+                  >
+                    {{
+                      "GLOBAL." +
+                        _commonService.getStatusName(data?.inviteStatus)
+                        | translate
+                    }}
+                  </p>
+                  <p
+                    *ngIf="data?.inviteStatus !== 1"
+                    class="text-danger font-11 mb-0 mt-1n"
+                  >
+                    {{
+                      "GLOBAL." +
+                        _commonService.getStatusName(data?.inviteStatus)
+                        | translate
+                    }}
+                  </p>
+                </div>
+                <!-- url -->
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<vadar-popup-invite-members
+  [(isVisiblePopupInvite)]="isShowPopupAddMember"
+></vadar-popup-invite-members>
+<!-- popup -->

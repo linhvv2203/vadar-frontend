@@ -1,0 +1,162 @@
+<section
+  class="dashboard mt-4 mb-5 pb-5 pl-3"
+  *ngIf="(workspaceSelected$ | async)?.id != null && (workspaceSelected$ | async)?.id >= 0"
+>
+  <div class="mx-n3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <vadar-ds-summary></vadar-ds-summary>
+        </div>
+        <!-- col -->
+
+        <div class="col-12 mt-4">
+          <nz-collapse>
+            <nz-collapse-panel
+              nzHeader="{{'DASHBOARD.ATTACK_IP_MAP' | translate}}"
+              nzActive="false"
+            >
+              <div class="row">
+                <div class="col-md-9 mt-4">
+                  <vadar-ds-attack-ip-map
+                    [data]="listCountry"
+                    [time]="timeTopAttack"
+                    (timeChange)="onTopAttackTimeChange($event)"
+                  ></vadar-ds-attack-ip-map>
+                </div>
+                <!-- col -->
+
+                <div class="col-md-3 mt-4">
+                  <vadar-ds-top-attack-ip
+                    [data]="listCountry"
+                  ></vadar-ds-top-attack-ip>
+                </div>
+                <!-- col -->
+              </div>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+
+        <div class="col-md-6 mt-4">
+          <vadar-ds-events-attt></vadar-ds-events-attt>
+        </div>
+        <!-- col -->
+
+        <div class="col-md-6 mt-4">
+          <vadar-ds-events-performnce></vadar-ds-events-performnce>
+        </div>
+        <!-- col -->
+      </div>
+      <!-- row -->
+
+      <div class="card mt-4">
+        <div class="mx-3 mt-3 d-flex justify-content-between">
+          <p
+            class="font-18 font-weight-500 mb-2 line-clamp"
+            nzTooltipTitle="{{'DASHBOARD.PERFORMANCE_EVENTS' | translate}}"
+            nzTooltipPlacement="topLeft"
+            nz-tooltip
+          >
+            {{'DASHBOARD.PERFORMANCE_EVENTS' | translate}}
+          </p>
+
+          <nz-select
+            nzTooltipTitle="{{'GLOBAL.AUTO_RELOAD' | translate}}"
+            nzTooltipPlacement="topLeft"
+            nz-tooltip
+            [ngModel]="timeEventsPer"
+            style="min-width: 100px;"
+            [nzSize]="'small'"
+            (ngModelChange)="onEventsPerTimeChange($event)"
+          >
+            <nz-option
+              [nzValue]="15000"
+              nzLabel="15 {{'GLOBAL.SECONDS' | translate}}"
+            ></nz-option>
+            <nz-option
+              [nzValue]="30000"
+              nzLabel="30 {{'GLOBAL.SECONDS' | translate}}"
+            ></nz-option>
+            <nz-option
+              [nzValue]="60000"
+              nzLabel="1 {{'GLOBAL.MINUTE' | translate}}"
+            ></nz-option>
+            <nz-option
+              [nzValue]="300000"
+              nzLabel="5 {{'GLOBAL.MINUTES' | translate}}"
+            ></nz-option>
+            <nz-option
+              [nzValue]="0"
+              nzLabel="{{'GLOBAL.NEVER' | translate}}"
+            ></nz-option>
+          </nz-select>
+        </div>
+        <div class="border-bottom"></div>
+        <saf-line-chart
+          [type]="'chartdivper'"
+          dateFormat="MM/dd/yyyy"
+          [data]="(perEventsByTime$ | async)"
+          [translate]="true"
+        >
+        </saf-line-chart>
+      </div>
+      <div class="card mt-4">
+        <div class="mx-3 mt-3 d-flex justify-content-between">
+          <p
+            class="font-18 font-weight-500 mb-2 line-clamp"
+            nzTooltipTitle="{{'DASHBOARD.SECURITY_EVENTS' | translate}}"
+            nzTooltipPlacement="topLeft"
+            nz-tooltip
+          >
+            {{'DASHBOARD.SECURITY_EVENTS' | translate}}
+          </p>
+
+          <nz-select
+            nzTooltipTitle="{{'GLOBAL.AUTO_RELOAD' | translate}}"
+            nzTooltipPlacement="topLeft"
+            nz-tooltip
+            [ngModel]="timeEventsSec"
+            style="min-width: 100px;"
+            [nzSize]="'small'"
+            (ngModelChange)="onEventsSecTimeChange($event)"
+          >
+            <nz-option
+              [nzValue]="15000"
+              nzLabel="15 {{'GLOBAL.SECONDS' | translate}}"
+            ></nz-option>
+            <nz-option
+              [nzValue]="30000"
+              nzLabel="30 {{'GLOBAL.SECONDS' | translate}}"
+            ></nz-option>
+            <nz-option
+              [nzValue]="60000"
+              nzLabel="1 {{'GLOBAL.MINUTE' | translate}}"
+            ></nz-option>
+            <nz-option
+              [nzValue]="300000"
+              nzLabel="5 {{'GLOBAL.MINUTES' | translate}}"
+            ></nz-option>
+            <nz-option
+              [nzValue]="0"
+              nzLabel="{{'GLOBAL.NEVER' | translate}}"
+            ></nz-option>
+          </nz-select>
+        </div>
+        <div class="border-bottom"></div>
+        <saf-line-chart
+          [type]="'chartdivsec'"
+          dateFormat="MM/dd/yyyy"
+          [data]="(secEventsByTime$ | async)"
+        >
+        </saf-line-chart>
+      </div>
+    </div>
+  </div>
+</section>
+<div
+  *ngIf="!(workspaceSelected$ | async)?.id || (workspaceSelected$ | async)?.id < 0"
+>
+  <p class="font-25 text-center text-danger" style="margin-top: 37vh;">
+    {{ "ROLES.NO_WORKSPACE_SELECTED_YET" | translate }}
+  </p>
+</div>

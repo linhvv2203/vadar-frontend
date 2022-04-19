@@ -1,0 +1,18 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="d-flex justify-content-center align-items-center py-2">
+      <span class="font-18">{{
+        "HOST.NUMBER_OF_EVENTS_OVER_TIME" | translate
+      }}</span>
+    </div>
+    <div class="mdc-content position-relative text-center">
+      <vadar-stacked-column-chart
+        [type]="'chartdivgrfper'"
+        dateFormat="MM/dd/yyyy"
+        [data]="model$ | async"
+        [dateFormat]="_commonService.isDayDateFormat(time)"
+      >
+      </vadar-stacked-column-chart>
+    </div>
+  </div>
+</div>

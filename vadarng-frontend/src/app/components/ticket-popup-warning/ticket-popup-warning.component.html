@@ -1,0 +1,46 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzContent]="modalContent"
+  [nzFooter]="null"
+  (nzOnCancel)="handleCancel()"
+  nzWrapClassName="vertical-center-modal"
+></nz-modal>
+<ng-template #modalContent>
+  <div class="d-flex align-items-center justify-content-center mt-3">
+    <i
+      class="mr-2 text-warning"
+      style="font-size: 70px;"
+      nz-icon
+      nzType="info-circle"
+      nzTheme="outline"
+    ></i>
+    <br />
+  </div>
+  <div class="text-center py-4">
+    {{ "SECURITY.TICKET_WARNING" | translate }}
+  </div>
+  <div class="site-btn text-center">
+    <button
+      nzTooltipTitle="contact@vsec.com.vn"
+      nzTooltipPlacement="topLeft"
+      nz-tooltip
+      (click)="_commonService.mailTo()"
+      class="mdc-button mdc-btn-lg mdc-button--unelevated mx-2 mb-3"
+      type="button"
+    >
+      {{ "GLOBAL.EMAIL_FOR_US" | translate }}
+    </button>
+    <span class="mb-3 d-inline-flex align-middle">
+      {{ "GLOBAL.OR" | translate }}
+    </span>
+    <a
+      nzTooltipTitle="+(84) 906 831 337"
+      nzTooltipPlacement="topLeft"
+      nz-tooltip
+      class="mdc-button mdc-btn-lg mdc-button--unelevated mx-2 mb-3"
+      href="tel:+84906831337"
+    >
+      {{ "GLOBAL.PHONE" | translate }}
+    </a>
+  </div>
+</ng-template>

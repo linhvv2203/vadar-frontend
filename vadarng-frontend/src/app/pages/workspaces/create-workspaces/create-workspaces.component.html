@@ -1,0 +1,210 @@
+<div class="mx-n3 pt-4" *ngIf="isCreate">
+  <div class="pt-4 px-4 card position-relative text-body">
+    <div class="position-absolute" style="top: 0; right: 0">
+      <a
+        href="#"
+        clickPreventDefault
+        (click)="onClose()"
+        class="more d-flex align-items-center justify-content-center"
+      >
+        <span class="material-icons-outlined font-25">clear</span>
+      </a>
+    </div>
+    <!-- clear -->
+
+    <div *ngIf="!isUpdate" class="title font-18 font-weight-500 mb-3">
+      {{ "WORKSPACES.CREATE_WORKSPACE" | translate }}
+    </div>
+    <div *ngIf="isUpdate" class="title font-18 font-weight-500 mb-3">
+      {{ "GLOBAL.EDIT" | translate }}
+    </div>
+
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <div class="row">
+        <div class="col-md-10 mb-3">
+          <div class="row">
+            <div class="col-md-6">
+              <nz-form-item class="mb-0">
+                <nz-form-label nzRequired nzFor="name">{{
+                  "LOGS.WORKSPACE_NAME" | translate
+                }}</nz-form-label>
+                <nz-form-control class="w-100" [nzErrorTip]="errorName">
+                  <input
+                    formControlName="name"
+                    nzSize="large"
+                    class="mb-2"
+                    nz-input
+                    placeholder="{{ 'WORKSPACES.WORKSPACE_NAME' | translate }}"
+                  />
+                  <ng-template #errorName let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      {{ "WORKSPACES.WORKSPACE_IS_REQUIRED" | translate }}
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      {{ "WORKSPACES.NOT_SPECIAL_CHAR" | translate }}
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('maxlength')">
+                      {{ "WORKSPACES.NAME_LENGTH" | translate }}
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div class="col-md-6">
+              <nz-form-item class="mb-0">
+                <nz-form-label nzFor="status">{{
+                  "GLOBAL.STATUS" | translate
+                }}</nz-form-label>
+                <nz-form-control [nzErrorTip]="errorName">
+                  <nz-form-control>
+                    <nz-select
+                      nzSize="large"
+                      formControlName="status"
+                      nzShowSearch
+                      nzAllowClear
+                      nzPlaceHolder="{{ 'GLOBAL.STATUS' | translate }}"
+                    >
+                      <nz-option
+                        [nzDisabled]="checkDate(validateForm.value.endDate)"
+                        nzLabel="{{ 'DASHBOARD.ACTIVE' | translate }}"
+                        [nzValue]="ExpireStatus.Active"
+                      ></nz-option>
+                      <nz-option
+                        nzLabel="{{ 'DASHBOARD.REVOKED' | translate }}"
+                        [nzValue]="ExpireStatus.Revoked"
+                      ></nz-option>
+                      <nz-option
+                        nzDisabled
+                        nzLabel="{{ 'DASHBOARD.EXPIRED' | translate }}"
+                        [nzValue]="ExpireStatus.ExpiredDate"
+                      ></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <!-- <div class="col-md-6">
+              <nz-form-item class="mb-0">
+                <nz-form-label nzFor="members">{{
+                  "SIDEBAR.MEMBERS" | translate
+                }}</nz-form-label>
+                <nz-form-control [nzErrorTip]="errorEmail">
+                  <nz-select
+                    nzSize="large"
+                    nzMode="tags"
+                    class="mb-2"
+                    nzDropdownClassName="members"
+                    nzPlaceHolder="email@example.com"
+                    formControlName="members"
+                  >
+                    <nz-option></nz-option>
+                  </nz-select>
+                </nz-form-control>
+
+                <ng-template #errorEmail let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    {{ "WORKSPACES.EMAIL_REQUIED" | translate }}
+                  </ng-container>
+                  <ng-container
+                    *ngIf="validateForm.controls.members.errors.emailIsInvalid"
+                  >
+                    {{ "ACTION.EMAIL_INVALID_LIST" | translate }}
+                  </ng-container>
+                </ng-template>
+              </nz-form-item>
+            </div> -->
+            <div class="col-md-6">
+              <nz-form-item class="mb-0">
+                <nz-form-label nzRequired nzFor="hostLimit">{{
+                  "WORKSPACES.HOST_LIMIT" | translate
+                }}</nz-form-label>
+                <nz-form-control [nzErrorTip]="errorNameLimit">
+                  <input
+                    formControlName="hostLimit"
+                    nzSize="large"
+                    class="mb-2"
+                    nz-input
+                    placeholder="{{ 'WORKSPACES.HOST_LIMIT' | translate }}"
+                  />
+                  <ng-template #errorNameLimit let-control>
+                    <ng-container *ngIf="control.hasError('required')">
+                      {{ "WORKSPACES.LIMIT_REQUIRED" | translate }}
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('pattern')">
+                      {{ "WORKSPACES.NUMBER" | translate }}
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('max')">
+                      {{ "LICENSES.HOSTLIMITISTOOLARGE" | translate }}
+                    </ng-container>
+                    <ng-container *ngIf="control.hasError('min')">
+                      {{ "LICENSES.HOSTLIMITISTOOSMALL" | translate }}
+                    </ng-container>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <!-- <div class="col-md-6">
+              <nz-form-item class="mb-0">
+                <nz-form-label nzFor="roles">{{
+                  "ROLES.LIST_PERMISSION" | translate
+                }}</nz-form-label>
+                <nz-form-control>
+                  <nz-select
+                    nzSize="large"
+                    nzMode="multiple"
+                    formControlName="roles"
+                    [nzPlaceHolder]="'ROLES.LIST_PERMISSION' | translate"
+                  >
+                    <nz-option
+                      *ngFor="let option of listRoles"
+                      [nzLabel]="option.label"
+                      [nzValue]="option.value"
+                    >
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div> -->
+            <div class="col-md-6">
+              <nz-form-item class="mb-0">
+                <nz-form-label nzRequired nzFor="endDate">{{
+                  "WORKSPACES.EXPIRE_TIME" | translate
+                }}</nz-form-label>
+                <nz-form-control [nzErrorTip]="errorExpire">
+                  <nz-date-picker
+                    class="w-100 mb-2"
+                    formControlName="endDate"
+                    [nzDisabledDate]="disabledEndDates"
+                    nzSize="large"
+                    nzPlaceHolder="{{ 'WORKSPACES.EXPIRE_TIME' | translate }}"
+                    (ngModelChange)="onChangeDate($event)"
+                  >
+                    <!-- -->
+                  </nz-date-picker>
+                </nz-form-control>
+                <ng-template #errorExpire let-control>
+                  <ng-container *ngIf="control.hasError('required')">
+                    {{ "WORKSPACES.EXPIRETIME_REQUIRED" | translate }}
+                  </ng-container>
+                </ng-template>
+              </nz-form-item>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 mb-4">
+          <div class="h-100 d-flex align-items-end">
+            <button
+              type="submit"
+              class="px-4 mdc-button mdc-btn-lg mdc-button--unelevated"
+            >
+              <i class="material-icons-outlined font-16 mr-2">control_point</i>
+              {{ "GLOBAL.SAVE" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- card -->
+</div>
+<!-- form -->

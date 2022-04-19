@@ -1,0 +1,29 @@
+<nz-modal
+  [(nzVisible)]="isConfirmPopup"
+  nzTitle="{{ 'NOTIFICATIONS.POPUP.TITLE' | translate }}"
+  [nzContent]="modalContent"
+  [nzFooter]="null"
+  (nzOnCancel)="handleCancel()"
+  nzWrapClassName="vertical-center-modal"
+>
+  <ng-template #modalContent>
+    <p class="px-3 text-center">{{ "NOTIFICATIONS.POPUP.TEXT" | translate }}</p>
+
+    <div
+      class="site-btn mt-4 pt-2 mb-4 d-flex justify-content-center align-items-center"
+    >
+      <button
+        class="px-5 mr-3 mdc-button mdc-btn-lg mdc-button--outlined"
+        (click)="handleCancel()"
+      >
+        {{ "MEMBERS.NO" | translate }}
+      </button>
+      <button
+        class="px-5 mdc-button mdc-btn-lg mdc-button--unelevated"
+        (click)="acceptChangeCondition()"
+      >
+        {{ "MEMBERS.ACCEPT" | translate }}
+      </button>
+    </div>
+  </ng-template>
+</nz-modal>

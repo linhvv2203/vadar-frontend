@@ -1,0 +1,43 @@
+<nz-dropdown
+  [nzTrigger]="'click'"
+  [nzPlacement]="'bottomRight'"
+  class="avatar-wrapper"
+>
+  <a nz-dropdown>
+    <nz-avatar
+      nzSize="small"
+      [nzText]="(auth$ | async)?.fullName"
+      [nzSrc]="
+        (auth$ | async)?.avatar === '' || (auth$ | async)?.avatar === null
+          ? '../assets/images/avatar/avatar-hacker.png'
+          : (auth$ | async)?.avatar
+      "
+    >
+    </nz-avatar>
+  </a>
+  <ul nz-menu class="avatar-menu position-absolute">
+    <li>
+      <div class="avatar-info">
+        <nz-avatar
+          nzSize="large"
+          [nzText]="(auth$ | async)?.fullName"
+          [nzSrc]="
+            (auth$ | async)?.avatar === '' || (auth$ | async)?.avatar === null
+              ? '../assets/images/avatar/avatar-hacker.png'
+              : (auth$ | async)?.avatar
+          "
+        >
+        </nz-avatar>
+        <div class="avatar-text">
+          <h5>{{ (auth$ | async)?.fullName || "-------" }}</h5>
+          <i>{{ (auth$ | async)?.email }}</i>
+        </div>
+      </div>
+    </li>
+    <li nz-menu-divider></li>
+    <li nz-menu-item (click)="showConfirm()">
+      <i nz-icon nzType="logout" nzTheme="outline"></i>
+      <span>{{ "PROFILE.LOGOUT" | translate }}</span>
+    </li>
+  </ul>
+</nz-dropdown>

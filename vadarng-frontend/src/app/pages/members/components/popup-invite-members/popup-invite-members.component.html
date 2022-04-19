@@ -1,0 +1,82 @@
+<nz-modal
+  [(nzVisible)]="isVisiblePopupInvite"
+  nzTitle="{{ 'MEMBERS.INVITE_MEMBERS' | translate }}"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  nzWrapClassName="vertical-center-modal"
+>
+  <ng-template #modalContent>
+    <p class="px-3">
+      {{ "MEMBERS.ASK_PEOPLE" | translate }}
+    </p>
+
+    <form
+      nz-form
+      class="px-3"
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item>
+        <nz-form-label class="text-left" nzRequired [nzSpan]="24" nzFor="email"
+          ><b>E-mail</b></nz-form-label
+        >
+        <nz-form-control
+          [nzSpan]="24"
+          nzErrorTip="{{ 'MEMBERS.EMAIL_REQUIRED' | translate }}"
+        >
+          <nz-select
+            nzSize="large"
+            class="mb-2"
+            nzDropdownClassName="select-lg"
+            formControlName="emails"
+            nzMode="tags"
+            id="popup-invite-members__email"
+          >
+            <nz-option nzHide="true"> </nz-option>
+            <nz-option
+              *ngFor="let option of listOfOption"
+              [nzLabel]="option.label"
+              [nzValue]="option.value"
+            >
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired nzFor="roles">
+          <b>{{ "MEMBERS.ROLE" | translate }}</b>
+        </nz-form-label>
+        <nz-form-control
+          [nzSpan]="24"
+          nzErrorTip="{{ 'MEMBERS.ROLES_REQUIED' | translate }}"
+        >
+          <nz-select
+            class="mb-2"
+            nzSize="large"
+            formControlName="workspaceRoles"
+            nzDropdownClassName="select-lg"
+            id="popup-invite-members__roles"
+          >
+            <nz-option
+              *ngFor="let role of model$ | async"
+              [nzValue]="role.id"
+              [nzLabel]="role.name"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <div class="site-btn mt-3 text-right">
+        <button
+          class="px-5 mdc-button mdc-btn-lg mdc-button--unelevated"
+          id="popup-invite-members__invite-btn"
+        >
+          {{ "MEMBERS.INVITE" | translate }}
+        </button>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #modalFooter> </ng-template>
+</nz-modal>

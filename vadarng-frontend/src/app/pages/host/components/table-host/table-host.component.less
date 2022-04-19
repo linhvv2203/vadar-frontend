@@ -1,0 +1,117 @@
+.col-stt {
+  max-width: 50px;
+}
+
+.col-url {
+  max-width: 140px;
+}
+
+.col-type {
+  max-width: 250px;
+}
+
+.col-time {
+  max-width: 110px;
+}
+
+.col-status {
+  max-width: 100px;
+}
+
+.col-result {
+  max-width: 250px;
+}
+
+.col-action {
+  max-width: 48px;
+}
+
+.table-scaned {
+  ul {
+    li[class*="flex"] {
+      height: 50px;
+      align-items: center;
+      border-bottom: 1px solid #dee2e6;
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+}
+
+:host ::ng-deep thead > tr {
+  > td {
+    background: #fafafa;
+    border-bottom: 1px solid #e8e8e8;
+    transition: 0s;
+  }
+  &:hover {
+    > td {
+      background: #fafafa !important;
+    }
+  }
+}
+
+.table-scaned ::ng-deep table {
+  max-width: 100%;
+}
+
+@media screen and (max-width: 1199px) {
+  .col-result {
+    max-width: 350px;
+  }
+
+  .col-type {
+    max-width: 124px;
+  }
+
+  .col-url {
+    max-width: 200px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .table-scaned {
+    th[class*="col-"] {
+      display: none;
+    }
+
+    tr {
+      display: block;
+      border-bottom: 10px solid #f2f6fa;
+      position: relative;
+      &:last-child {
+        border: none;
+      }
+    }
+
+    td[class*="col-"] {
+      display: flex;
+      max-width: 100%;
+      padding: 1rem;
+      border-bottom: 1px solid #dee2e6;
+      .line-clamp {
+        width: calc(100% - 80px);
+      }
+      a {
+        text-align: right;
+      }
+    }
+
+    td.col-action {
+      position: absolute;
+      top: 0;
+      right: 1px;
+      height: 48px;
+      border: none !important;
+    }
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .table-scaned {
+    td[class*="col-"]:not([class*="-action"]) {
+      width: calc(100vw - 1.8rem);
+    }
+  }
+}

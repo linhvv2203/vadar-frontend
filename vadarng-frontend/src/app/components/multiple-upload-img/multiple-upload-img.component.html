@@ -1,0 +1,43 @@
+<div class="add-img">
+  <input
+    #customerInput
+    type="file"
+    (change)="handleAddImg($event)"
+    style="display: none;"
+  />
+  <div
+    (click)="triggerInput(customerInput)"
+    class="d-flex justify-content-center align-items-center flex-column h-100 w-100"
+  >
+    <ng-container>
+      <i class="upload-icon" nz-icon type="plus"></i>
+      <div class="ant-upload-text">{{ "UPLOAD" | translate }}</div>
+    </ng-container>
+  </div>
+</div>
+<div>
+  <ul class="upload-file-content">
+    <li *ngFor="let item of value">
+      <a target="_blank" [href]="item.url">{{ item.name }}</a>
+      <button
+        type="button"
+        title="Copy url"
+        class="ml-2 mr-1 p-0 btn rounded-circle"
+        (click)="copyUrl(item.url)"
+      >
+        <i style="z-index: 10;" nz-icon nzType="copy" nzTheme="outline"></i>
+      </button>
+      <button
+        title="Remove file"
+        type="button"
+        class="p-0 btn rounded-circle"
+        (click)="removeAvatar(item)"
+      >
+        <i
+          style="z-index: 10;"
+          class="avatar-remove text-center anticon anticon-delete ng-tns-c25-9 ng-star-inserted"
+        ></i>
+      </button>
+    </li>
+  </ul>
+</div>

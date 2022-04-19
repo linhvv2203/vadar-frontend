@@ -1,0 +1,140 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTables
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async).items"
+        [nzNoResult]="noResultTpl"
+      >
+        <ng-template #noResultTpl>
+          <img src="assets/images/noresult.svg" alt="no-result" />
+          <div>{{ "LOGS.NO_DATA_IN_THE_TIME_PERIOD" | translate }}</div>
+        </ng-template>
+        <thead>
+          <tr>
+            <th class="col-url">{{ "LOGS.MESSAGE" | translate }}</th>
+            <th class="col-type">{{ "LOGS.HOSTNAME" | translate }}</th>
+            <th class="col-result">{{ "LOGS.ACTION" | translate }}</th>
+            <th class="col-status">{{ "LOGS.CLASS" | translate }}</th>
+            <th class="col-url">{{ "LOGS.SOURCE_ADDRESS" | translate }}</th>
+            <th class="col-url">{{ "LOGS.SOURCE_PORT" | translate }}</th>
+            <th class="col-url">
+              {{ "LOGS.DESTINATION_ADDRESS" | translate }}
+            </th>
+            <th class="col-url">{{ "LOGS.DESTINATION_PORT" | translate }}</th>
+            <th class="col-time">{{ "GLOBAL.TIME" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTables.data"
+            class="position-relative"
+          >
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.DESCRIPTION" | translate }}
+              </div>
+              <span>
+                {{ data?.message || "--" }}
+              </span>
+              <!-- result -->
+            </td>
+            <td
+              class="col-type justify-content-between cursor-pointer"
+              (click)="onSelect(data)"
+            >
+              <div class="d-block d-lg-none">
+                {{ "LOGS.SEVERITY" | translate }}
+              </div>
+              <div class="d-flex">
+                {{ data?.hostName }}
+              </div>
+              <!-- type -->
+            </td>
+            <td class="col-result justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.EVENT_NAME" | translate }}
+              </div>
+              <span>
+                {{ data?.action }}
+              </span>
+              <!-- result -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.DESCRIPTION" | translate }}
+              </div>
+              <span>
+                {{ data?.class || "--" }}
+              </span>
+              <!-- result -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.DESCRIPTION" | translate }}
+              </div>
+              <span>
+                {{ data?.sourceAddress || "--" }}
+              </span>
+              <!-- result -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.DESCRIPTION" | translate }}
+              </div>
+              <span>
+                {{ data?.sourcePort || "--" }}
+              </span>
+              <!-- result -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.DESCRIPTION" | translate }}
+              </div>
+              <span>
+                {{ data?.destinationAddress || "--" }}
+              </span>
+              <!-- result -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.DESCRIPTION" | translate }}
+              </div>
+              <span>
+                {{ data?.destinationPort || "--" }}
+              </span>
+              <!-- result -->
+            </td>
+            <td class="col-time justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "GLOBAL.TIME" | translate }}
+              </div>
+              <span>
+                {{ data?.time + " UTC" | date: "yyyy-MM-dd HH:mm:ss" }}
+              </span>
+              <!-- url -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<nz-pagination
+  class="text-center"
+  [nzPageIndex]="currentPageIndex"
+  [nzTotal]="(model$ | async).count"
+  (nzPageIndexChange)="onPageChange($event)"
+></nz-pagination>
+<!-- pagiante -->
+<vadar-popup-detail-network
+  [(isPopupDetail)]="isPopupDetail"
+  [dataSelected]="dataSelected"
+>
+</vadar-popup-detail-network>

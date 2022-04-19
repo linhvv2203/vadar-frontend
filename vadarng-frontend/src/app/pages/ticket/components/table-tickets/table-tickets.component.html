@@ -1,0 +1,142 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTables
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async).items"
+        [nzNoResult]="noResultTpl"
+      >
+        <ng-template #noResultTpl>
+          <img src="assets/images/noresult.svg" alt="no-result" />
+          <div>{{ "LOGS.NO_DATA_IN_THE_TIME_PERIOD" | translate }}</div>
+        </ng-template>
+        <thead>
+          <tr>
+            <th class="col-url">{{ "TICKET.TITLE" | translate }}</th>
+            <th class="col-type text-center">
+              {{ "GLOBAL.STATUS" | translate }}
+            </th>
+            <th class="col-type text-center">
+              {{ "TICKET.SEVERITY" | translate }}
+            </th>
+            <th class="col-result text-center">
+              {{ "TICKET.DATE" | translate }}
+            </th>
+            <th class="col-status">{{ "TICKET.CREATE_BY" | translate }}</th>
+            <th class="col-action"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTables.data"
+            class="position-relative"
+          >
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "TICKET.TITLE" | translate }}
+              </div>
+              <a
+                clickPreventDefault
+                href="#"
+                class="text-primary cursor-pointer"
+                (click)="onSelect(data)"
+              >
+                {{ data?._source.title || "--" }}
+              </a>
+              <!-- title -->
+            </td>
+            <td class="col-url justify-content-between text-center">
+              <div class="d-block d-lg-none">
+                {{ "GLOBAL.STATUS" | translate }}
+              </div>
+              <span>
+                {{ "TICKET." + data?._source.status | translate }}
+              </span>
+              <!-- title -->
+            </td>
+            <td class="col-type text-center justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "TICKET.SEVERITY" | translate }}
+              </div>
+              <span class="text-{{ data?._source.severity }}">
+                {{ "TICKET.SEVERITY_" + data?._source.severity | translate }}
+              </span>
+              <!-- severity -->
+            </td>
+            <td class="col-result text-center justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "TICKET.DATE" | translate }}
+              </div>
+              <span>
+                {{ data?._source.timestamp | date: "yyyy-MM-dd HH:mm:ss" }}
+              </span>
+              <!-- date -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "TICKET.CREATE_BY" | translate }}
+              </div>
+              <span>
+                {{ data?._source.createBy || "--" }}
+              </span>
+            </td>
+            <td class="col-action p-0">
+              <div>
+                <a
+                  href="#"
+                  clickPreventDefault
+                  class="more d-flex align-items-center justify-content-center"
+                  nzPlacement="bottomRight"
+                  nz-dropdown
+                  nzTrigger="click"
+                  [nzDropdownMenu]="menu"
+                >
+                  <span class="material-icons-outlined font-25">
+                    more_vert
+                  </span>
+                </a>
+                <!-- more -->
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu class="select-lg">
+                    <li class="d-flex align-items-center px-3" nz-menu-item>
+                      <a clickPreventDefault href="#" (click)="onSelect(data)">
+                        <i
+                          class="mr-2 font-19"
+                          nz-icon
+                          nzType="edit"
+                          nzTheme="outline"
+                        ></i>
+                        {{ "TICKET.VIEW_DETAIL" | translate }}
+                      </a>
+                    </li>
+                  </ul>
+                </nz-dropdown-menu>
+                <!-- Dropdown -->
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<nz-pagination
+  class="text-center"
+  [nzPageIndex]="currentPageIndex"
+  [nzTotal]="(model$ | async).count"
+  (nzPageIndexChange)="onPageChange($event)"
+></nz-pagination>
+<!-- pagiante -->
+
+<vadar-popup-detail-ticket
+  [(isPopupDetail)]="isPopupDetail"
+  [dataSelected]="dataSelected"
+  (statusChange)="onPageChange()"
+>
+</vadar-popup-detail-ticket>

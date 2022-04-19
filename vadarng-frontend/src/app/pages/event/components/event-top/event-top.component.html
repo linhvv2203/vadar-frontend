@@ -1,0 +1,48 @@
+<div class="row align-items-center justify-content-between">
+  <div class="col-md-4 mb-3 mb-md-0 pl-0">
+    <div class="d-flex align-items-center">
+      <a
+        href="#"
+        clickPreventDefault
+        [routerLink]="redirect"
+        class="more mr-2 d-flex align-items-center justify-content-center"
+      >
+        <span class="material-icons-outlined font-25">
+          keyboard_backspace
+        </span>
+      </a>
+      <b class="font-20">{{ "EVENT.MANAGE_EVENT" | translate }}</b>
+    </div>
+  </div>
+  <!-- button -->
+  <div class="col-md-8 px-0 d-flex align-items-center justify-content-end">
+    <form
+      nz-form
+      [formGroup]="validateForm"
+      [nzLayout]="'inline'"
+      class="text-lg-right filter-form"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item class="mb-0 w-100">
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="prefixTemplateUrl">
+            <ng-template #prefixTemplateUrl
+              ><i class="font-19 ml-n2" nz-icon nzType="search"></i
+            ></ng-template>
+            <input
+              class="custom-border"
+              type="text"
+              nz-input
+              (ngModelChange)="submitForm()"
+              formControlName="url"
+              placeholder="{{ 'GLOBAL.SEARCH' | translate }}"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- url -->
+    </form>
+  </div>
+  <!-- filter -->
+</div>
+<!-- top -->

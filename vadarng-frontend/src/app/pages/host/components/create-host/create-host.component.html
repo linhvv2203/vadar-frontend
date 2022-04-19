@@ -1,0 +1,106 @@
+<div class="mx-n3 pt-4" *ngIf="isCreate">
+  <div class="px-4 py-5 card position-relative text-body">
+    <div class="position-absolute" style="top: 0; right: 0">
+      <a
+        href="#"
+        clickPreventDefault
+        (click)="onClose()"
+        class="more d-flex align-items-center justify-content-center"
+      >
+        <span class="material-icons-outlined font-25">clear</span>
+      </a>
+    </div>
+    <!-- clear -->
+
+    <div class="title font-18 font-weight-500 mb-3">
+      {{ "HOST.ADD_NEW_HOST" | translate }}
+    </div>
+
+    <p>
+      <b>{{ "HOST.STEP_1" | translate }}:</b>
+      {{
+        "HOST.CHOOSE_INSTALLATION_COMFORT_WITH_YOUR_OPERATING_SYSTEM"
+          | translate
+      }}
+      <b *ngIf="!isShowLinkdownload"
+        >({{ "HOST.INSTALLATION_IS_IN_PROGRESS" | translate }})</b
+      >
+    </p>
+
+    <nz-table
+      #rowSelectionTable
+      [nzShowPagination]="false"
+      [nzData]="listOfAllData"
+    >
+      <thead>
+        <tr>
+          <th class="col-type pl-5">{{ "HOST.OS" | translate }}</th>
+          <th class="col-result">{{ "HOST.VERSION" | translate }}</th>
+          <th class="col-status">{{ "GLOBAL.DOWNLOAD" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="position-relative" *ngFor="let item of model$ | async">
+          <td class="col-type justify-content-between">
+            <div class="text-center d-inline-block" style="min-width: 77px;">
+              <img class="mr-2" src="{{ item?.icon }}" alt="{{ item?.name }}" />
+            </div>
+
+            {{ item?.name }}
+          </td>
+          <td class="col-result justify-content-between">
+            <span class="line-clamp"> 1.0.0 </span>
+          </td>
+          <td class="col-status justify-content-between">
+            <span class="text-primary" *ngFor="let el of item?.agentInstalls">
+              <a
+                *ngIf="showLinkdownload(item)"
+                class="line-clamp"
+                target="_blank"
+                href="{{ el?.linkDownload }}"
+                title="{{ el?.linkDownload }}"
+                >{{ getNameAgent(el?.name) }}</a
+              >
+
+              <a
+                *ngIf="!showLinkdownload(item)"
+                class="line-clamp"
+                href="javascript:void(0);"
+                >{{ "HOST.IS_CREATING_AN_AGENT_INSTALLATION" | translate }}</a
+              >
+            </span>
+            <!-- <span class="text-primary">
+              <a
+                class="line-clamp"
+                target="_blank"
+                href="https://vadar-agent.s3-ap-southeast-1.amazonaws.com/EDH/vadar-security-agent.msi"
+                >Download security agent</a
+              >
+            </span> -->
+          </td>
+        </tr>
+        <!-- 1 -->
+      </tbody>
+    </nz-table>
+    <!-- table -->
+
+    <p class="mt-4">
+      <b>{{ "HOST.STEP_2" | translate }}:</b>
+      {{ "HOST.INSTALL_AGENT_FOLLOWING" | translate }}
+      <span class="text-primary"
+        ><a
+          href="https://docs.vsec.vn/index.php/knowledge-base/2-cai-dat-agent/"
+          >{{ "HOST.THIS_ARTICLE" | translate }}</a
+        ></span
+      >
+      . {{ "HOST.IF_YOU_GET_PROBLEM" | translate }},
+      <span class="text-primary"
+        ><a href="mailto:suppport@vsec.com.vn">{{
+          "HOST.CONTACT_US" | translate
+        }}</a></span
+      >
+    </p>
+  </div>
+  <!-- card -->
+</div>
+<!-- form -->

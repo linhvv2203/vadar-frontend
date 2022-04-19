@@ -1,0 +1,16 @@
+nz-select {
+  margin: 0;
+  min-width: 150px;
+  max-width: 300px;
+}
+
+::ng-deep .cdk-overlay-container > div:nth-child(3) {
+  z-index: 1111;
+  .cdk-overlay-pane {
+    z-index: 1006 !important;
+  }
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}

@@ -1,0 +1,204 @@
+<section class="page-member page-padding pl-3">
+  <div class="container-fluid">
+    <div class="row align-items-center justify-content-between">
+      <div class="col-md-4 mb-3 mb-md-0 pl-0">
+        <div class="d-flex align-items-center">
+          <a
+            href="#"
+            clickPreventDefault
+            routerLink="/"
+            class="more mr-2 d-flex align-items-center justify-content-center"
+          >
+            <span class="material-icons-outlined font-25">
+              keyboard_backspace
+            </span>
+          </a>
+          <b class="font-20">{{ "MEMBERS.MANAGE_MEMBERS" | translate }}</b>
+        </div>
+      </div>
+      <!-- button -->
+    </div>
+    <!-- top -->
+
+    <div class="mx-n3 pt-4" *ngIf="currentWorkspaceId > 0">
+      <div class="row">
+        <div class="col-md-4">
+          <vadar-table-members
+            [(memberSelected)]="memberSelected"
+          ></vadar-table-members>
+          <!-- table -->
+        </div>
+        <div class="col-md-8" *ngIf="memberSelected">
+          <div class="card p-4">
+            <header class="pb-4 row">
+              <div class="d-flex col-md-8">
+                <div class="mr-3" style="width: 50px; height: 50px">
+                  <img
+                    class="cover-img"
+                    src="assets/images/150.png"
+                    loading="lazy"
+                    alt="vsec"
+                  />
+                </div>
+                <div>
+                  <h6>{{ memberSelected.userEmail }}</h6>
+                  <!-- <span>Joined at 12/05/2017 </span> -->
+                  <span>{{
+                    "GLOBAL." +
+                      _commonService.getStatusName(memberSelected.inviteStatus)
+                      | translate
+                  }}</span>
+                </div>
+              </div>
+              <div class="text-right col-md-4">
+                <button
+                  class="btn btn-link text-main"
+                  *ngIf="
+                    memberSelected.inviteStatus ===
+                      enInviteWorkspaceRoleStatus.Pending &&
+                    _commonService.validatePermission(
+                      [
+                        EnPermissions.FullPermission,
+                        EnPermissions.WorkspacePermissionSetting
+                      ],
+                      (auth$ | async)?.systemPermissions
+                    )
+                  "
+                  (click)="isVisibleResend = true"
+                >
+                  {{ "GLOBAL.RESEND" | translate }}
+                </button>
+                <button
+                  class="btn btn-link text-secondary"
+                  (click)="isVisibleCancel = true"
+                  *ngIf="
+                    memberSelected.inviteStatus ===
+                      enInviteWorkspaceRoleStatus.Pending &&
+                    _commonService.validatePermission(
+                      [
+                        EnPermissions.FullPermission,
+                        EnPermissions.WorkspacePermissionSetting
+                      ],
+                      (auth$ | async)?.systemPermissions
+                    )
+                  "
+                >
+                  {{ "GLOBAL.CANCEL" | translate }}
+                </button>
+                <button
+                  class="btn btn-link text-danger"
+                  *ngIf="
+                    memberSelected.inviteStatus ===
+                      enInviteWorkspaceRoleStatus.Accept &&
+                    _commonService.validatePermission(
+                      [
+                        EnPermissions.FullPermission,
+                        EnPermissions.WorkspacePermissionSetting
+                      ],
+                      (auth$ | async)?.systemPermissions
+                    )
+                  "
+                  (click)="deleteInvitation(memberSelected.inviteId)"
+                >
+                  {{ "GLOBAL.DELETE" | translate }}
+                </button>
+              </div>
+            </header>
+            <div class="border-top pt-5">
+              <form
+                nz-form
+                [formGroup]="validateForm"
+                (ngSubmit)="submitForm()"
+              >
+                <nz-form-item class="mb-2">
+                  <nz-form-label class="mb-0" [nzSpan]="4" nzFor="email"
+                    >E-mail</nz-form-label
+                  >
+                  <span style="line-height: 40px;">{{
+                    memberSelected.userEmail
+                  }}</span>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label
+                    style="line-height: 50px;"
+                    [nzSpan]="4"
+                    nzRequired
+                    nzFor="workspaceRoles"
+                  >
+                    {{ "MEMBERS.ROLE" | translate }}</nz-form-label
+                  >
+                  <nz-form-control
+                    [nzSpan]="12"
+                    nzErrorTip="{{ 'MEMBERS.ROLES_REQUIED' | translate }}"
+                  >
+                    <nz-select
+                      class="mb-2"
+                      nzSize="large"
+                      formControlName="workspaceRoles"
+                      nzDropdownClassName="select-lg"
+                      [(ngModel)]="memberSelected.workspaceRoleId"
+                    >
+                      <nz-option
+                        nzValue="00000000-0000-0000-0000-000000000000"
+                        nzLabel=""
+                      ></nz-option>
+                      <nz-option
+                        *ngFor="let role of workspaceRoles$ | async"
+                        [nzValue]="role.id"
+                        [nzLabel]="role.name"
+                      >
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item
+                  *ngIf="
+                    memberSelected.inviteStatus ===
+                    enInviteWorkspaceRoleStatus.Accept
+                  "
+                >
+                  <nz-form-control [nzSpan]="4"></nz-form-control>
+                  <nz-form-control [nzSpan]="12">
+                    <button
+                      *ngIf="
+                        _commonService.validatePermission(
+                          [
+                            EnPermissions.FullPermission,
+                            EnPermissions.WorkspacePermissionSetting
+                          ],
+                          (auth$ | async)?.systemPermissions
+                        )
+                      "
+                      class="px-5 mdc-button mdc-btn-lg mdc-button--unelevated"
+                      (click)="handleUpdateRoleForUser()"
+                    >
+                      {{ "GLOBAL.SAVE" | translate }}
+                    </button>
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!currentWorkspaceId || currentWorkspaceId < 0">
+      <p class="font-25 text-center text-danger" style="margin-top: 25vh;">
+        {{ "ROLES.NO_WORKSPACE_SELECTED_YET" | translate }}
+      </p>
+    </div>
+  </div>
+</section>
+
+<vadar-popup-resend-invite
+  [(isVisibleResend)]="isVisibleResend"
+  [invitation]="memberSelected"
+>
+</vadar-popup-resend-invite>
+<vadar-popup-cancel-invite
+  [(isVisibleCancel)]="isVisibleCancel"
+  [invitation]="memberSelected"
+>
+</vadar-popup-cancel-invite>

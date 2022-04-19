@@ -1,0 +1,38 @@
+.create-scan {
+  background-color: #00b3c6;
+  border-radius: 5px;
+  .divider {
+    &::before {
+      content: "";
+      width: 100%;
+      position: absolute;
+      top: 12px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      opacity: 0.4;
+      z-index: 0;
+      background: #ffffff;
+    }
+
+    span {
+      z-index: 1;
+      position: relative;
+      background-color: #00b3c6;
+    }
+  }
+}
+
+.text-error {
+  color: #f5222d;
+  position: absolute;
+}
+
+::ng-deep.has-error .ant-form-explain {
+  line-height: inherit !important;
+  position: absolute;
+}
+
+.pb-3rem {
+  padding-bottom: 3rem !important;
+}

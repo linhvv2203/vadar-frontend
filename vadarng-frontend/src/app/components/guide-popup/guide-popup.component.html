@@ -1,0 +1,31 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzContent]="modalContent"
+  [nzFooter]="null"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  nzWrapClassName="vertical-center-modal"
+>
+  <ng-template #modalContent>
+    <div class="d-flex align-items-center justify-content-center mt-3">
+      <i
+        class="mr-2 text-success"
+        style="font-size: 70px;"
+        nz-icon
+        nzType="check-circle"
+        nzTheme="outline"
+      ></i>
+      <br />
+    </div>
+    <div class="text-center pt-4">
+      {{ "HOST.GUIDE_POPUP" | translate
+      }}<a
+        (click)="handleOk()"
+        routerLink="/host"
+        class="highlight-link"
+        [queryParams]="{ isCreate: true }"
+        >{{ "HOST.GUIDE_POPUP_LINK" | translate }}</a
+      >
+    </div>
+  </ng-template></nz-modal
+>

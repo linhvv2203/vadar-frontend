@@ -1,0 +1,121 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTables
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async)?.items"
+      >
+        <thead>
+          <tr>
+            <td
+              *ngIf="
+                _commonService.validatePermission(
+                  [
+                    EnPermissions.FullPermission,
+                    EnPermissions.WhitelistIpSetting
+                  ],
+                  (auth$ | async)?.systemPermissions
+                )
+              "
+              class="p-3 text-center"
+              nzShowCheckbox
+              [(nzChecked)]="isAllDisplayDataChecked"
+              [nzIndeterminate]="isIndeterminate"
+              (nzCheckedChange)="checkAll($event)"
+            ></td>
+            <th class="">IP</th>
+            <th class="">{{ "ACTION.COMMENT" | translate }}</th>
+            <th class=""></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTables.data; let i = index"
+            class="position-relative"
+          >
+            <td
+              *ngIf="
+                _commonService.validatePermission(
+                  [
+                    EnPermissions.FullPermission,
+                    EnPermissions.WhitelistIpSetting
+                  ],
+                  (auth$ | async)?.systemPermissions
+                )
+              "
+              nzShowCheckbox
+              [(nzChecked)]="mapOfCheckedId[data.ip]"
+              (nzCheckedChange)="refreshStatus()"
+            ></td>
+            <td class="">
+              <span id="action-table-whitelist__ip-{{ i }}">{{ data.ip }}</span>
+              <!-- url -->
+            </td>
+            <td class="">
+              <span>{{ data.description }}</span>
+              <!-- url -->
+            </td>
+            <td class=" p-0">
+              <div>
+                <a
+                  *ngIf="
+                    _commonService.validatePermission(
+                      [
+                        EnPermissions.FullPermission,
+                        EnPermissions.WhitelistIpSetting
+                      ],
+                      (auth$ | async)?.systemPermissions
+                    )
+                  "
+                  href="3"
+                  clickPreventDefault
+                  (click)="showConfirm(data.ip)"
+                  style="cursor: pointer;"
+                  class="more d-flex align-items-center justify-content-center"
+                >
+                  <i class="far fa-trash-alt text-danger"></i>
+                </a>
+                <!-- more -->
+              </div>
+              <!-- action -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<nz-pagination
+  class="text-center"
+  [nzPageIndex]="whiteListRequest.pageIndex"
+  [nzPageSize]="whiteListRequest.pageSize"
+  [nzTotal]="(model$ | async)?.count"
+  (nzPageIndexChange)="onPageChange($event)"
+></nz-pagination>
+
+<div class="site-btn mb-4 mt-3">
+  <button
+    *ngIf="
+      _commonService.validatePermission(
+        [EnPermissions.FullPermission, EnPermissions.WhitelistIpSetting],
+        (auth$ | async)?.systemPermissions
+      )
+    "
+    class="mdc-button mdc-btn-sm mdc-button--outlined mdc-ripple-upgraded"
+    (click)="showConfirm()"
+  >
+    <span>{{ "GROUP.DELETE_SELECTED" | translate }}</span>
+  </button>
+</div>
+
+<vadar-delete-modal
+  [(isVisible)]="isVisible"
+  [id]="idGroup"
+  (callback)="handleCallBackModal($event)"
+></vadar-delete-modal>

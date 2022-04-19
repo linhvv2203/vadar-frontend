@@ -1,0 +1,293 @@
+.main-header {
+  background-color: #ffffff;
+  height: 80px;
+  position: relative;
+  z-index: 1;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -50vw;
+    width: 200vw;
+    z-index: -1;
+    background-color: #ffffff;
+  }
+}
+
+.add-item {
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+.copy-custom {
+  font-weight: bold;
+  background: #ddd;
+}
+
+.btn-copy {
+  min-width: 168px;
+}
+
+.user-name {
+  max-width: 80px;
+}
+
+.license-overlay {
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1001;
+  .mdc-button {
+    min-width: 130px;
+  }
+  .container {
+    max-width: 860px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .user-info {
+    flex-direction: column-reverse;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .btn-copy {
+    min-width: unset;
+  }
+}
+
+//warning license animation
+.Phone {
+  position: relative;
+  display: block;
+  margin: 0;
+  width: 27px;
+  height: 27px;
+  font-size: 25vmin;
+  background-color: #ffcc5c;
+  border-radius: 0.5em;
+  box-shadow: 0 0 0 0em rgba(#ffcc5c, 0), 0em 0.05em 0.1em rgba(#000000, 0.2);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.Phone::before,
+.Phone::after {
+  position: absolute;
+  content: "";
+}
+
+.Phone::before {
+  width: 27px;
+  height: 27px;
+  background-color: rgba(#fff, 0.1);
+  border-radius: 100%;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(0);
+}
+
+.Phone::after {
+  width: 27px;
+  height: 27px;
+  background: url("/assets/images/exclamation.png");
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: translate3d(0, 0, 0);
+}
+
+.Phone.is-animating {
+  animation: phone-outer 4000ms infinite;
+
+  &::before {
+    animation: phone-inner 4000ms infinite;
+  }
+
+  &::after {
+    animation: phone-icon 4000ms infinite;
+  }
+}
+
+@keyframes phone-outer {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.8);
+    box-shadow: 0 0 0 0em rgba(#ffcc5c, 0), 0em 5px 5px rgba(#c9d3da, 0.2);
+  }
+  33.3333% {
+    transform: translate3d(0, 0, 0) scale(1.1);
+    box-shadow: 0 0 0 5px rgba(#ffcc5c, 0.1), 0em 5px 5px rgba(#c9d3da, 0.5);
+  }
+  66.6666% {
+    transform: translate3d(0, 0, 0) scale(1);
+    box-shadow: 0 0 0 10px rgba(#ffcc5c, 0), 0em 5px 5px rgba(#c9d3da, 0.2);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.1);
+    box-shadow: 0 0 0 0em rgba(#ffcc5c, 0), 0em 5px 5px rgba(#c9d3da, 0.2);
+  }
+}
+
+@keyframes phone-inner {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(0);
+  }
+  33.3333% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(0.9);
+  }
+  66.6666% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0);
+  }
+}
+
+@keyframes phone-icon {
+  0% {
+    transform: translate3d(0em, 0, 0);
+  }
+  2% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  4% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  6% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  8% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  10% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  12% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  14% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  16% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  18% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  20% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  22% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  24% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  26% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  28% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  30% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  32% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  34% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  36% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  38% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  40% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  42% {
+    transform: translate3d(0.01em, 0, 0);
+  }
+  44% {
+    transform: translate3d(-0.01em, 0, 0);
+  }
+  46% {
+    transform: translate3d(0em, 0, 0);
+  }
+}
+
+//warning license animation in mobile
+
+.user-avatar {
+  position: relative;
+}
+
+.circle {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+}
+
+.circle:before {
+  background-color: #fff;
+  content: "";
+  display: table;
+  border-radius: 50%;
+  position: absolute;
+  animation: pulse 600ms ease-in-out infinite;
+}
+
+.circle-yellow {
+  background-color: #ffcc5c;
+}
+
+.circle-yellow:before {
+  background-color: #ffcc5c;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    width: 10px;
+    height: 10px;
+    left: 0;
+    top: 0;
+  }
+
+  90% {
+    opacity: 0.1;
+    left: -4px;
+    top: -4px;
+    width: 18px;
+    height: 18px;
+  }
+
+  100% {
+    opacity: 0;
+    width: 10px;
+    height: 10px;
+    left: 0;
+    top: 0;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .site-btn button,
+  .site-btn a.mdc-button::ng-deep {
+    width: auto !important;
+  }
+}

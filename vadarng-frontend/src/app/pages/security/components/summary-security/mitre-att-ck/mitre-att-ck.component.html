@@ -1,0 +1,25 @@
+<div class="card mt-4">
+  <div class="mx-3 mt-3 d-flex justify-content-between">
+    <p
+      class="font-18 font-weight-500 mb-2 line-clamp"
+      nzTooltipTitle="{{ 'SECURITY.ALERT_EVOLUTION_OVER_TIME' | translate }}"
+      nzTooltipPlacement="topLeft"
+      nz-tooltip
+    >
+      {{ "SECURITY.ALERT_EVOLUTION_OVER_TIME" | translate }}
+    </p>
+  </div>
+  <div class="border-bottom"></div>
+  <vadar-line-chart-without-fill
+    [type]="'chartdivEvolutionOverTime'"
+    [data]="securityAlertEvolutionOverTime$ | async"
+    [className]="'custom'"
+    [label]="'levelName'"
+    [dateFormat]="_commonService.isDayDateFormat(time)"
+  >
+  </vadar-line-chart-without-fill>
+</div>
+<vadar-top-events-by-level
+  [time]="time"
+  [type]="'mitreattck'"
+></vadar-top-events-by-level>

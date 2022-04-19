@@ -1,0 +1,13 @@
+<section class="page-host page-padding pl-3">
+  <div class="container-fluid">
+    <vadar-host-top [(isCreate)]="isCreate" redirect="/host"></vadar-host-top>
+
+    <vadar-create-host [(isCreate)]="isCreate"></vadar-create-host>
+    <!-- create form -->
+
+    <div class="mx-n3 pt-4">
+      <vadar-host-edit-form></vadar-host-edit-form>
+    </div>
+    <!-- table -->
+  </div>
+</section>

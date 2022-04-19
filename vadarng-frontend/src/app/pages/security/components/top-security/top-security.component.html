@@ -1,0 +1,297 @@
+<div class="row align-items-center justify-content-between">
+  <div class="col-md-4 mb-3 mb-md-0 pl-0">
+    <div class="d-flex align-items-center">
+      <a
+        href="#"
+        clickPreventDefault
+        [routerLink]="redirect"
+        class="more mr-2 d-flex align-items-center justify-content-center"
+      >
+        <span class="material-icons-outlined font-25">
+          keyboard_backspace
+        </span>
+      </a>
+      <b class="font-20">{{ "LOGS.MANAGE_SECURITY" | translate }}</b>
+    </div>
+  </div>
+  <!-- button -->
+  <div
+    *ngIf="(workspaceSelected$ | async)?.id > 0"
+    class="col-md-8 px-0 d-flex align-items-center justify-content-end"
+  >
+    <form
+      nz-form
+      [formGroup]="validateForm"
+      [nzLayout]="'inline'"
+      class="text-lg-right filter-form w-100"
+      (ngSubmit)="submitForm()"
+    >
+      <nz-form-item
+        *ngIf="!tabIndex"
+        class="mb-0 mr-0 d-inline-flex align-items-center w-100"
+      >
+        <label class="mb-0 mr-2" for="group"
+          >{{ "SIDEBAR.GROUP" | translate }}:</label
+        >
+        <nz-form-control>
+          <nz-select
+            formControlName="groupId"
+            class="custom-select-border"
+            nzPlaceHolder="{{ 'HOST.SELECT_GROUP' | translate }}"
+            (ngModelChange)="submitForm()"
+          >
+            <nz-option
+              *ngFor="let o of listGroup"
+              [nzLabel]="o.name"
+              [nzValue]="o.id"
+            >
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- group -->
+      <nz-form-item
+        class="mb-0 mr-0 ml-sm-3 d-inline-flex align-items-center w-100"
+      >
+        <div
+          class="card border py-1 px-3 text-center w-100"
+          [ngClass]="{ 'd-none': isAbsolute }"
+        >
+          <span>{{ recent | translate: lastOptions }}</span>
+        </div>
+        <nz-form-control [ngClass]="{ 'd-none': !isAbsolute }">
+          <nz-range-picker
+            [nzShowTime]="{ nzFormat: 'HH:mm' }"
+            nzFormat="yyyy-MM-dd HH:mm"
+            [nzPlaceHolder]="['Start Time', 'End Time']"
+            (nzOnOk)="submitForm()"
+            formControlName="time"
+          ></nz-range-picker>
+        </nz-form-control>
+        <div class="ml-2">
+          <a
+            href="#"
+            clickPreventDefault
+            class="more d-flex align-items-center justify-content-center"
+            nzPlacement="bottomLeft"
+            nz-dropdown
+            nzTrigger="click"
+            [nzDropdownMenu]="menu"
+            [nzClickHide]="false"
+          >
+            <i
+              class="font-19"
+              nz-icon
+              nzType="clock-circle"
+              nzTheme="outline"
+            ></i>
+          </a>
+          <!-- more -->
+        </div>
+      </nz-form-item>
+      <!-- last time -->
+    </form>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu class="select-lg" style="max-width: calc(100vw - 2rem);">
+        <li style="line-height: 1; cursor: unset;" class="px-3" nz-menu-item>
+          <span class="font-14">{{ "SECURITY.OPTIONS" | translate }}</span>
+          <div class="d-flex mt-2">
+            <input
+              type="number"
+              class="mr-2 col-5"
+              nz-input
+              [ngModel]="timeQuery"
+              (ngModelChange)="onTimeQueryChange($event)"
+            />
+            <nz-select
+              class="mr-2 col-3"
+              [ngModel]="timeUnitQuery"
+              (ngModelChange)="onTimeUnitQueryChange($event)"
+            >
+              <nz-option
+                [nzValue]="1000"
+                nzLabel="{{ 'GLOBAL.SECONDS' | translate }}"
+              ></nz-option>
+              <nz-option
+                [nzValue]="60000"
+                nzLabel="{{ 'GLOBAL.MINUTE' | translate }}"
+              ></nz-option>
+              <nz-option
+                [nzValue]="60000 * 60"
+                nzLabel="{{ 'GLOBAL.HOURS' | translate }}"
+              ></nz-option>
+              <nz-option
+                [nzValue]="60000 * 60 * 24"
+                nzLabel="{{ 'GLOBAL.DAYS' | translate }}"
+              ></nz-option>
+              <nz-option
+                [nzValue]="60000 * 60 * 24 * 30"
+                nzLabel="{{ 'GLOBAL.MONTHS' | translate }}"
+              ></nz-option>
+              <nz-option
+                [nzValue]="60000 * 60 * 24 * 365"
+                nzLabel="{{ 'GLOBAL.YEARS' | translate }}"
+              ></nz-option>
+            </nz-select>
+            <button
+              [disabled]="timeQuery <= 0"
+              type="button"
+              (click)="onApply()"
+              class="mdc-button mdc-btn-sm mdc-button--outlined mdc-ripple-upgraded"
+            >
+              {{ "GLOBAL.APPLY" | translate }}
+            </button>
+          </div>
+        </li>
+        <li
+          class="px-3 d-flex align-items-center"
+          nz-menu-item
+          (click)="onAbsolute()"
+        >
+          <i
+            class="font-16"
+            nz-icon
+            nzType="clock-circle"
+            nzTheme="outline"
+          ></i>
+          <span class="font-14">{{ "SECURITY.ABSOLUTE" | translate }}</span>
+        </li>
+        <li style="line-height: 1; cursor: unset;" class="px-3" nz-menu-item>
+          <span class="font-14">{{
+            "SECURITY.COMMONLY_USED" | translate
+          }}</span>
+          <div class="row mt-2" style="max-width: 405px;">
+            <div class="col-6">
+              <a
+                (click)="onLastTime('today', 'SECURITY.TODAY')"
+                style="line-height: 2;"
+                class="font-15 text-primary font-weight-light"
+                href="#"
+                clickPreventDefault
+                >{{ "SECURITY.TODAY" | translate }}</a
+              >
+            </div>
+            <div class="col-6">
+              <a
+                (click)="onLastTime(60 * 60000, 'SECURITY.LAST1H')"
+                style="line-height: 2;"
+                class="font-15 text-primary font-weight-light"
+                href="#"
+                clickPreventDefault
+                >{{ "SECURITY.LAST1H" | translate }}</a
+              >
+            </div>
+            <div class="col-6">
+              <a
+                (click)="onLastTime('thisweek', 'SECURITY.THIS_WEEK')"
+                style="line-height: 2;"
+                class="font-15 text-primary font-weight-light"
+                href="#"
+                clickPreventDefault
+                >{{ "SECURITY.THIS_WEEK" | translate }}</a
+              >
+            </div>
+            <div class="col-6">
+              <a
+                (click)="onLastTime(24 * 60 * 60000, 'SECURITY.LAST24H')"
+                style="line-height: 2;"
+                class="font-15 text-primary font-weight-light"
+                href="#"
+                clickPreventDefault
+                >{{ "SECURITY.LAST24H" | translate }}</a
+              >
+            </div>
+            <div class="col-6">
+              <a
+                (click)="onLastTime(15 * 60000, 'SECURITY.LAST15')"
+                style="line-height: 2;"
+                class="font-15 text-primary font-weight-light"
+                href="#"
+                clickPreventDefault
+                >{{ "SECURITY.LAST15" | translate }}</a
+              >
+            </div>
+            <div class="col-6">
+              <a
+                (click)="onLastTime(7 * 24 * 60 * 60000, 'SECURITY.LAST7D')"
+                style="line-height: 2;"
+                class="font-15 text-primary font-weight-light"
+                href="#"
+                clickPreventDefault
+                >{{ "SECURITY.LAST7D" | translate }}</a
+              >
+            </div>
+            <div class="col-6">
+              <a
+                (click)="onLastTime(30 * 60000, 'SECURITY.LAST30')"
+                style="line-height: 2;"
+                class="font-15 text-primary font-weight-light"
+                href="#"
+                clickPreventDefault
+                >{{ "SECURITY.LAST30" | translate }}</a
+              >
+            </div>
+            <div class="col-6">
+              <a
+                (click)="onLastTime(30 * 24 * 60 * 60000, 'SECURITY.LAST30D')"
+                style="line-height: 2;"
+                class="font-15 text-primary font-weight-light"
+                href="#"
+                clickPreventDefault
+                >{{ "SECURITY.LAST30D" | translate }}</a
+              >
+            </div>
+          </div>
+        </li>
+        <li nz-menu-divider></li>
+        <li style="line-height: 1; cursor: unset;" class="px-3" nz-menu-item>
+          <span class="font-14">{{
+            "SECURITY.REFRESH_EVERY" | translate
+          }}</span>
+          <div class="d-flex mt-2">
+            <input
+              type="number"
+              class="mr-2 col-5"
+              nz-input
+              [(ngModel)]="timeReload"
+            />
+            <nz-select class="mr-2 col-3" [(ngModel)]="timeUnit">
+              <nz-option
+                [nzValue]="1000"
+                nzLabel="{{ 'GLOBAL.SECONDS' | translate }}"
+              ></nz-option>
+              <nz-option
+                [nzValue]="60000"
+                nzLabel="{{ 'GLOBAL.MINUTE' | translate }}"
+              ></nz-option>
+              <nz-option
+                [nzValue]="60000 * 60"
+                nzLabel="{{ 'GLOBAL.HOURS' | translate }}"
+              ></nz-option>
+            </nz-select>
+            <button
+              *ngIf="!isAutoReload"
+              [disabled]="timeReload <= 0"
+              type="button"
+              (click)="handleAutoReload()"
+              class="mdc-button mdc-btn-sm mdc-button--outlined mdc-ripple-upgraded"
+            >
+              {{ "GLOBAL.START" | translate }}
+            </button>
+            <button
+              *ngIf="isAutoReload"
+              type="button"
+              (click)="handleAutoReload()"
+              class="mdc-button mdc-btn-sm mdc-button--outlined mdc-ripple-upgraded"
+            >
+              stop
+            </button>
+          </div>
+        </li>
+      </ul>
+    </nz-dropdown-menu>
+    <!-- Dropdown -->
+  </div>
+  <!-- filter -->
+</div>
+<!-- top -->

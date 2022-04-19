@@ -1,0 +1,100 @@
+<div class="card p-4">
+  <div class="row mt-4">
+    <div class="col-lg-3 col-sm-6">
+      <div
+        style="min-height: 81.5px;"
+        class="d-flex justify-content-start justify-content-sm-center mb-4"
+      >
+        <img
+          class="mr-3"
+          style="min-width: 68px;"
+          src="assets/images/database.svg"
+          alt="summary"
+        />
+        <div
+          class="d-flex flex-column justify-content-between font-18 font-weight-500 text-sm-center "
+        >
+          {{ "DASHBOARD.TOTAL_AGENT" | translate }}
+          <a routerLink="/host">
+            <span class="font-25 text-black" id="ds-summary__total-agent">{{
+              (model$ | async).active + (model$ | async).disconnect
+            }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+      <div
+        style="min-height: 81.5px;"
+        class="d-flex justify-content-start justify-content-sm-center mb-4"
+      >
+        <img
+          class="mr-3"
+          style="min-width: 68px;"
+          src="assets/images/connect.svg"
+          alt="active"
+        />
+        <div
+          class="d-flex flex-column justify-content-between font-18 font-weight-500 text-sm-center "
+        >
+          {{ "DASHBOARD.ACTIVE" | translate }}
+          <br />
+          <a routerLink="/host" [queryParams]="{ status: 1 }">
+            <span class="font-25 text-success" id="ds-summary__active">{{
+              (model$ | async).active
+            }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+      <div
+        style="min-height: 81.5px;"
+        class="d-flex justify-content-start justify-content-sm-center mb-4"
+      >
+        <img
+          class="mr-3"
+          style="min-width: 68px;"
+          src="assets/images/disconnect.svg"
+          alt="disconnected"
+        />
+        <div
+          class="d-flex flex-column justify-content-between font-18 font-weight-500 text-sm-center "
+        >
+          {{ "DASHBOARD.DISCONNECTED" | translate }}
+          <br />
+          <a routerLink="/host" [queryParams]="{ status: -1 }">
+            <span class="font-25 text-danger" id="ds-summary__disconnected">{{
+              (model$ | async).disconnect
+            }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+      <div
+        style="min-height: 81.5px;"
+        class="d-flex justify-content-start justify-content-sm-center mb-4"
+      >
+        <img
+          class="mr-3"
+          style="min-width: 68px;"
+          src="assets/images/issues.svg"
+          alt="issues"
+        />
+        <div
+          class="d-flex flex-column justify-content-between font-18 font-weight-500 text-sm-center "
+        >
+          {{ "DASHBOARD.ISSUES" | translate }}
+          <br />
+          <a routerLink="/performance" [queryParams]="{ status: 'PROBLEM' }">
+            <span class="font-25 text-danger" id="ds-summary__issues">{{
+              (model$ | async).unHealthy
+            }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- card -->

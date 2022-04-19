@@ -1,0 +1,73 @@
+<div class="card mt-4">
+  <div class="mx-3 mt-3 d-flex justify-content-between">
+    <p
+      class="font-18 font-weight-500 mb-2 line-clamp"
+      nzTooltipTitle="{{ 'SECURITY.ALERT_BY_ACTION' | translate }}"
+      nzTooltipPlacement="topLeft"
+      nz-tooltip
+    >
+      {{ "SECURITY.ALERT_BY_ACTION" | translate }}
+    </p>
+  </div>
+  <div class="border-bottom"></div>
+  <saf-line-chart
+    [type]="'chartdivSeverity'"
+    [data]="securityAlertsByActionOverTime$ | async"
+    [label]="'levelName'"
+    [className]="'custom'"
+    [dateFormat]="_commonService.isDayDateFormat(time)"
+    [translate]="true"
+  >
+  </saf-line-chart>
+</div>
+
+<div class="row">
+  <div class="col-md-6 pb-1">
+    <div class="card mt-4">
+      <div class="mx-3 mt-3 d-flex justify-content-between">
+        <p
+          class="font-18 font-weight-500 mb-2 line-clamp"
+          nzTooltipTitle="{{ 'SECURITY.TOP_5_AGENTS' | translate }}"
+          nzTooltipPlacement="topLeft"
+          nz-tooltip
+        >
+          {{ "SECURITY.TOP_5_AGENTS" | translate }}
+        </p>
+      </div>
+      <div class="border-bottom"></div>
+      <vadar-donut-chart
+        [type]="'chartDonutCVEs'"
+        [data]="securityTop5Agents$ | async"
+        [className]="'custom'"
+      >
+      </vadar-donut-chart>
+    </div>
+  </div>
+  <div class="col-md-6 pb-1">
+    <div class="card mt-4">
+      <div class="mx-3 mt-3 d-flex justify-content-between">
+        <p
+          class="font-18 font-weight-500 mb-2 line-clamp"
+          nzTooltipTitle="{{ 'SECURITY.EVENTS_SUMMARY' | translate }}"
+          nzTooltipPlacement="topLeft"
+          nz-tooltip
+        >
+          {{ "SECURITY.EVENTS_SUMMARY" | translate }}
+        </p>
+      </div>
+      <div class="border-bottom"></div>
+      <vadar-line-chart-without-fill
+        [type]="'lineChartWithoutLegend'"
+        [data]="securityEventsSummary$ | async"
+        [className]="'custom'"
+        [dateFormat]="_commonService.isDayDateFormat(time)"
+      >
+      </vadar-line-chart-without-fill>
+    </div>
+  </div>
+</div>
+
+<vadar-top-events-by-level
+  [time]="time"
+  [type]="'sim'"
+></vadar-top-events-by-level>

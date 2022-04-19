@@ -1,0 +1,62 @@
+<section class="page-log page-padding pl-3">
+  <div class="container-fluid">
+    <vadar-top-security
+      [tabIndex]="tabIndex"
+      [(time)]="time"
+    ></vadar-top-security>
+
+    <div
+      class="mx-n3 pt-4"
+      *ngIf="
+        (workspaceSelected$ | async) && (workspaceSelected$ | async)?.id >= 0
+      "
+    >
+      <nz-tabset
+        [nzSelectedIndex]="tabIndex"
+        (nzSelectedIndexChange)="onChangeTab($event)"
+        [nzType]="'card'"
+      >
+        <nz-tab nzTitle="{{ 'GLOBAL.SUMMARY' | translate }}">
+          <div class="pt-4" *ngIf="!tabIndex">
+            <vadar-summary-security [time]="time"></vadar-summary-security>
+            <!--  -->
+          </div>
+        </nz-tab>
+        <nz-tab nzTitle="{{ 'SIDEBAR.EVENTS' | translate }}">
+          <div class="pt-4" *ngIf="tabIndex === 1">
+            <vadar-filter-logs-security
+              [tabIndex]="1"
+              [(time)]="time"
+              [(filter)]="filterSe"
+            >
+            </vadar-filter-logs-security>
+            <vadar-table-logs-security
+              [(filter)]="filterSe"
+            ></vadar-table-logs-security>
+          </div>
+        </nz-tab>
+        <nz-tab nzTitle="{{ 'SECURITY.GROUP_BY_NAME' | translate }}">
+          <div class="pt-4" *ngIf="tabIndex === 2">
+            <vadar-filter-logs-security
+              [tabIndex]="2"
+              [(time)]="time"
+              [(filter)]="filterSe"
+            >
+            </vadar-filter-logs-security>
+            <vadar-group-by-name [(filter)]="filterSe"></vadar-group-by-name>
+          </div>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+    <!-- table -->
+    <div
+      *ngIf="
+        !(workspaceSelected$ | async) || (workspaceSelected$ | async)?.id < 0
+      "
+    >
+      <p class="font-25 text-center text-danger" style="margin-top: 25vh;">
+        {{ "ROLES.NO_WORKSPACE_SELECTED_YET" | translate }}
+      </p>
+    </div>
+  </div>
+</section>

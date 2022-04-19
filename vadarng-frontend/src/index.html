@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vn">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vsec Vadar</title>
+    <base href="/" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+
+    <link rel="shortcut icon" type="image/png" href="assets/images/vsec.svg" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="assets/jvectormap/jquery-jvectormap.css" />
+
+    <script src="assets/jvectormap/assets/jquery-1.8.2.js"></script>
+    <script src="assets/jvectormap/jquery-jvectormap.js"></script>
+    <script src="assets/jvectormap/lib/jquery-mousewheel.js"></script>
+
+    <script src="assets/jvectormap/src/jvectormap.js"></script>
+
+    <script src="assets/jvectormap/src/abstract-element.js"></script>
+    <script src="assets/jvectormap/src/abstract-canvas-element.js"></script>
+    <script src="assets/jvectormap/src/abstract-shape-element.js"></script>
+
+    <script src="assets/jvectormap/src/svg-element.js"></script>
+    <script src="assets/jvectormap/src/svg-group-element.js"></script>
+    <script src="assets/jvectormap/src/svg-canvas-element.js"></script>
+    <script src="assets/jvectormap/src/svg-shape-element.js"></script>
+    <script src="assets/jvectormap/src/svg-path-element.js"></script>
+    <script src="assets/jvectormap/src/svg-circle-element.js"></script>
+    <script src="assets/jvectormap/src/svg-image-element.js"></script>
+    <script src="assets/jvectormap/src/svg-text-element.js"></script>
+
+    <script src="assets/jvectormap/src/vml-element.js"></script>
+    <script src="assets/jvectormap/src/vml-group-element.js"></script>
+    <script src="assets/jvectormap/src/vml-canvas-element.js"></script>
+    <script src="assets/jvectormap/src/vml-shape-element.js"></script>
+    <script src="assets/jvectormap/src/vml-path-element.js"></script>
+    <script src="assets/jvectormap/src/vml-circle-element.js"></script>
+    <script src="assets/jvectormap/src/vml-image-element.js"></script>
+
+    <script src="assets/jvectormap/src/map-object.js"></script>
+    <script src="assets/jvectormap/src/region.js"></script>
+    <script src="assets/jvectormap/src/marker.js"></script>
+
+    <script src="assets/jvectormap/src/vector-canvas.js"></script>
+    <script src="assets/jvectormap/src/simple-scale.js"></script>
+    <script src="assets/jvectormap/src/ordinal-scale.js"></script>
+    <script src="assets/jvectormap/src/numeric-scale.js"></script>
+    <script src="assets/jvectormap/src/color-scale.js"></script>
+    <script src="assets/jvectormap/src/legend.js"></script>
+    <script src="assets/jvectormap/src/data-series.js"></script>
+    <script src="assets/jvectormap/src/proj.js"></script>
+    <script src="assets/jvectormap/src/map.js"></script>
+
+    <script src="assets/jvectormap/assets/jquery-jvectormap-world-mill-en.js"></script>
+    <script>
+      window.$ = jQuery;
+    </script>
+    <!-- start Gist JS code-->
+    <script>
+      (function(d, h, w) {
+        var gist = (w.gist = w.gist || []);
+        gist.methods = ["trackPageView", "identify", "track", "setAppId"];
+        gist.factory = function(t) {
+          return function() {
+            var e = Array.prototype.slice.call(arguments);
+            e.unshift(t);
+            gist.push(e);
+            return gist;
+          };
+        };
+        for (var i = 0; i < gist.methods.length; i++) {
+          var c = gist.methods[i];
+          gist[c] = gist.factory(c);
+        }
+        (s = d.createElement("script")),
+          (s.src = "https://widget.getgist.com"),
+          (s.async = !0),
+          (e = d.getElementsByTagName(h)[0]),
+          e.appendChild(s),
+          s.addEventListener("load", function(e) {}, !1),
+          //dev
+          //gist.setAppId("tayfamiq"),
+          //prod
+          gist.setAppId("jqygwfij"),
+          gist.trackPageView();
+      })(document, "head", window);
+    </script>
+    <!-- end Gist JS code-->
+  </head>
+
+  <body>
+    <vadar-root></vadar-root>
+  </body>
+</html>

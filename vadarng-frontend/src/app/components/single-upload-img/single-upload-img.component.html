@@ -1,0 +1,59 @@
+<nz-upload
+  class="avatar-uploader position-relative w-auto"
+  nzListType="picture-card"
+  [nzShowUploadList]="false"
+  (nzChange)="handleChange($event)"
+>
+  <ng-container *ngIf="!avatarUrl && !value">
+    <i class="upload-icon" nz-icon [type]="loading ? 'loading' : 'plus'"></i>
+    <div class="ant-upload-text">{{ "UPLOAD" | translate }}</div>
+  </ng-container>
+
+  <img
+    loading="lazy"
+    *ngIf="!avatarUrl && value"
+    [src]="value"
+    class="avatar upload-max-heigh"
+    alt="avatar"
+  />
+  <img
+    loading="lazy"
+    *ngIf="avatarUrl"
+    [src]="avatarUrl"
+    class="avatar upload-max-heigh"
+    alt="avatar"
+  />
+
+  <div
+    *ngIf="avatarUrl || value"
+    class="h-100 w-100 position-absolute avatar-remove-wrap "
+  >
+    <div
+      clickStopPropagation
+      class="d-flex justify-content-center align-items-center w-100 h-100"
+    >
+      <button
+        clickStopPropagation
+        *ngIf="isShowCopyBtn"
+        type="button"
+        title="Copy url"
+        class="mr-1 p-0 btn btn-outline-light rounded-circle"
+        (click)="copyUrl(value)"
+      >
+        <i style="z-index: 10;" nz-icon nzType="copy" nzTheme="outline"></i>
+      </button>
+      <button
+        clickStopPropagation
+        title="Remove file"
+        type="button"
+        class="p-0 btn btn-outline-light rounded-circle"
+        (click)="removeAvatar(value)"
+      >
+        <i
+          style="z-index: 10;"
+          class="avatar-remove text-center anticon anticon-delete ng-tns-c25-9 ng-star-inserted"
+        ></i>
+      </button>
+    </div>
+  </div>
+</nz-upload>

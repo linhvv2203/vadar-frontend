@@ -1,0 +1,80 @@
+{
+  "name": "vadar-web",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "ng serve --open",
+    "start:dev": "ng serve --configuration=dev --open",
+    "start:prod": "ng serve --prod --open",
+    "build": "ng build",
+    "build:dev": "ng build --configuration=dev",
+    "build:prod": "ng build --prod",
+    "prettier": "prettier -c --write \"**/*\"",
+    "lint-staged": "lint-staged",
+    "c": "ng generate component"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*": [
+      "prettier -c --write",
+      "git add"
+    ]
+  },
+  "private": true,
+  "dependencies": {
+    "@amcharts/amcharts4": "^4.9.28",
+    "@angular/animations": "~8.2.4",
+    "@angular/common": "~8.2.4",
+    "@angular/compiler": "~8.2.4",
+    "@angular/core": "~8.2.4",
+    "@angular/forms": "~8.2.4",
+    "@angular/platform-browser": "~8.2.4",
+    "@angular/platform-browser-dynamic": "~8.2.4",
+    "@angular/router": "~8.2.4",
+    "@ngrx/effects": "^7.3.0",
+    "@ngrx/router-store": "^7.3.0",
+    "@ngrx/store": "^7.3.0",
+    "@ngx-loading-bar/core": "^4.2.0",
+    "@ngx-loading-bar/http-client": "^4.2.0",
+    "@ngx-translate/core": "^11.0.1",
+    "@ngx-translate/http-loader": "^4.0.0",
+    "angular-auth-oidc-client": "^10.0.10",
+    "core-js": "~3.6.5",
+    "date-fns": "^2.16.1",
+    "husky": "^4.2.3",
+    "moment": "^2.24.0",
+    "ng-zorro-antd": "^8.3.1",
+    "ngrx-store-logger": "^0.2.2",
+    "prettier": "^1.19.1",
+    "rxjs": "~6.5.2",
+    "tslib": "^2.1.0",
+    "zone.js": "^0.10.2"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~0.803.2",
+    "@angular/cli": "~8.3.2",
+    "@angular/compiler-cli": "~8.2.4",
+    "@angular/language-service": "~8.2.4",
+    "@babel/core": "^7.3.4",
+    "@storybook/addon-actions": "^5.0.10",
+    "@storybook/addon-links": "^5.0.1",
+    "@storybook/addon-notes": "^5.0.10",
+    "@storybook/addons": "^5.0.1",
+    "@storybook/angular": "^5.0.1",
+    "@types/node": "~8.9.4",
+    "babel-loader": "^8.0.5",
+    "codelyzer": "^5.0.1",
+    "htmllint": "^0.7.3",
+    "lint-staged": "^10.2.11",
+    "protractor": "~5.4.0",
+    "stylelint": "^9.10.1",
+    "stylelint-config-standard": "^18.2.0",
+    "ts-node": "~7.0.0",
+    "tslint": "~5.11.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "~3.5.3"
+  }
+}

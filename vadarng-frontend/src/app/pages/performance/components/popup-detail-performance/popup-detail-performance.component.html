@@ -1,0 +1,68 @@
+<nz-modal
+  [(nzVisible)]="isPopupDetail"
+  nzTitle="{{ 'LOGS.DETAIL' | translate }}"
+  [nzFooter]="null"
+  [nzContent]="modalContent"
+  (nzOnCancel)="close()"
+  nzWidth="800"
+></nz-modal>
+<ng-template #modalContent>
+  <div class="row d-flex justify-content-end mb-3">
+    <div class="col-md-6" style="position: unset;">
+      <vadar-chat-with-expert></vadar-chat-with-expert>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">
+      {{ "LOGS.EVENT_NAME" | translate }}:
+    </div>
+    <div class="col-md-9 text-danger">
+      {{ dataSelected.description }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">{{ "LOGS.HOSTS" | translate }}:</div>
+    <div class="col-md-9">
+      <a
+        href="{{ grafanaPerformanceDashboardtUrl }}{{ dataSelected.hostName }}"
+        target="_blank"
+      >
+        {{ dataSelected.hostName }}
+      </a>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">
+      {{ "LOGS.SEVERITY" | translate }}:
+    </div>
+    <div class="col-md-9">
+      {{ dataSelected.severity }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">
+      {{ "LOGS.EVENT_STATUS" | translate }}:
+    </div>
+    <div class="col-md-9">
+      <div class="d-flex">
+        <div
+          *ngIf="
+            dataSelected.status?.toUpperCase() === 'RESOLVED' ||
+            dataSelected.status?.toUpperCase() === 'OK'
+          "
+          class="dot bg-success"
+        ></div>
+        <div
+          *ngIf="dataSelected.status?.toUpperCase() === 'PROBLEM'"
+          class="dot bg-danger"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <div class="row pb-2 mb-4">
+    <div class="col-md-3 font-weight-600">{{ "GLOBAL.TIME" | translate }}:</div>
+    <div class="col-md-9">
+      {{ dataSelected.time + " UTC" | date: "yyyy-MM-dd HH:mm:ss" }}
+    </div>
+  </div>
+</ng-template>

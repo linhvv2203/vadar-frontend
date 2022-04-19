@@ -1,0 +1,76 @@
+<nz-modal
+  [(nzVisible)]="isPopupDetail"
+  nzTitle="{{ 'LOGS.DETAIL' | translate }}"
+  [nzFooter]="null"
+  [nzContent]="modalContent"
+  (nzOnCancel)="close()"
+  nzWidth="800"
+></nz-modal>
+<ng-template #modalContent>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">
+      {{ "LOGS.HOSTNAME" | translate }}:
+    </div>
+    <div class="col-md-9">
+      {{ dataSelected.hostName }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">{{ "GLOBAL.TIME" | translate }}:</div>
+    <div class="col-md-9">
+      {{ dataSelected.time + " UTC" | date: "yyyy-MM-dd HH:mm:ss" }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">{{ "LOGS.ACTION" | translate }}:</div>
+    <div class="col-md-9">
+      {{ dataSelected.action }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">{{ "LOGS.CLASS" | translate }}:</div>
+    <div class="col-md-9">
+      {{ dataSelected.class || "--" }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">
+      {{ "LOGS.SOURCE_ADDRESS" | translate }}:
+    </div>
+    <div class="col-md-9">
+      {{ dataSelected.sourceAddress || "--" }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">
+      {{ "LOGS.SOURCE_PORT" | translate }}:
+    </div>
+    <div class="col-md-9">
+      {{ dataSelected.sourcePort || "--" }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">
+      {{ "LOGS.DESTINATION_ADDRESS" | translate }}:
+    </div>
+    <div class="col-md-9">
+      {{ dataSelected.destinationAddress || "--" }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">
+      {{ "LOGS.DESTINATION_PORT" | translate }}:
+    </div>
+    <div class="col-md-9">
+      {{ dataSelected.destinationPort || "--" }}
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-md-3 font-weight-600">
+      {{ "LOGS.MESSAGE" | translate }}:
+    </div>
+    <div class="col-md-9">
+      {{ dataSelected.message || "--" }}
+    </div>
+  </div>
+</ng-template>

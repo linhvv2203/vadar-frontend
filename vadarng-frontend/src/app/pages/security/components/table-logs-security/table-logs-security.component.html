@@ -1,0 +1,152 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="d-flex justify-content-center align-items-center py-2">
+      <span class="font-32 text-success mr-2">{{
+        (model$ | async).count
+      }}</span>
+      <span class="font-18">{{ "GLOBAL.HITS" | translate }}</span>
+    </div>
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async).items"
+        [nzNoResult]="noResultTpl"
+        [nzPageSize]="pageSize"
+      >
+        <ng-template #noResultTpl>
+          <img src="assets/images/noresult.svg" alt="no-result" />
+          <div>{{ "LOGS.NO_DATA_IN_THE_TIME_PERIOD" | translate }}</div>
+        </ng-template>
+        <thead (nzSortChange)="sorF($event)" nzSingleSort>
+          <tr>
+            <th class="col-stt">#</th>
+            <th class="col-status">{{ "LOGS.EVENT_NAME" | translate }}</th>
+            <th class="col-result">{{ "LOGS.EVENT_GROUP" | translate }}</th>
+            <th class="col-url">{{ "LOGS.FULL_LOG" | translate }}</th>
+            <th class="col-type">{{ "LOGS.HOST_NAME" | translate }}</th>
+            <th class="col-time text-center">{{ "LOGS.LEVEL" | translate }}</th>
+            <th class="col-result" nzShowSort>
+              {{ "GLOBAL.TIME" | translate }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTable.data; let i = index"
+            class="position-relative"
+          >
+            <td class="col-stt">{{ getOrdinalNumbers(i) }}</td>
+            <td
+              class="col-status justify-content-between cursor-pointer"
+              (click)="onSelect(data)"
+            >
+              <div class="d-block d-lg-none">
+                {{ "LOGS.EVENT_NAME" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                class="line-clamp"
+                nzTooltipTitle="{{ data.description }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+              >
+                {{ data.description }}
+              </span>
+              <!-- name -->
+            </td>
+            <td class="col-result justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.EVENT_GROUP" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                class="line-clamp"
+                nzTooltipTitle="{{ data?.groups }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                >{{ data?.groups }}</span
+              >
+              <!-- event group -->
+            </td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.DESCRIPTION" | translate }}
+              </div>
+              <div
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ data.fullLog }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="truncate-3"
+              >
+                {{ data.fullLog }}
+              </div>
+              <!-- full log -->
+            </td>
+            <td class="col-type justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.HOST_NAME" | translate }}
+              </div>
+              <div
+                class="d-flex"
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ data.host }} / {{ data.nameDisplay }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="line-clamp"
+              >
+                {{ data.host }} / {{ data.nameDisplay }}
+              </div>
+              <!-- host name -->
+            </td>
+            <td class="col-time text-center justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.LEVEL" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                nzTooltipTitle="{{ data.level }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                class="line-clamp"
+                >{{ data.level }}/15</span
+              >
+              <!-- level -->
+            </td>
+            <td class="col-time justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "GLOBAL.TIME" | translate }}
+              </div>
+              <span>{{
+                data.timestamp + " UTC" | date: "yyyy-MM-dd HH:mm:ss"
+              }}</span>
+              <!-- time -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+      <div class="text-center py-3" *ngIf="pageSize >= totalHits.value">
+        {{ "SECURITY.FIRST_500" | translate: totalHits }}
+        <a
+          href="#"
+          clickPreventDefault
+          (click)="toTop()"
+          class="text-primary"
+          >{{ "SECURITY.BACK_TO_TOP" | translate }}</a
+        >
+      </div>
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<!-- pagiante -->
+<vadar-popup-detail-security
+  [(isPopupDetail)]="isPopupDetail"
+  [dataSelected]="dataSelected"
+>
+</vadar-popup-detail-security>

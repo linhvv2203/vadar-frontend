@@ -1,0 +1,175 @@
+.left-menu {
+  background-color: #1c42a3;
+  min-height: calc(100vh);
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  &::before {
+    position: absolute;
+    content: "";
+    background-color: #1c42a3;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    width: 100vw;
+  }
+
+  .side-bar {
+    &--top {
+      padding-top: 40px;
+    }
+    &__item {
+      position: relative;
+      height: 40px;
+      color: #ffffff;
+      &.active,
+      &:hover {
+        background: linear-gradient(
+          270deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.2) 100%
+        );
+        &::before {
+          content: "";
+          height: 100%;
+          width: 4px;
+          border-radius: 0 3.23px 3.23px 0;
+          background-color: #ffffff;
+          box-shadow: 4px 0 7px 0 rgba(48, 48, 48, 0.1);
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+        }
+      }
+      &.premium {
+        color: #ffd700;
+        &:hover {
+          &::before {
+            content: "";
+            background-color: #ffc107;
+          }
+        }
+      }
+    }
+  }
+  .hide-animate {
+    height: 0;
+    transition: all 0.3s;
+    overflow: hidden;
+  }
+}
+
+.ss-icon {
+  width: 18px;
+  height: 18px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+}
+
+.ss-icon-dashboard {
+  background-image: url(/assets/images/sidebar/dashboard.png);
+}
+
+.ss-icon-monitoring {
+  background-image: url(/assets/images/sidebar/database.png);
+}
+
+.ss-icon-merchant {
+  background-image: url(/assets/images/sidebar/contract.png);
+}
+
+.ss-icon-scanning {
+  background-image: url(/assets/images/sidebar/antivirus.png);
+}
+
+.ss-icon-website {
+  background-image: url(/assets/images/sidebar/world-wide-web-fff.png);
+}
+
+.ss-icon-help {
+  background-image: url(/assets/images/sidebar/help.png);
+}
+
+.ss-icon-world {
+  background-image: url(/assets/images/sidebar/world-wide-web.png);
+}
+
+@media screen and (max-width: 991px) {
+  .left-menu {
+    position: fixed;
+    padding-left: 1rem;
+    z-index: 2;
+    top: 0;
+    bottom: 0;
+    left: -300px;
+    transition: 0.3s;
+    &.show {
+      left: 0;
+      transition: 0.3s;
+    }
+  }
+}
+
+:host ::ng-deep .material-icons-outlined {
+  letter-spacing: -2px;
+}
+
+:host ::ng-deep .anticon {
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+@media screen and (max-width: 575px) {
+  .left-menu {
+    .side-bar {
+      &--top {
+        height: calc(100vh - 175px);
+        overflow-y: auto;
+        padding-top: 1rem;
+      }
+    }
+  }
+}
+
+.slide-animation {
+  background: linear-gradient(
+    45deg,
+    rgba(184, 198, 219, 0) 0%,
+    rgba(245, 247, 250, 0.5) 33.33%,
+    rgba(184, 198, 219, 0) 66.66%,
+    rgba(245, 247, 250, 0.5) 100%
+  );
+  background-size: 400% 400%;
+  animation: slideBg 2.5s cubic-bezier(0.84, 0.21, 1, 1) infinite;
+}
+
+@-webkit-keyframes slideBg {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 15% 100%;
+  }
+}
+
+@-moz-keyframes slideBg {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 15% 100%;
+  }
+}
+
+@keyframes slideBg {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 15% 100%;
+  }
+}

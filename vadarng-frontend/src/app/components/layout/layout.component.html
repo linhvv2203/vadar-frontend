@@ -1,0 +1,60 @@
+<div class="main-layout">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2">
+        <vadar-left-menu></vadar-left-menu>
+      </div>
+      <div
+        class="col-lg-10 pl-0 col-12 no-menu"
+        [ngClass]="{ 'has-menu': stateLeftMenu$ | async }"
+      >
+        <div class="row ml-0 mr-0 mr-lg-3">
+          <div class="col-12 px-0">
+            <div class="header-wrapper">
+              <vadar-header></vadar-header>
+            </div>
+            <div class="content-wrapper">
+              <router-outlet></router-outlet>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  nzWrapClassName="vertical-center-modal"
+>
+  <ng-template #modalTitle>
+    <div class=""></div>
+  </ng-template>
+
+  <ng-template #modalContent>
+    <div class="text-center font-18">
+      <i
+        class="mr-2 text-warning"
+        style="font-size: 70px;"
+        nz-icon
+        nzType="exclamation-circle"
+        nzTheme="outline"
+      ></i>
+      <br />
+      <br />
+      <span class="text-black"
+        >Cảnh báo nguy cơ bị tấn công. Máy chủ "BankVN" vừa xuất hiện sự kiện
+        bảo mật ở mức độ 10/15</span
+      >
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <div></div>
+  </ng-template>
+</nz-modal>

@@ -1,0 +1,95 @@
+<div class="table-scaned my-3">
+  <p
+    class="font-18 font-weight-500 mb-2"
+    nzTooltipTitle="{{ 'SECURITY.TOP_EVENT_BY_LEVEL' | translate }}"
+    nzTooltipPlacement="topLeft"
+    nz-tooltip
+  >
+    {{ "SECURITY.TOP_EVENT_BY_LEVEL" | translate }}
+  </p>
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        [nzShowPagination]="false"
+        [nzData]="model$ | async"
+        [nzNoResult]="noResultTpl"
+      >
+        <ng-template #noResultTpl>
+          <img src="assets/images/noresult.svg" alt="no-result" />
+          <div>{{ "LOGS.NO_DATA_IN_THE_TIME_PERIOD" | translate }}</div>
+        </ng-template>
+        <thead>
+          <tr>
+            <th class="col-status">{{ "LOGS.EVENT_NAME" | translate }}</th>
+            <th class="col-status">{{ "LOGS.HOSTS" | translate }}</th>
+            <th class="col-time text-center">{{ "LOGS.LEVEL" | translate }}</th>
+            <th class="col-time">{{ "LOGS.QUANTITY" | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTable.data"
+            class="position-relative"
+          >
+            <td
+              class="col-status justify-content-between cursor-pointer"
+              (click)="rederectEvents($event, '', data.eventName)"
+            >
+              <div class="d-block d-lg-none">
+                {{ "LOGS.EVENT_NAME" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                class="line-clamp"
+                nzTooltipTitle="{{ data.description }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+              >
+                {{ data.eventName }}
+              </span>
+              <!-- name -->
+            </td>
+            <td class="col-status justify-content-between cursor-pointer">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.HOSTS" | translate }}
+              </div>
+              <span
+                style="cursor: pointer;"
+                class="line-clamp"
+                nzTooltipTitle="{{ data.description }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+              >
+                {{ data.hosts }}
+              </span>
+              <!-- hosts -->
+            </td>
+            <td
+              class="col-time text-center justify-content-between"
+              (click)="rederectEvents($event, data.level, '')"
+            >
+              <div class="d-block d-lg-none">
+                {{ "LOGS.LEVEL" | translate }}
+              </div>
+              <span style="cursor: pointer;" class="line-clamp">
+                {{ data.level }}/15</span
+              >
+              <!-- level -->
+            </td>
+            <td class="col-time justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "LOGS.QUANTITY" | translate }}
+              </div>
+              <span>{{ data.count }}</span>
+              <!-- time -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>

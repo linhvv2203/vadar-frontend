@@ -1,0 +1,74 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="d-flex justify-content-center align-items-center py-2">
+      <span class="font-18">{{ "HOST.EVENTS_DETAIL" | translate }}</span>
+    </div>
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        nzVirtualScroll
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async).items"
+        [nzNoResult]="noResultTpl"
+        [nzPageSize]="pageSize"
+        [nzScroll]="{ y: '378px' }"
+      >
+        <ng-template #noResultTpl>
+          <img src="assets/images/noresult.svg" alt="no-result" />
+          <div>{{ "LOGS.NO_DATA_IN_THE_TIME_PERIOD" | translate }}</div>
+        </ng-template>
+        <thead>
+          <tr>
+            <th nzWidth="100px">{{ "LOGS.LEVEL" | translate }}</th>
+            <th nzWidth="400px">{{ "LOGS.EVENT_NAME" | translate }}</th>
+            <th nzRight class="text-center">
+              {{ "LOGS.FULL_LOG" | translate }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-template nz-virtual-scroll let-data>
+            <tr>
+              <td
+                class="cursor-pointer"
+                (click)="redirectEvents($event, data.level, '')"
+              >
+                <span style="cursor: pointer;">{{ data.level }}/15</span>
+                <!-- level -->
+              </td>
+              <td
+                class="cursor-pointer"
+                (click)="redirectEvents($event, '', data.description)"
+              >
+                <span
+                  class="line-clamp"
+                  nzTooltipTitle="{{ data.description }}"
+                  nzTooltipPlacement="topLeft"
+                  nz-tooltip
+                >
+                  {{ data.description }}
+                </span>
+                <!-- name -->
+              </td>
+              <td nzRight class="cursor-pointer">
+                <div
+                  nzTooltipTitle="{{ data.fullLog }}"
+                  nzTooltipPlacement="topLeft"
+                  nz-tooltip
+                  class="truncate-3 cursor-pointer"
+                >
+                  {{ data.fullLog }}
+                </div>
+                <!-- full log -->
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->

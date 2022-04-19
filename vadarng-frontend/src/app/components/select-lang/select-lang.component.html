@@ -1,0 +1,36 @@
+<div
+  nzTitle=""
+  nzPlacement="bottomRight"
+  nz-popover
+  nzTrigger="click"
+  [(nzVisible)]="visible"
+  [nzContent]="contentTemplate"
+  class="lang-select"
+>
+  <img
+    *ngIf="(language$ | async).lang === 'vn'; else elseBlock"
+    src="assets/images/vn-flag.svg"
+    alt="vn-flag"
+  />
+  <ng-template #elseBlock>
+    <img src="assets/images/en-flag.svg" alt="en-flag" />
+  </ng-template>
+  <i class="fas fa-caret-down ml-2 text-white"></i>
+</div>
+
+<ng-template #contentTemplate>
+  <div class="lang-item-wrapper">
+    <div class="lang-item">
+      <a (click)="handleChangeLang('en')">
+        <img src="assets/images/en-flag.svg" alt="en-flag" />
+        English
+      </a>
+    </div>
+    <div class="lang-item">
+      <a (click)="handleChangeLang('vn')">
+        <img src="assets/images/vn-flag.svg" alt="vn-flag" />
+        Tiếng việt
+      </a>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,91 @@
+<div class="mx-n3 pt-4" *ngIf="isCreate">
+  <div class="p-4 pb-3rem card position-relative text-body">
+    <div class="position-absolute" style="top: 0; right: 0">
+      <a
+        href="#"
+        clickPreventDefault
+        (click)="onClose()"
+        class="more d-flex align-items-center justify-content-center"
+      >
+        <span class="material-icons-outlined font-25">clear</span>
+      </a>
+    </div>
+    <!-- clear -->
+
+    <div class="title font-18 font-weight-500 mb-3">
+      {{ "ACTION.ADD_NEW" | translate }}
+    </div>
+
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <nz-form-item class="mb-0">
+        <nz-form-control *ngIf="tabIndex === 0" [nzSpan]="8" class="mr-3">
+          <input
+            formControlName="name"
+            nzSize="large"
+            nz-input
+            placeholder="{{ 'WORKSPACES.WORKSPACE_NAME' | translate }}"
+          />
+        </nz-form-control>
+        <nz-form-control
+          *ngIf="tabIndex === 1"
+          [nzSpan]="8"
+          class="mr-3 mb-3 mb-sm-0"
+          [nzErrorTip]="errorName"
+        >
+          <nz-select
+            formControlName="ip"
+            nzMode="tags"
+            id="action-create__ip"
+            nzSize="large"
+            nzPlaceHolder="{{ 'WORKSPACES.WORKSPACE_IP' | translate }}"
+          ></nz-select>
+          <div
+            *ngIf="
+              validateForm.controls.ip.invalid &&
+              !validateForm.controls.ip.errors.required
+            "
+            class="text-error"
+          >
+            {{ "ACTION.IP_INVALID" | translate }}
+          </div>
+          <ng-template #errorName let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              {{ "ACTION.REQUIRED" | translate }}
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+        <nz-form-control
+          *ngIf="tabIndex === 1"
+          [nzSpan]="8"
+          class="mr-3 mb-3 mb-sm-0"
+        >
+          <input
+            id="action-create__description"
+            formControlName="description"
+            nzSize="large"
+            nz-input
+            placeholder="{{ 'WORKSPACES.WORKSPACE_COMMENT' | translate }}"
+          />
+        </nz-form-control>
+        <button
+          class="mdc-button mdc-btn-lg mdc-button--unelevated"
+          id="action-create__btn"
+        >
+          <i class="material-icons-outlined font-16 mr-2">control_point</i>
+          {{ "HEADER.ADD_ITEM" | translate }}
+        </button>
+        <!-- <div class="site-btn">
+          <button
+            type="submit"
+            class="mdc-button mdc-btn-lg mdc-button--unelevated"
+          >
+            <i class="material-icons-outlined font-16 mr-2">control_point</i>
+            {{ "HEADER.ADD_ITEM" | translate }}
+          </button>
+        </div> -->
+      </nz-form-item>
+    </form>
+  </div>
+  <!-- card -->
+</div>
+<!-- form -->

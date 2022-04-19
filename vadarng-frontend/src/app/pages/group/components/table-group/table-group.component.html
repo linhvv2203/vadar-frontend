@@ -1,0 +1,190 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async).items"
+        (nzCurrentPageDataChange)="currentPageDataChange($event)"
+      >
+        <thead>
+          <tr>
+            <th class="col-url">{{ "GROUP.GROUP_NAME" | translate }}</th>
+            <th class="col-type">{{ "GROUP.COUNT" | translate }}</th>
+            <th class="col-result">{{ "GROUP.HOST" | translate }}</th>
+            <th
+              class="col-action"
+              *ngIf="
+                _commonService.validatePermission(
+                  [EnPermissions.FullPermission, EnPermissions.GroupSetting],
+                  (auth$ | async)?.systemPermissions
+                )
+              "
+            ></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTable.data; let i = index"
+            class="position-relative"
+          >
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "GROUP.GROUP_NAME" | translate }}
+              </div>
+              <a
+                *ngIf="
+                  _commonService.validatePermission(
+                    [EnPermissions.FullPermission, EnPermissions.GroupSetting],
+                    (auth$ | async)?.systemPermissions
+                  )
+                "
+                class="text-primary line-clamp"
+                id="table-group__name-{{ i }}"
+                clickPreventDefault
+                nzTooltipTitle="{{ data?.name }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                href="#"
+                routerLink="/group/add-host"
+                [queryParams]="{
+                  groupId: data.id
+                }"
+                >{{ data?.name }}</a
+              >
+
+              <a
+                *ngIf="
+                  !_commonService.validatePermission(
+                    [EnPermissions.FullPermission, EnPermissions.GroupSetting],
+                    (auth$ | async)?.systemPermissions
+                  )
+                "
+                class="text-primary line-clamp"
+                clickPreventDefault
+                nzTooltipTitle="{{ data?.name }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+                href="#"
+                >{{ data?.name }}</a
+              >
+              <!-- url -->
+            </td>
+            <td class="col-type justify-content-between">
+              <div class="d-block d-lg-none ">
+                {{ "GROUP.COUNT" | translate }}
+              </div>
+              <div class="ml-5">
+                {{ data?.numberOfHost }}
+              </div>
+
+              <!-- type -->
+            </td>
+            <td class="col-result justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "GROUP.HOST" | translate }}
+              </div>
+              <span
+                class="line-clamp"
+                nzTooltipTitle="{{ data?.hostName }}"
+                nzTooltipPlacement="topLeft"
+                nz-tooltip
+              >
+                {{ data?.hostName }}
+              </span>
+              <!-- result -->
+            </td>
+            <td
+              class="col-action p-0"
+              *ngIf="
+                _commonService.validatePermission(
+                  [
+                    EnPermissions.FullPermission,
+                    EnPermissions.GroupSetting,
+                    EnPermissions.WorkspaceFullPermission
+                  ],
+                  (auth$ | async)?.systemPermissions
+                )
+              "
+            >
+              <div>
+                <a
+                  href="#"
+                  clickPreventDefault
+                  class="more d-flex align-items-center justify-content-center"
+                  nzPlacement="bottomRight"
+                  nz-dropdown
+                  nzTrigger="click"
+                  [nzDropdownMenu]="menu"
+                >
+                  <span class="material-icons-outlined font-25">
+                    more_vert
+                  </span>
+                </a>
+                <!-- more -->
+
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu class="select-lg">
+                    <li
+                      routerLink="/group/add-host"
+                      [queryParams]="{
+                        groupId: data.id,
+                        name: data.name,
+                        hosts: data.serverUrl
+                      }"
+                      class="d-flex align-items-center px-3"
+                      nz-menu-item
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="edit"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "GLOBAL.EDIT" | translate }}
+                    </li>
+                    <li nz-menu-divider></li>
+                    <li
+                      (click)="showConfirm(data.id)"
+                      class="d-flex align-items-center px-3 text-danger"
+                      nz-menu-item
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="delete"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "GLOBAL.DELETE" | translate }}
+                    </li>
+                  </ul>
+                </nz-dropdown-menu>
+                <!-- Dropdown -->
+              </div>
+              <!-- action -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<nz-pagination
+  class="text-center"
+  [nzPageIndex]="data.pageIndex"
+  [nzPageSize]="data.pageSize"
+  [nzTotal]="(model$ | async)?.count"
+  (nzPageIndexChange)="onCurrentPageIndexChange($event)"
+></nz-pagination>
+<!-- pagiante -->
+
+<vadar-delete-modal
+  [(isVisible)]="isVisible"
+  [id]="idGroup"
+  (callback)="handleCallBackModal($event)"
+></vadar-delete-modal>

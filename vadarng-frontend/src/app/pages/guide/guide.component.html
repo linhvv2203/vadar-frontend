@@ -1,0 +1,62 @@
+<section class="page-guide page-padding pl-3">
+  <div class="container-fluid">
+    <div class="row align-items-center justify-content-between">
+      <div class="col-md-4 mb-3 mb-md-0 pl-0">
+        <div class="d-flex align-items-center">
+          <a
+            href="#"
+            clickPreventDefault
+            routerLink="/host"
+            class="more mr-2 d-flex align-items-center justify-content-center"
+          >
+            <span class="material-icons-outlined font-25">
+              keyboard_backspace
+            </span>
+          </a>
+          <b class="font-20">{{ "GUIDE.TITLE" | translate }}</b>
+        </div>
+      </div>
+      <!-- button -->
+      <!-- filter -->
+    </div>
+    <!-- top -->
+
+    <h6 class="mt-5">{{ "GUIDE.VADAR_INCLUDE" | translate }}</h6>
+    <ul>
+      <li>Vadar Performance Agent</li>
+      <li>Vadar Security Agent</li>
+    </ul>
+
+    <p><b>1. Window</b></p>
+    <p>{{ "GUIDE.WINDOW_GUIDE" | translate }}.</p>
+    <p><b>2. Linux</b></p>
+    <p>a. Cemtos</p>
+    <p>{{ "GUIDE.LINUX_GUIDE" | translate }}.</p>
+    <p class="mt-5">- Centos 6</p>
+    <code>
+      rpm -ivh vadarp-agent-1.0.0.el6.x86_64.rpm
+      <br />
+      rpm -ivh vadars-agent-1.0.0.x86_64.rpm
+    </code>
+    <p class="mt-5">- Centos 7</p>
+    <code>
+      rpm -ivh vadarp-agent-1.0.0.el7.x86_64.rpm
+      <br />
+      rpm -ivh vadars-agent-1.0.0.x86_64.rpm
+    </code>
+    <p>b. Ubuntu</p>
+    <p class="mt-5">{{ "GUIDE.LINUX_GUIDE" | translate }}.</p>
+    <code>
+      apt-get install vadarp-agent_4.4.8-1+bionic_amd64.deb
+      <br />
+      apt-get install vadars-agent_3.11.3-1_amd64.deb
+    </code>
+    <p></p>
+    <p><b>3. Macos</b></p>
+    <code>
+      installer -pkg zab.pkg -target /
+      <br />
+      installer -pkg waz.pkg -target /
+    </code>
+  </div>
+</section>

@@ -1,0 +1,210 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        [nzShowPagination]="false"
+        [nzData]="(model$ | async).items"
+        (nzCurrentPageDataChange)="currentPageDataChange($event)"
+      >
+        <thead>
+          <tr>
+            <td
+              class="col- p-3 text-center"
+              nzShowCheckbox
+              [(nzChecked)]="isAllDisplayDataChecked"
+              [nzIndeterminate]="isIndeterminate"
+              (nzCheckedChange)="checkAll($event)"
+            ></td>
+            <th class="col-url">{{ "WORKSPACES.NAME" | translate }}</th>
+            <th class="col-type text-center">
+              {{ "GLOBAL.STATUS" | translate }}
+            </th>
+            <th class="col-type text-center">
+              {{ "WORKSPACES.HOST_LIMIT" | translate }}
+            </th>
+            <th class="col-type">{{ "WORKSPACES.EXPIRE_TIME" | translate }}</th>
+            <th class="col-action"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTable.data"
+            class="position-relative"
+          >
+            <td
+              class="col-"
+              nzShowCheckbox
+              [(nzChecked)]="mapOfCheckedId[data?.id]"
+              (nzCheckedChange)="refreshStatus()"
+            ></td>
+            <td class="col-url justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "WORKSPACES.NAME" | translate }}
+              </div>
+              <div
+                style="cursor: pointer;"
+                (click)="handleEdit(data)"
+                class="text-primary line-clamp text-right text-lg-left"
+              >
+                {{ data?.name }}
+              </div>
+              <!-- url -->
+            </td>
+            <td class="col-type justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "GLOBAL.STATUS" | translate }}
+              </div>
+              <div
+                class="text-success text-center"
+                [ngClass]="{
+                  'text-success': data?.status === ExpireStatus.Active,
+                  'text-danger':
+                    data?.status === ExpireStatus.Inactive ||
+                    data?.status === ExpireStatus.Revoked,
+                  'text-warning': data?.status === ExpireStatus.ExpiredDate
+                }"
+              >
+                <span *ngIf="data?.status === ExpireStatus.Active">
+                  {{ "DASHBOARD.ACTIVE" | translate }}
+                </span>
+                <span *ngIf="data?.status === ExpireStatus.Inactive">
+                  {{ "DASHBOARD.INACTIVE" | translate }}
+                </span>
+                <span *ngIf="data?.status === ExpireStatus.Revoked">
+                  {{ "DASHBOARD.REVOKED" | translate }}
+                </span>
+                <span *ngIf="data?.status === ExpireStatus.ExpiredDate">
+                  {{ "DASHBOARD.EXPIRED" | translate }}
+                </span>
+              </div>
+              <!-- type -->
+            </td>
+            <td class="col-type justify-content-between text-center">
+              <div class="d-block d-lg-none">
+                {{ "WORKSPACES.HOST_LIMIT" | translate }}
+              </div>
+              {{ data?.hostLimit }}
+              <!-- type -->
+            </td>
+            <td class="col-type justify-content-between">
+              <div class="d-block d-lg-none">
+                {{ "WORKSPACES.EXPIRE_TIME" | translate }}
+              </div>
+              {{ data?.endDate | date: "MM-dd-yyyy" }}
+              <!-- type -->
+            </td>
+            <td class="col-action p-0">
+              <div>
+                <a
+                  href="#"
+                  clickPreventDefault
+                  class="more d-flex align-items-center justify-content-center"
+                  nzPlacement="bottomRight"
+                  nz-dropdown
+                  nzTrigger="click"
+                  [nzDropdownMenu]="menu"
+                >
+                  <span class="material-icons-outlined font-25">
+                    more_vert
+                  </span>
+                </a>
+                <!-- more -->
+
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu class="select-lg">
+                    <li
+                      class="d-flex align-items-center px-3"
+                      nz-menu-item
+                      (click)="handleEdit(data)"
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="edit"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "GLOBAL.EDIT" | translate }}
+                    </li>
+                    <li
+                      class="d-flex align-items-center px-3 disabled"
+                      [ngClass]="{ btn: data.isCreatedOrganisation }"
+                      nz-menu-item
+                      (click)="handleCreateOrganisation(data)"
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="plus-circle"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "LOGS.CREATE_ORGANISATION" | translate }}
+                    </li>
+                    <li
+                      class="d-flex align-items-center px-3"
+                      nz-menu-item
+                      (click)="handleGoToWorkspace(data)"
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="double-right"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "GLOBAL.GOTOWORKSPACE" | translate }}
+                    </li>
+                    <li nz-menu-divider></li>
+                    <li
+                      class="d-flex align-items-center px-3 text-danger"
+                      nz-menu-item
+                      (click)="showConfirm(data?.id)"
+                    >
+                      <i
+                        class="mr-2 font-19"
+                        nz-icon
+                        nzType="delete"
+                        nzTheme="outline"
+                      ></i>
+                      {{ "GLOBAL.DELETE" | translate }}
+                    </li>
+                  </ul>
+                </nz-dropdown-menu>
+                <!-- Dropdown -->
+              </div>
+              <!-- action -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
+
+<div class="site-btn mb-4 mt-3">
+  <button
+    class="mdc-button mdc-btn-sm mdc-button--outlined mdc-ripple-upgraded"
+    (click)="showConfirm()"
+  >
+    <span>{{ "GROUP.DELETE_SELECTED" | translate }}</span>
+  </button>
+</div>
+
+<nz-pagination
+  class="text-center"
+  [nzPageIndex]="currentPageIndex"
+  [nzPageSize]="data?.pageSize"
+  [nzTotal]="(model$ | async).count"
+  (nzPageIndexChange)="onPageChange($event)"
+></nz-pagination>
+<!-- pagiante -->
+
+<vadar-delete-modal
+  [(isVisible)]="isVisible"
+  [id]="idWorkspace"
+  (callback)="handleCallBackModal($event)"
+>
+</vadar-delete-modal>

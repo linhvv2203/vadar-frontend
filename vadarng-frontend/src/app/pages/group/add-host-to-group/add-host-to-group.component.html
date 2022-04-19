@@ -1,0 +1,95 @@
+<div class="page-padding pl-3">
+  <div class="container-fluid">
+    <div class="row align-items-center justify-content-between">
+      <div class="col-md-4 mb-3 mb-md-0 pl-0">
+        <div class="d-flex align-items-center">
+          <a
+            href="#"
+            clickPreventDefault
+            routerLink="/group"
+            class="more mr-2 d-flex align-items-center justify-content-center"
+          >
+            <span class="material-icons-outlined font-25">
+              keyboard_backspace
+            </span>
+          </a>
+          <b class="font-20">{{ "GROUP.MANAGE_GROUP" | translate }}</b>
+        </div>
+      </div>
+      <!-- button -->
+    </div>
+    <!-- top -->
+    <div class="mx-n3 pt-4">
+      <div class="p-4 card position-relative text-body">
+        <div
+          class="title font-18 font-weight-500 mb-3"
+          *ngIf="
+            _commonService.validatePermission(
+              [EnPermissions.FullPermission, EnPermissions.HostSetting],
+              (auth$ | async)?.systemPermissions
+            )
+          "
+        >
+          {{ "GROUP.ADD_HOST_TO_GROUP" | translate }}
+        </div>
+
+        <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+          <nz-form-item>
+            <nz-form-control
+              [nzSpan]="8"
+              class="mr-3"
+              nzErrorTip="{{ 'HOST.REQUIRED' | translate }}"
+            >
+              <nz-select
+                class="mb-2"
+                nzShowSearch
+                nzSize="large"
+                nzMode="tags"
+                formControlName="hostIds"
+                nzDropdownClassName="select-lg"
+                nzServerSearch
+                nzPlaceHolder="{{ 'HOST.INPUT_SEARCH_TEXT' | translate }}"
+                [nzShowArrow]="false"
+                [nzFilterOption]="nzFilterOption"
+                id="eventType"
+              >
+                <nz-option
+                  *ngFor="let o of (hosts$ | async)?.items"
+                  [nzLabel]="o.name"
+                  [nzValue]="o.id"
+                >
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+            <button
+              *ngIf="
+                _commonService.validatePermission(
+                  [EnPermissions.FullPermission, EnPermissions.GroupSetting],
+                  (auth$ | async)?.systemPermissions
+                )
+              "
+              class="mdc-button mdc-btn-lg mdc-button--unelevated"
+            >
+              <i class="material-icons-outlined font-16 mr-2">control_point</i>
+              {{ "HEADER.ADD_ITEM" | translate }}
+            </button>
+          </nz-form-item>
+        </form>
+        <!-- form -->
+
+        <p class="font-16">{{ "GROUP.CURRENT_HOST" | translate }}</p>
+        <!--  -->
+        <vadar-table-host-of-group></vadar-table-host-of-group>
+        <!-- table -->
+      </div>
+      <!-- card -->
+    </div>
+    <!-- table -->
+  </div>
+</div>
+
+<confirm-add-host-modal
+  [(isVisible)]="isVisible"
+  [id]="query.groupId"
+  (callback)="handleCallBackModal($event)"
+></confirm-add-host-modal>

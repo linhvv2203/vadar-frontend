@@ -1,0 +1,349 @@
+<section class="page-notification page-padding pl-3">
+  <div class="container-fluid">
+    <vadar-notifications-top
+      *ngIf="workspaceId != null && workspaceId >= 0"
+    ></vadar-notifications-top>
+
+    <div class="mx-n3 pt-4" *ngIf="workspaceId > 0">
+      <div class="card py-5 px-4">
+        <nz-collapse>
+          <nz-collapse-panel
+            #p
+            *ngFor="let panel of panels; let i = index"
+            [nzHeader]="expandedHeader"
+            [nzActive]="panel.active"
+            [nzExtra]="extraTpl"
+            [nzDisabled]="panel.disabled"
+            [nzExpandedIcon]="expandedIcon"
+          >
+            <div class="py-4 px-3" *ngIf="i == 0">
+              <form
+                nz-form
+                [formGroup]="validateForm"
+                (ngSubmit)="submitForm()"
+              >
+                <div class="row d-flex align-items-center">
+                  <div
+                    style="min-width: 120px;"
+                    class="col-md-4 mr-auto mr-sm-0 mb-2 mb-sm-0"
+                  >
+                    <i
+                      nz-icon
+                      nzType="mail"
+                      class="font-20 mr-2"
+                      nzTheme="outline"
+                    ></i>
+                    <span class="mr-3">{{
+                      "NOTIFICATIONS.INPUT_EMAIL" | translate
+                    }}</span>
+                    &nbsp;
+                    <i
+                      class="fas fa-spinner fa-spin"
+                      *ngIf="showLabel == 1"
+                    ></i>
+                  </div>
+                  <nz-form-item class="col-md-8 mb-0 mr-auto mr-sm-0 email">
+                    <nz-form-control
+                      [nzSpan]="24"
+                      nzErrorTip="{{
+                        'NOTIFICATIONS.EMAIL_VALIDATE' | translate
+                      }}"
+                      class="w-75"
+                    >
+                      <nz-select
+                        *ngIf="
+                          !_commonService.validatePermission(
+                            [
+                              EnPermissions.FullPermission,
+                              EnPermissions.EmailNotificationSetting
+                            ],
+                            (auth$ | async)?.systemPermissions
+                          )
+                        "
+                        nzDisabled
+                        class="mr-4"
+                        nzMode="tags"
+                        nzPlaceHolder="{{
+                          'NOTIFICATIONS.INPUT_EMAIL' | translate
+                        }}"
+                        formControlName="emails"
+                        id="notifications__input-email"
+                      >
+                        <nz-option nzHide="true"> </nz-option>
+                        <nz-option
+                          *ngFor="let option of listOfOption"
+                          [nzLabel]="option.label"
+                          [nzValue]="option.value"
+                        >
+                        </nz-option>
+                      </nz-select>
+
+                      <nz-select
+                        *ngIf="
+                          _commonService.validatePermission(
+                            [
+                              EnPermissions.FullPermission,
+                              EnPermissions.EmailNotificationSetting
+                            ],
+                            (auth$ | async)?.systemPermissions
+                          )
+                        "
+                        class="mr-4"
+                        nzMode="tags"
+                        nzPlaceHolder="{{
+                          'NOTIFICATIONS.INPUT_EMAIL' | translate
+                        }}"
+                        formControlName="emails"
+                        id="notifications__input-email"
+                      >
+                        <nz-option nzHide="true"> </nz-option>
+                        <nz-option
+                          *ngFor="let option of listOfOption"
+                          [nzLabel]="option.label"
+                          [nzValue]="option.value"
+                        >
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                  <!-- <nz-switch
+                    class="ml-sm-3 mr-auto mr-sm-0 mt-3 mt-sm-0"
+                    formControlName="status"
+                    (ngModel)="(true)"
+                  ></nz-switch> -->
+                </div>
+                <!-- email -->
+                <div class="d-flex row align-items-center py-3">
+                  <div
+                    style="min-width: 120px;"
+                    class="col-md-4 mr-auto mr-sm-0 mb-2 mb-sm-0"
+                  >
+                    <i
+                      nz-icon
+                      nzType="slack"
+                      class="font-20 mr-2"
+                      nzTheme="outline"
+                    ></i>
+                    <span class="mr-3">{{
+                      "NOTIFICATIONS.INPUT_SLACK" | translate
+                    }}</span>
+                  </div>
+                  <nz-form-item class="col-md-8 mb-0 mr-auto mr-sm-0 email">
+                    <nz-form-control
+                      [nzSpan]="24"
+                      nzErrorTip="{{
+                        'NOTIFICATIONS.SLACK_VALIDATE' | translate
+                      }}"
+                      class="w-75"
+                    >
+                      <input
+                        nz-input
+                        placeholder="Slack webhook URL"
+                        formControlName="slack"
+                      />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <!-- Slack -->
+                <div class="d-flex row align-items-center py-3">
+                  <div
+                    style="min-width: 120px;"
+                    class="col-md-4 mr-auto mr-sm-0 mb-2 mb-sm-0"
+                  >
+                    <i
+                      class="fab fa-telegram-plane"
+                      style="font-size: 20px;"
+                    ></i>
+                    <span class="ml-2 mr-3">{{
+                      "NOTIFICATIONS.INPUT_TELE" | translate
+                    }}</span>
+                  </div>
+                  <nz-form-item class="col-md-8 mb-0 mr-auto mr-sm-0 email">
+                    <nz-form-control
+                      [nzSpan]="24"
+                      nzErrorTip="{{ 'MEMBERS.EMAIL_REQUIRED' | translate }}"
+                      class="w-75"
+                    >
+                      <input
+                        nz-input
+                        placeholder="Telegram Webhook URL"
+                        formControlName="telegram"
+                      />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <!-- Telegram -->
+                <!-- <div class="d-flex row align-items-center py-3">
+                  <div
+                    style="min-width: 120px;"
+                    class="col-md-4 mr-auto mr-sm-0 mb-2 mb-sm-0"
+                  >
+                    <img
+                      src="assets/images/zalo.svg"
+                      class="mr-2"
+                      alt="telegram"
+                      style="max-height: 20px;"
+                    />
+                    <span class="mr-3">{{
+                      "NOTIFICATIONS.INPUT_ZALO" | translate
+                    }}</span>
+                  </div>
+                  <nz-form-item class="col-md-8 mb-0 mr-auto mr-sm-0 email">
+                    <nz-form-control
+                      [nzSpan]="24"
+                      nzErrorTip="{{
+                        'NOTIFICATIONS.PHONE_VALIDATE' | translate
+                      }}"
+                      class="w-75"
+                    >
+                      <nz-select
+                        formControlName="zalo"
+                        nzMode="tags"
+                        nzPlaceHolder="{{
+                          'NOTIFICATIONS.INPUT_ZALO' | translate
+                        }}"
+                      ></nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div> -->
+                <!-- Zalo -->
+                <!-- <div class="d-flex row align-items-center py-3">
+                  <div
+                    style="min-width: 120px;"
+                    class="col-md-4 d-flex align-items-center mr-auto mr-sm-0 mb-2 mb-sm-0"
+                  >
+                    <span class="material-icons-outlined">
+                      textsms
+                    </span>
+                    <span class="ml-2 mr-3">{{
+                      "NOTIFICATIONS.INPUT_SMS" | translate
+                    }}</span>
+                  </div>
+                  <nz-form-item class="col-md-8 mb-0 mr-auto mr-sm-0 email">
+                    <nz-form-control
+                      [nzSpan]="24"
+                      nzErrorTip="{{
+                        'NOTIFICATIONS.PHONE_VALIDATE' | translate
+                      }}"
+                      class="w-75"
+                    >
+                      <nz-select
+                        formControlName="sms"
+                        nzMode="tags"
+                        nzPlaceHolder="{{
+                          'NOTIFICATIONS.INPUT_SMS' | translate
+                        }}"
+                      ></nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div> -->
+                <!-- SMS -->
+
+                <!-- <div class="d-flex align-items-center py-3">
+                <div style="min-width: 120px;">
+                  <i class="far fa-comment-dots font-20 mr-2"></i>
+                  <span class="mr-3">SMS</span>
+                </div>
+                <nz-select
+                  class="mr-4"
+                  style="min-width: 200px;"
+                  [(ngModel)]="tagValue2"
+                  nzMode="tags"
+                  nzPlaceHolder="Input notifications"
+                >
+                  <nz-option
+                    *ngFor="let option of listOfOption"
+                    [nzLabel]="option.label"
+                    [nzValue]="option.value"
+                  >
+                  </nz-option>
+                </nz-select>
+                <nz-switch></nz-switch>
+              </div> -->
+                <!-- sms -->
+
+                <div class="d-flex align-items-center py-3">
+                  <button
+                    *ngIf="
+                      _commonService.validatePermission(
+                        [
+                          EnPermissions.FullPermission,
+                          EnPermissions.EmailNotificationSetting
+                        ],
+                        (auth$ | async)?.systemPermissions
+                      )
+                    "
+                    class="mdc-button mdc-btn-lg mdc-button--unelevated mdc-ripple-upgraded"
+                    id="notifications__save-btn"
+                  >
+                    {{ "GLOBAL.SAVE" | translate }}
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="py-4 px-3" *ngIf="i == 1">
+              <vadar-notification-setting></vadar-notification-setting>
+            </div>
+
+            <ng-template #expandedHeader>
+              <div class="ml-2 d-inline-block nav-header">
+                <span class="font-18 font-weight-500">{{
+                  panel.name | translate
+                }}</span>
+                <br />
+                <span class="text-secondary">{{
+                  panel.description | translate
+                }}</span>
+              </div>
+            </ng-template>
+            <!-- header -->
+
+            <ng-template #expandedIcon>
+              <div class="ant-collapse-arrow">
+                <i
+                  class="text-warning far fa-bell font-24 mr-2"
+                  *ngIf="i == 0"
+                ></i>
+                <span
+                  class="material-icons-outlined text-warning font-24 mr-2"
+                  *ngIf="i == 1"
+                >
+                  settings
+                </span>
+              </div>
+            </ng-template>
+            <!-- left icon -->
+
+            <ng-template #extraTpl>
+              <!-- You can use stopPropagation if you don't want the panel to toggle -->
+              <div class="mt-2">
+                <i
+                  nz-icon
+                  nzType="caret-right"
+                  class="font-18"
+                  clickStopPropagation
+                  [nzRotate]="p.nzActive ? -90 : 90"
+                ></i>
+              </div>
+            </ng-template>
+            <!-- right icon -->
+          </nz-collapse-panel>
+        </nz-collapse>
+        <!-- collapse -->
+
+        <!-- <div class="site-btn text-center mt-4">
+          <button class="mdc-button mdc-ripple-upgraded">
+            <i class="material-icons-outlined font-16 mr-2">control_point</i>
+            {{ "NOTIFICATIONS.ADD_NOTIFICATIONS" | translate }}
+          </button>
+        </div> -->
+      </div>
+    </div>
+    <!-- table -->
+    <div *ngIf="!workspaceId || workspaceId < 0">
+      <p class="font-25 text-center text-danger" style="margin-top: 25vh;">
+        {{ "ROLES.NO_WORKSPACE_SELECTED_YET" | translate }}
+      </p>
+    </div>
+  </div>
+</section>

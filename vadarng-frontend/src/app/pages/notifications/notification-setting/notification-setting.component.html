@@ -1,0 +1,259 @@
+<form
+  nz-form
+  [formGroup]="validateSecurityForm"
+  (ngSubmit)="checkSecurityCondition()"
+>
+  <div class="d-flex align-items-center py-3 row">
+    <div
+      style="min-width: 120px;"
+      class="col-md-4 d-flex align-items-center mr-auto mr-sm-0 mb-2 mb-sm-0"
+    >
+      <span class="font-weight-bold">{{
+        "NOTIFICATIONS.SETTING_SECURITY" | translate
+      }}</span>
+    </div>
+    <div class="col-md-8 d-flex justify-content-center">
+      <nz-form-item class="mb-0 mr-auto mr-sm-0">
+        <nz-form-control>
+          <nz-switch
+            formControlName="security"
+            nzCheckedChildren="{{ 'NOTIFICATIONS.ON' | translate }}"
+            nzUnCheckedChildren="{{ 'NOTIFICATIONS.OFF' | translate }}"
+            (click)="submitSecurityForm()"
+          ></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div class="row">
+    <div
+      style="min-width: 120px;"
+      class="col-md-2 mr-auto mr-sm-0 mb-2 mb-sm-0"
+    >
+      <span class="mr-3">{{ "NOTIFICATIONS.CONDITION" | translate }}</span>
+    </div>
+    <div class="col-md-10">
+      <div
+        class="row d-flex align-items-center nomarl-disable"
+        *ngFor="let condition of listCondition; let i = index"
+      >
+        <nz-form-item class="col-md-3 mb-0 mr-auto mr-sm-0">
+          <nz-form-control
+            [nzSpan]="22"
+            nzErrorTip="{{ 'MEMBERS.EMAIL_REQUIRED' | translate }}"
+          >
+            <nz-select
+              formControlName="condition-{{ condition.id }}"
+              [nzDisabled]="true"
+            >
+              <nz-option
+                [nzValue]="SecurityNotificationCondition.Above"
+                nzLabel="{{ 'NOTIFICATIONS.ABOVE' | translate }}"
+              ></nz-option>
+              <nz-option
+                [nzValue]="SecurityNotificationCondition.Below"
+                nzLabel="{{ 'NOTIFICATIONS.BELOW' | translate }}"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="col-md-3 mb-0 mr-auto mr-sm-0">
+          <nz-form-control [nzSpan]="22">
+            <input
+              nz-input
+              type="number"
+              min="7"
+              max="15"
+              placeholder="{{ 'DASHBOARD.LEVEL' | translate }}"
+              formControlName="value-{{ condition.id }}"
+              disabled="true"
+            />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="col-md-4 mb-0 mr-auto mr-sm-0">
+          <nz-form-control
+            [nzSpan]="22"
+            nzErrorTip="{{ 'MEMBERS.EMAIL_REQUIRED' | translate }}"
+          >
+            <nz-select
+              formControlName="notificationType-{{ condition.id }}"
+              [nzDisabled]="true"
+            >
+              <nz-option
+                [nzValue]="SecurityNotificationChannel.emails"
+                nzLabel="Email"
+              ></nz-option>
+              <nz-option
+                [nzValue]="SecurityNotificationChannel.slack"
+                nzLabel="Slack"
+              ></nz-option>
+              <nz-option
+                [nzValue]="SecurityNotificationChannel.telegram"
+                nzLabel="Telegram"
+              ></nz-option>
+              <nz-option
+                [nzValue]="SecurityNotificationChannel.zalo"
+                nzLabel="Zalo"
+              ></nz-option>
+              <nz-option
+                [nzValue]="SecurityNotificationChannel.sms"
+                nzLabel="SMS"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <div
+          class="col-md-2 d-flex align-items-center cursor-pointer"
+          (click)="removeCondition(i)"
+        >
+          <span class="material-icons-outlined">
+            delete
+          </span>
+        </div>
+      </div>
+      <div class="row" *ngIf="!isAddNew">
+        <nz-form-item class="col-md-3 mb-0 mr-auto mr-sm-0">
+          <nz-form-control
+            [nzSpan]="22"
+            nzErrorTip="{{ 'MEMBERS.EMAIL_REQUIRED' | translate }}"
+          >
+            <nz-select formControlName="newCondition">
+              <nz-option
+                [nzValue]="SecurityNotificationCondition.Above"
+                nzLabel="{{ 'NOTIFICATIONS.ABOVE' | translate }}"
+              ></nz-option>
+              <nz-option
+                [nzValue]="SecurityNotificationCondition.Below"
+                nzLabel="{{ 'NOTIFICATIONS.BELOW' | translate }}"
+              ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="col-md-3 mb-0 mr-auto mr-sm-0">
+          <nz-form-control
+            [nzSpan]="22"
+            nzErrorTip="{{ 'NOTIFICATIONS.LEVEL_VALIDATE' | translate }}"
+          >
+            <input
+              nz-input
+              type="number"
+              min="7"
+              max="15"
+              placeholder="{{ 'DASHBOARD.LEVEL' | translate }}"
+              formControlName="newLevel"
+            />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="col-md-4 mb-0 mr-auto mr-sm-0">
+          <nz-form-control
+            [nzSpan]="22"
+            nzErrorTip="{{ 'MEMBERS.EMAIL_REQUIRED' | translate }}"
+          >
+            <nz-select formControlName="newChannel">
+              <nz-option
+                [nzValue]="SecurityNotificationChannel.emails"
+                nzLabel="Email"
+              ></nz-option>
+              <nz-option
+                [nzValue]="SecurityNotificationChannel.slack"
+                nzLabel="Slack"
+              ></nz-option>
+              <nz-option
+                [nzValue]="SecurityNotificationChannel.telegram"
+                nzLabel="Telegram"
+              ></nz-option>
+              <!-- <nz-option
+                [nzValue]="SecurityNotificationChannel.zalo"
+                nzLabel="Zalo"
+              ></nz-option>
+              <nz-option
+                [nzValue]="SecurityNotificationChannel.sms"
+                nzLabel="SMS"
+              ></nz-option> -->
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <button
+          class="col-md-2 mdc-button mdc-btn-sm mdc-button--unelevated mdc-ripple-upgraded mt-1"
+        >
+          {{ "HEADER.ADD_MEM" | translate }}
+        </button>
+      </div>
+      <div
+        class="row text-underline text-primary cursor-pointer ml--15"
+        *ngIf="isAddNew"
+        (click)="toggleAddForm()"
+      >
+        <div class="col-md-3 invisible">invisible</div>
+        <div class="col-md-9 text-center">
+          <span class="mr-4">{{ "NOTIFICATIONS.ADD_NEW" | translate }}...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<!-- <form nz-form [formGroup]="validatePerformanceForm">
+  <div class="d-flex align-items-center py-3 row">
+    <div
+      style="min-width: 120px;"
+      class="col-md-4 d-flex align-items-center mr-auto mr-sm-0 mb-2 mb-sm-0"
+    >
+      <span class="mr-3 font-weight-bold">{{
+        "NOTIFICATIONS.SETTING_PERFORMANCE" | translate
+      }}</span>
+    </div>
+    <div class="col-md-8 d-flex justify-content-center">
+      <nz-switch
+        formControlName="performance"
+        nzCheckedChildren="{{ 'NOTIFICATIONS.ON' | translate }}"
+        nzUnCheckedChildren="{{ 'NOTIFICATIONS.OFF' | translate }}"
+        (click)="submitPerformanceForm()"
+      ></nz-switch>
+    </div>
+  </div>
+</form> -->
+<!-- <form nz-form [formGroup]="validateNetworkForm">
+  <div class="d-flex align-items-center py-3 row">
+    <div
+      style="min-width: 120px;"
+      class="col-md-4 d-flex align-items-center mr-auto mr-sm-0 mb-2 mb-sm-0"
+    >
+      <span class="mr-3 font-weight-bold">{{
+        "NOTIFICATIONS.SETTING_NETWORK" | translate
+      }}</span>
+    </div>
+    <div class="col-md-8 d-flex justify-content-center">
+      <nz-switch
+        formControlName="network"
+        nzCheckedChildren="{{ 'NOTIFICATIONS.ON' | translate }}"
+        nzUnCheckedChildren="{{ 'NOTIFICATIONS.OFF' | translate }}"
+        (click)="submitNetworkForm()"
+      ></nz-switch>
+    </div>
+  </div>
+</form>
+<form nz-form [formGroup]="validateTicketForm">
+  <div class="d-flex align-items-center py-3 row">
+    <div
+      style="min-width: 120px;"
+      class="col-md-4 d-flex align-items-center mr-auto mr-sm-0 mb-2 mb-sm-0"
+    >
+      <span class="mr-3 font-weight-bold">{{
+        "NOTIFICATIONS.SETTING_TICKET" | translate
+      }}</span>
+    </div>
+    <div class="col-md-8 d-flex justify-content-center">
+      <nz-switch
+        formControlName="ticket"
+        nzCheckedChildren="{{ 'NOTIFICATIONS.ON' | translate }}"
+        nzUnCheckedChildren="{{ 'NOTIFICATIONS.OFF' | translate }}"
+        (click)="submitTicketForm()"
+      ></nz-switch>
+    </div>
+  </div>
+</form> -->
+<vadar-popup-confirm-add-condition
+  [(isConfirmPopup)]="isConfirmPopup"
+  (isAcceptChangeConditon)="receiveMessage($event)"
+>
+</vadar-popup-confirm-add-condition>

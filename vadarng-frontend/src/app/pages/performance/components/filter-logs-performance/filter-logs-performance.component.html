@@ -1,0 +1,111 @@
+<div class="table-scaned mb-5">
+  <div class="card p-4 position-relative">
+    <div class="mdc-content position-relative ">
+      <div class="title font-18 font-weight-500 mb-3">
+        {{ "LOGS.ADVANCE_SEARCH" | translate }}
+      </div>
+      <!-- title -->
+
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <div class="row">
+          <div class="col-md-10">
+            <div class="row">
+              <div class="col-md-4 mb-3 px-2">
+                <nz-form-control>
+                  <nz-date-picker
+                    class="w-100"
+                    nzShowTime
+                    formControlName="fromDate"
+                    [(ngModel)]="startValue"
+                    [nzDisabledDate]="disabledStartDate"
+                    nzSize="large"
+                    nzPlaceHolder="{{ 'GLOBAL.FROM' | translate }}"
+                  >
+                  </nz-date-picker>
+                </nz-form-control>
+              </div>
+              <!-- form -->
+
+              <div class="col-md-4 mb-3 px-2">
+                <nz-form-control>
+                  <nz-date-picker
+                    class="w-100"
+                    nzShowTime
+                    [(ngModel)]="endValue"
+                    formControlName="toDate"
+                    [nzDisabledDate]="disabledEndDate"
+                    nzSize="large"
+                    nzPlaceHolder="{{ 'GLOBAL.TO' | translate }}"
+                  >
+                  </nz-date-picker>
+                </nz-form-control>
+              </div>
+              <!-- to -->
+
+              <div class="col-md-4 mb-3 px-2">
+                <nz-form-control>
+                  <nz-select
+                    nzSize="large"
+                    formControlName="status"
+                    nzShowSearch
+                    nzAllowClear
+                    nzPlaceHolder="{{ 'GLOBAL.STATUS' | translate }}"
+                  >
+                    <nz-option
+                      nzLabel="{{ 'GLOBAL.ALL' | translate }}"
+                      nzValue=""
+                    ></nz-option>
+                    <nz-option
+                      nzLabel="{{ 'LOGS.NO_PROBLEM' | translate }}"
+                      nzValue="OK"
+                    ></nz-option>
+                    <nz-option
+                      nzLabel="{{ 'LOGS.PROBLEM' | translate }}"
+                      nzValue="PROBLEM"
+                    ></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </div>
+              <!-- status -->
+
+              <div class="col-md-4 mb-3 px-2">
+                <nz-form-control>
+                  <nz-select
+                    nzSize="large"
+                    formControlName="severity"
+                    nzShowSearch
+                    nzAllowClear
+                    nzPlaceHolder="{{ 'LOGS.SEVERITY' | translate }}"
+                  >
+                    <nz-option
+                      nzLabel="{{ 'GLOBAL.ALL' | translate }}"
+                      nzValue=""
+                    ></nz-option>
+                    <nz-option
+                      nzLabel="{{ 'LOGS.AVERAGE' | translate }}"
+                      nzValue="AVERAGE"
+                    ></nz-option>
+                    <nz-option
+                      nzLabel="{{ 'LOGS.WARNING' | translate }}"
+                      nzValue="WARNING"
+                    ></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </div>
+              <!-- severity -->
+            </div>
+          </div>
+          <div class="col-md-2 px-2">
+            <button
+              type="submit"
+              class="w-100 mdc-button mdc-btn-lg mdc-button--unelevated"
+            >
+              {{ "GLOBAL.SEARCH" | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+      <!-- form -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="card p-3">
+  <div class="d-flex justify-content-between">
+    <p
+      class="font-18 font-weight-500 mb-2 line-clamp"
+      nzTooltipTitle="{{ 'DASHBOARD.ATTACK_IP_MAP' | translate }}"
+      nzTooltipPlacement="topLeft"
+      nz-tooltip
+    >
+      {{ "DASHBOARD.ATTACK_IP_MAP" | translate }}
+    </p>
+
+    <nz-select
+      nzTooltipTitle="{{ 'GLOBAL.AUTO_RELOAD' | translate }}"
+      nzTooltipPlacement="topLeft"
+      nz-tooltip
+      [ngModel]="time"
+      style="min-width: 100px;"
+      [nzSize]="'small'"
+      (ngModelChange)="onChangeTime($event)"
+    >
+      <nz-option
+        [nzValue]="15000"
+        nzLabel="15 {{ 'GLOBAL.SECONDS' | translate }}"
+      ></nz-option>
+      <nz-option
+        [nzValue]="30000"
+        nzLabel="30 {{ 'GLOBAL.SECONDS' | translate }}"
+      ></nz-option>
+      <nz-option
+        [nzValue]="60000"
+        nzLabel="1 {{ 'GLOBAL.MINUTE' | translate }}"
+      ></nz-option>
+      <nz-option
+        [nzValue]="300000"
+        nzLabel="5 {{ 'GLOBAL.MINUTES' | translate }}"
+      ></nz-option>
+      <nz-option
+        [nzValue]="0"
+        nzLabel="{{ 'GLOBAL.NEVER' | translate }}"
+      ></nz-option>
+    </nz-select>
+  </div>
+  <div class="border-bottom mx-n3 mb-3"></div>
+  <div id="map" class="w-100"></div>
+</div>

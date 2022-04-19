@@ -1,0 +1,93 @@
+<section class="page-group page-padding pl-3">
+  <div class="container-fluid">
+    <div class="row align-items-center justify-content-between">
+      <div class="col-md-4 mb-3 mb-md-0 pl-0">
+        <div class="d-flex align-items-center">
+          <a
+            href="#"
+            clickPreventDefault
+            routerLink="/"
+            class="more mr-2 d-flex align-items-center justify-content-center"
+          >
+            <span class="material-icons-outlined font-25">
+              keyboard_backspace
+            </span>
+          </a>
+          <b class="font-20">{{ "GROUP.MANAGE_GROUP" | translate }}</b>
+        </div>
+      </div>
+      <!-- button -->
+      <div
+        class="col-md-8 px-0 d-flex align-items-center justify-content-end"
+        *ngIf="groupRequest.workspaceId > 0"
+      >
+        <form
+          nz-form
+          [formGroup]="validateForm"
+          class="text-lg-right filter-form"
+          (ngSubmit)="submitForm()"
+        >
+          <nz-form-item class="mb-0 w-100">
+            <nz-form-control>
+              <nz-input-group [nzPrefix]="prefixTemplateUrl">
+                <ng-template #prefixTemplateUrl
+                  ><i class="font-19 ml-n2" nz-icon nzType="search"></i
+                ></ng-template>
+                <input
+                  class="custom-border"
+                  type="text"
+                  nz-input
+                  formControlName="groupName"
+                  placeholder="{{ 'GLOBAL.SEARCH' | translate }}"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <!-- url -->
+        </form>
+        <div class="mb-lg-0 ml-4">
+          <button
+            (click)="onOpenFormCreate()"
+            class="mdc-button mdc-btn-sm mdc-button--outlined mdc-ripple-upgraded"
+            *ngIf="
+              _commonService.validatePermission(
+                [EnPermissions.FullPermission, EnPermissions.GroupSetting],
+                (auth$ | async)?.systemPermissions
+              )
+            "
+            id="btn-group__add-new"
+          >
+            <i
+              class="d-inline d-md-none"
+              nz-icon
+              nzType="plus"
+              nzTheme="outline"
+            ></i>
+            <span class="d-md-inline d-none">{{
+              "GROUP.ADD_NEW" | translate
+            }}</span>
+          </button>
+        </div>
+      </div>
+      <!-- filter -->
+    </div>
+    <!-- top -->
+
+    <vadar-create-group
+      [(isCreate)]="isCreate"
+      [data]="groupRequest"
+      *ngIf="groupRequest.workspaceId > 0"
+    ></vadar-create-group>
+    <!-- create form -->
+
+    <div class="mx-n3 pt-4" *ngIf="groupRequest.workspaceId > 0">
+      <vadar-table-group [data]="groupRequest"></vadar-table-group>
+    </div>
+    <!-- table -->
+    <div *ngIf="!groupRequest.workspaceId || groupRequest.workspaceId < 0">
+      <p class="font-25 text-center text-danger" style="margin-top: 25vh;">
+        {{ "ROLES.NO_WORKSPACE_SELECTED_YET" | translate }}
+      </p>
+    </div>
+  </div>
+</section>

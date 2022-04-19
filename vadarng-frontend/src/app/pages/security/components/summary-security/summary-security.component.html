@@ -1,0 +1,22 @@
+<vadar-security-events
+  *ngIf="groupId === GroupOfSecurity.All"
+  [time]="time"
+></vadar-security-events>
+<vadar-security-vulnerabilities
+  *ngIf="groupId === GroupOfSecurity.Vulnerabilities"
+  [time]="time"
+>
+</vadar-security-vulnerabilities>
+<vadar-security-integrity-monitoring
+  *ngIf="groupId === GroupOfSecurity.Integrity_Monitoring"
+  [time]="time"
+>
+</vadar-security-integrity-monitoring>
+<vadar-mitre-att-ck
+  *ngIf="groupId === GroupOfSecurity.Mitre_ATT_CK"
+  [time]="time"
+></vadar-mitre-att-ck>
+<vadar-pci-dss
+  *ngIf="groupId === GroupOfSecurity.PCI_DSS"
+  [time]="time"
+></vadar-pci-dss>

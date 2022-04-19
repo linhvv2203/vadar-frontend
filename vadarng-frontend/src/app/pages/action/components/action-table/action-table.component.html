@@ -1,0 +1,53 @@
+<div class="table-scaned mb-3">
+  <div class="card h-100 px-0 position-relative">
+    <div class="mdc-content position-relative ">
+      <nz-table
+        #rowSelectionTable
+        [nzShowPagination]="false"
+        [nzData]="model$ | async"
+      >
+        <thead>
+          <tr
+            *ngIf="
+              _commonService.validatePermission(
+                [EnPermissions.FullPermission, EnPermissions.PolicySetting],
+                (auth$ | async)?.systemPermissions
+              )
+            "
+          >
+            <th class="col-">
+              <span class="mr-3">{{ "HOST.ENABLE" | translate }}</span>
+              <nz-switch
+                *ngIf="rowSelectionTable.data.length"
+                [(ngModel)]="rowSelectionTable.data[0].isEnable"
+                (ngModelChange)="
+                  handleChangeEnable(
+                    rowSelectionTable.data,
+                    rowSelectionTable.data[0].isEnable
+                  )
+                "
+                id="action-table__switch-btn"
+              >
+              </nz-switch>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of rowSelectionTable.data"
+            class="position-relative"
+          >
+            <td class=" justify-content-between">
+              <span>{{ data.description }}</span>
+              <!-- url -->
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <!-- table -->
+    </div>
+    <!-- content -->
+  </div>
+  <!-- card -->
+</div>
+<!-- item -->
